@@ -1,6 +1,5 @@
 import {Request, Response} from 'express';
 
-
 import {SingerModel} from '../../../common/model/singer.model';
 import {TopicModel} from '../../../common/model/topic.model';
 import {SongModel} from "../../../common/model/song.model";

@@ -6,7 +6,7 @@
     "outDir": "./dist",
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "CommonJS",
+    "module": "NodeNext",
     "target": "ES2017",
     "types": [],
     // For nodejs:
