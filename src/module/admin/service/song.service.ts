@@ -3,15 +3,37 @@ import slug from 'slug';
 import {SongModel} from '../../../common/model/song.model';
 
 import {ISong} from '../../../common/model/song.model';
+import {convertTextToSlug} from "../../../shared/ulti/unidecode.ulti";
 
 export class songService {
-    async index() : Promise<ISong[]> {
-        const filter = {status: 'active', deleted: false}
+    async index(q): Promise<{ songs: ISong[]; status: string; sort: string }> {
+        const filter: any = {status: 'active', deleted: false};
+        if (q.status) filter.status = q.status === 'all' || q.status === 'active' ? 'active' : 'inactive';
+
+        let sortOption: Record<string, 1 | -1> = {createdAt: -1}
+        if (q.sort && q.sort !== 'all' && typeof q.sort === 'string') {
+            const [key, value] = q.sort.split('-');
+            sortOption = { [key]: value === 'desc' ? -1 : 1 };
+        }
+
+        if (q.q) {
+            const convertText = convertTextToSlug(q.q);
+            filter['$or'] = [
+                { title: new RegExp(q.q, 'i') },
+                { slug: new RegExp(convertText, 'i') },
+            ];
+        }
+
         const songs = await SongModel.find(filter)
             .populate('singerId', 'fullName')
             .populate('topicId', 'title')
+            .sort(sortOption)
             .exec();
-        return songs;
+        return {
+            songs,
+            status: q.status,
+            sort: q.sort,
+        };
     }
 
     async create(body): Promise<void> {

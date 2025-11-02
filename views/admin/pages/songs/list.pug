@@ -22,6 +22,13 @@ block content
                                 option(value='all' selected=(status === 'all')) Tất cả
                                 option(value='active' selected=(status === 'active')) Active
                                 option(value='inactive' selected=(status === 'inactive')) Inactive
+                        form#filterForm(action='/server/song', method='GET', class='filter-form')
+                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                option(value='all' selected=(sort === 'all')) sắp xếp
+                                option(value='views-desc' selected=(sort === 'views-desc')) Lượt xem giảm dần
+                                option(value='views-asc' selected=(sort === 'views-asc')) Lượt xem tăng dần
+                                option(value='likes-desc' selected=(sort === 'likes-desc')) Lượt thích giảm dần
+                                option(value='likes-asc' selected=(sort === 'likes-asc')) Lượt thích tăng dần
                         form#multiActionForm(action='/server/song/change-multi?_method=PATCH', method='POST', style='display:none;')
                             input(type='hidden', name='ids', id='selectedIds')
                             input(type='hidden', name='action', id='selectedAction')

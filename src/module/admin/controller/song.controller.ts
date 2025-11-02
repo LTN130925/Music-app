@@ -9,10 +9,12 @@ const serviceInstance = new songService();
 
 export class controller {
     async index(req: Request, res: Response) {
-        const songs = await serviceInstance.index();
+        const data = await serviceInstance.index(req.query);
         res.render('admin/pages/songs/list', {
             titlePage: 'Quản lý bài hát',
-            songs,
+            songs: data.songs,
+            status: data.status,
+            sort: data.sort,
         });
     }
 
