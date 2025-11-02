@@ -2,6 +2,13 @@ import {PermissionModel} from '../../../common/model/permission.model';
 import {RoleModel} from '../../../common/model/role.model';
 
 export class roleService {
+    async index() {
+        const roles = await RoleModel.find({deleted: false, status: 'active'})
+            .populate('permissions', 'listPermission')
+            .exec();
+        return roles;
+    }
+
     async create(body): Promise<void> {
         const createNewPermission = new PermissionModel();
         await createNewPermission.save();

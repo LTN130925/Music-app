@@ -53,7 +53,7 @@ block content
                                     td.text-capitalize= role.title || '-'
                                     td !{role.description}
                                     td
-                                        if role.permissions && role.permissions.length
+                                        if role.permissions && role.permissions.listPermission.length
                                             span.badge.bg-info đã gán
                                         else
                                             span.badge.bg-secondary chưa có

@@ -7,7 +7,7 @@ const serviceInstance = new roleService();
 
 export class controller {
     async index(req: Request, res: Response) {
-        const roles = await RoleModel.find({deleted: false, status: 'active'});
+        const roles = await serviceInstance.index();
         res.render('admin/pages/role/list', {
             titlePage: 'Trang chức vụ',
             roles
