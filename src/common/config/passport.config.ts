@@ -2,6 +2,7 @@ import passport from 'passport';
 
 import {UserModel} from '../model/user.model';
 import {ManagerModel} from '../model/manager.model';
+import {populate} from "dotenv";
 
 // Serialize user (lưu id vào session)
 passport.serializeUser((user: any, done) => {
@@ -16,7 +17,7 @@ passport.deserializeUser(async (data, done) => {
             const manager = await ManagerModel.findById(data['_id'])
                 .populate('createdBy.managerId', 'fullName')
                 .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
-                .populate('roleId')
+                .populate({path: 'roleId', populate: {path: 'permissions', select: 'listPermission'}})
                 .select('-password')
                 .exec();
             done(null, manager);

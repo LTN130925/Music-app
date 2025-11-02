@@ -1,12 +1,17 @@
 export default [
     {
-        group: 'Danh mục sản phẩm',
-        key: 'product-category',
+        group: 'Bài hát',
+        key: 'song',
         actions: ['view', 'create', 'edit', 'delete'],
     },
     {
-        group: 'Sản phẩm',
-        key: 'product',
+        group: 'Quản trị',
+        key: 'manager',
+        actions: ['view', 'create', 'edit', 'delete'],
+    },
+    {
+        group: 'Chủ đề',
+        key: 'topic',
         actions: ['view', 'create', 'edit', 'delete'],
     },
     {

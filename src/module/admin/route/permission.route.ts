@@ -9,4 +9,6 @@ router.get('/', controllerInstance.index)
 
 router.patch('/update', controllerInstance.update);
 
+router.get('/debug', controllerInstance.debug);
+
 export default router;

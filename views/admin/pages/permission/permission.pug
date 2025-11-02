@@ -38,6 +38,6 @@ block content
                                                 input.form-check-input.permission-checkbox(
                                                     type='checkbox',
                                                     name=`perm_${role._id}_${permKey}`,
-                                                    checked=role.permissions.includes(permKey)
+                                                    checked=role.permissions.listPermission.includes(permKey)
                                                 )
                     input(type='hidden', name='permissions', id='permissionsData')
