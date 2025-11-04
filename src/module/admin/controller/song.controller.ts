@@ -1,8 +1,5 @@
 import {Request, Response} from 'express';
 
-
-import {SongModel} from "../../../common/model/song.model";
-
 import {songService} from '../service/song.service';
 const serviceInstance = new songService();
 
@@ -14,6 +11,10 @@ export class controller {
             songs: data.songs,
             status: data.status,
             sort: data.sort,
+            totalPages: data.totalPages,
+            currentPage: data.currentPage,
+            limit: data.limit,
+            keyword: data.keyword,
         });
     }
 

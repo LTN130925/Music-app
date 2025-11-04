@@ -6,10 +6,13 @@ import {SingerModel} from '../../../common/model/singer.model';
 import {TopicModel} from "../../../common/model/topic.model";
 
 import {ISong} from '../../../common/model/song.model';
-import {convertTextToSlug} from "../../../shared/ulti/unidecode.ulti";
+import {convertTextToSlug} from "../../../shared/util/unidecode.ulti";
+
+import {pagination} from '../../../shared/util/pagination.ulti';
+import {countSongs} from '../../../shared/helper/cntDocument.helper';
 
 export class songService {
-    async index(q): Promise<{ songs: ISong[]; status: string; sort: string }> {
+    async index(q) {
         const filter: any = {deleted: false};
         if (q.status && q.status !== 'all') filter.status = q.status;
 
@@ -20,7 +23,9 @@ export class songService {
             sortOption = { [key]: value === 'desc' ? -1 : 1 };
         }
 
+        let keyword = '';
         if (q.q) {
+            keyword = q.q;
             const convertText = convertTextToSlug(q.q);
             filter['$or'] = [
                 { title: new RegExp(q.q, 'i') },
@@ -28,15 +33,28 @@ export class songService {
             ];
         }
 
+        const objectPagination = {
+            limit: 5,
+            currentPage: 1,
+        }
+        const countRecords = await countSongs(filter);
+        const utilsPagination = pagination(objectPagination, Number(countRecords), q);
         const songs = await SongModel.find(filter)
             .populate('singerId', 'fullName')
             .populate('topicId', 'title')
+            .skip(utilsPagination.skip)
+            .limit(utilsPagination.limit)
             .sort(sortOption)
             .exec();
+
         return {
             songs,
             status: q.status,
             sort: q.sort,
+            totalPages: utilsPagination.totalPages,
+            currentPage: utilsPagination.currentPage,
+            limit: utilsPagination.limit,
+            keyword
         };
     }
 

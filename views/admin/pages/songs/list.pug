@@ -15,7 +15,7 @@ block content
                 .search-container
                     form.search-box(action= prefixName + '/song', method='GET')
                         i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm bài hát...')
+                        input(type='text', name='q', placeholder='Tìm kiếm bài hát...', value=keyword)
                     .filter-group
                         form#filterForm(action='/server/song', method='GET', class='filter-form')
                             select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
@@ -94,5 +94,5 @@ block content
                                 td(colspan='8' class='text-center py-4 text-muted') Không có bài hát nào.
 
     // Pagination + Limit control
-    +pagination('song')
+    +pagination('song', totalPages, currentPage, limit, q, status)
 
