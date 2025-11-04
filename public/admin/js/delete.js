@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const confirmDelete = confirm(`Bạn có chắc chắn muốn xóa ${title}?`);
             if (confirmDelete) {
                 // ✅ Tự động chọn route phù hợp
-                deleteForm.action = `/server/delete/${entity}/${id}?_method=DELETE`;
+                deleteForm.action = `/server/${entity}/delete/${id}?_method=DELETE`;
                 deleteForm.submit();
             }
         });

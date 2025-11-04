@@ -6,6 +6,7 @@ const BlogUpdatedSchema = new Schema(
             type: [
                 {
                     managerId: {type: Schema.Types.ObjectId, ref: 'Manager', required: true},
+                    title: String,
                     updatedAt: {type: Date, default: Date.now},
                 },
             ],

@@ -53,7 +53,7 @@ export class songService {
         await newDataSong.save();
     }
 
-    async edit(id, body, user): Promise<void> {
+    async edit(id, body, manager): Promise<void> {
         const existingSong = await SongModel.findById(id);
         if (!existingSong) throw new Error('Bài hát không tồn tại');
 
@@ -67,10 +67,11 @@ export class songService {
             avatar: body.avatar?.[0] || existingSong.avatar,
             audio: body.audio?.[0] || existingSong.audio,
         };
-        await BlogUpdatedModel.findByIdAndUpdate(user.updatedBlogId, {
+        await BlogUpdatedModel.findByIdAndUpdate(manager.updatedBlogId, {
             $push: {
                 list_blog: {
-                    managerId: user._id,
+                    managerId: manager._id,
+                    title: 'chỉnh sửa bài hát',
                     updatedAt: new Date()
                 }
             }
@@ -81,5 +82,15 @@ export class songService {
 
     async changeStatus(id, body): Promise<void> {
         await SongModel.findByIdAndUpdate(id, body);
+    }
+
+    async delete(id, manager): Promise<void> {
+        await SongModel.findByIdAndUpdate(id, {
+            deleted: true,
+            deletedBy: {
+                managerId: manager._id,
+                at: new Date()
+            }
+        });
     }
 }

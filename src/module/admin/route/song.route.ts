@@ -43,6 +43,8 @@ router.patch(
 
 router.get('/detail/:id', controllerInstance.detail);
 
-router.patch('/change-status/:id', controllerInstance.changeStatus)
+router.patch('/change-status/:id', controllerInstance.changeStatus);
+
+router.delete('/delete/:id', controllerInstance.delete);
 
 export default router;
