@@ -37,10 +37,20 @@ export class controller {
         res.redirect(req.get('Referrer') || '/');
     }
 
+    async editPatch(req: Request, res: Response) {
+        try {
+            await serviceInstance.edit(req.params.id, req.body, req.user);
+            req.flash('success', 'Cập nhật bài hát thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi cập nhật bài hát bài hát');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
+
     async edit(req: Request, res: Response) {
         res.render('admin/pages/songs/edit.pug', {
             titlePage: 'Trang chỉnh sửa',
-            song: await SongModel.findOne({_id: req.params.id, status: 'active', deleted: false}).exec(),
+            song: await SongModel.findOne({_id: req.params.id, deleted: false}).exec(),
             singers: await SingerModel.find({deleted: false, status: 'active'}).select('fullName').exec(),
             topics: await TopicModel.find({deleted: false, status: 'active'}).select('title').exec(),
         });

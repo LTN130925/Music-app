@@ -31,6 +31,16 @@ router.post(
 
 router.get('/edit/:id', controllerInstance.edit);
 
+router.patch(
+    '/edit/:id',
+    upload.fields([
+        { name: 'avatar', maxCount: 1 },
+        { name: 'audio', maxCount: 1 }
+    ]),
+    uploadFields,
+    controllerInstance.editPatch
+);
+
 router.get('/detail/:id', controllerInstance.detail)
 
 export default router;
