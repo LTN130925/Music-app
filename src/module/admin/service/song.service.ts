@@ -12,7 +12,7 @@ export class songService {
         if (q.status) filter.status = q.status === 'all' || q.status === 'active' ? 'active' : 'inactive';
 
         let sortOption: Record<string, 1 | -1> = {createdAt: -1}
-        if (q.sort && q.sort !== 'all' && typeof q.sort === 'string') {
+        if (q.sort && q.sort !== 'all') {
             const [key, value] = q.sort.split('-');
             sortOption = { [key]: value === 'desc' ? -1 : 1 };
         }
@@ -38,6 +38,7 @@ export class songService {
     }
 
     async create(body): Promise<void> {
+        const newBlog = new BlogUpdatedModel();
         const dataSong: Record<string, any> = {
             title: body.title,
             description: body.description || '',
@@ -45,11 +46,14 @@ export class songService {
             singerId: body.singerId,
             lyrics: body.lyrics || '',
             status: body.status,
+            updatedBlogId: newBlog._id,
             avatar: body.avatar ? body.avatar[0] : '',
             audio: body.audio ? body.audio[0] : '',
             slug: slug(body.title),
         }
+
         const newDataSong = new SongModel(dataSong);
+        await newBlog.save();
         await newDataSong.save();
     }
 
@@ -79,7 +83,6 @@ export class songService {
         await SongModel.findByIdAndUpdate(id, dataSong);
     }
 
-
     async changeStatus(id, body): Promise<void> {
         await SongModel.findByIdAndUpdate(id, body);
     }
@@ -92,5 +95,46 @@ export class songService {
                 at: new Date()
             }
         });
+    }
+
+    async changeMulti(ids, action, manager): Promise<{result: boolean; data: {text?: string; value?: number}}> {
+        const actionsMap: Record<string, any> = {
+            active: {
+                update: { status: 'active' },
+                log: { title: 'Kích hoạt bài hát' }
+            },
+            inactive: {
+                update: { status: 'inactive' },
+                log: { title: 'Ẩn bài hát' }
+            },
+            delete: {
+                update: { deleted: true },
+                log: { title: 'Xóa bài hát' }
+            }
+        };
+
+        const actionData = actionsMap[action];
+        if (!actionData) return { result: true, data: { text: 'Lỗi dữ liệu' } };
+
+        await SongModel.updateMany(
+            { _id: { $in: ids }} ,
+            actionData.update
+        );
+        const songs = await SongModel.find({ _id: { $in: ids }}).select('updatedBlogId').exec();
+        const blogIds = songs.map(song => song.updatedBlogId).filter(Boolean);
+
+        await BlogUpdatedModel.updateMany(
+            {_id: {$in: blogIds}},
+            {
+                $push: {
+                    list_blog: {
+                        managerId: manager._id,
+                        title: actionData.log.title,
+                        updatedAt: new Date()
+                    }
+                }
+            }
+        );
+        return {result: false, data: {value: ids.length}};
     }
 }
