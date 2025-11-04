@@ -5,6 +5,7 @@ import {TopicModel} from '../../../common/model/topic.model';
 import {SongModel} from "../../../common/model/song.model";
 
 import {songService} from '../service/song.service';
+import {asyncWrapProviders} from "node:async_hooks";
 const serviceInstance = new songService();
 
 export class controller {
@@ -67,7 +68,7 @@ export class controller {
     }
 
     async changeStatus(req: Request, res: Response) {
-        await serviceInstance.changeStatus(req.params.id, req.body);
+        await serviceInstance.changeStatus(req.params.id, req.body, req.user);
         res.json({status: 'active'});
     }
 

@@ -83,8 +83,17 @@ export class songService {
         await SongModel.findByIdAndUpdate(id, dataSong);
     }
 
-    async changeStatus(id, body): Promise<void> {
+    async changeStatus(id, body, manager): Promise<void> {
         await SongModel.findByIdAndUpdate(id, body);
+        await BlogUpdatedModel.findByIdAndUpdate(manager.updatedBlogId, {
+            $push: {
+                list_blog: {
+                    managerId: manager._id,
+                    title: 'Sửa trạng thái bài hát',
+                    updatedAt: new Date()
+                }
+            }
+        });
     }
 
     async delete(id, manager): Promise<void> {
