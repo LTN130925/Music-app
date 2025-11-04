@@ -1,11 +1,9 @@
 import {Request, Response} from 'express';
 
-import {SingerModel} from '../../../common/model/singer.model';
-import {TopicModel} from '../../../common/model/topic.model';
+
 import {SongModel} from "../../../common/model/song.model";
 
 import {songService} from '../service/song.service';
-import {asyncWrapProviders} from "node:async_hooks";
 const serviceInstance = new songService();
 
 export class controller {
@@ -20,17 +18,17 @@ export class controller {
     }
 
     async create(req: Request, res: Response) {
-        const filter = {status: 'active', deleted: false};
+        const data = await serviceInstance.create();
         res.render('admin/pages/songs/create.pug', {
             titlePage: 'Thêm mới bài hát',
-            singers: await SingerModel.find(filter).select('fullName'),
-            topics: await TopicModel.find(filter).select('title')
+            singers: data.singers,
+            topics: data.topics,
         });
     }
 
     async createPost(req: Request, res: Response) {
         try {
-            await serviceInstance.create(req.body);
+            await serviceInstance.createPost(req.body);
             req.flash('success', 'Tạo mới bài hát thành công!');
         } catch (e) {
             req.flash('error', 'Lỗi tạo bài hát');
@@ -38,9 +36,19 @@ export class controller {
         res.redirect(req.get('Referrer') || '/');
     }
 
+    async edit(req: Request, res: Response) {
+        const data = await serviceInstance.edit(req.params.id)
+        res.render('admin/pages/songs/edit.pug', {
+            titlePage: 'Trang chỉnh sửa',
+            song: data.song,
+            singers: data.singers,
+            topics: data.topics,
+        });
+    }
+
     async editPatch(req: Request, res: Response) {
         try {
-            await serviceInstance.edit(req.params.id, req.body, req.user);
+            await serviceInstance.editPatch(req.params.id, req.body, req.user);
             req.flash('success', 'Cập nhật bài hát thành công!');
         } catch (e) {
             req.flash('error', 'Lỗi cập nhật bài hát bài hát');
@@ -48,22 +56,11 @@ export class controller {
         res.redirect(req.get('Referrer') || '/');
     }
 
-    async edit(req: Request, res: Response) {
-        res.render('admin/pages/songs/edit.pug', {
-            titlePage: 'Trang chỉnh sửa',
-            song: await SongModel.findOne({_id: req.params.id, deleted: false}).exec(),
-            singers: await SingerModel.find({deleted: false, status: 'active'}).select('fullName').exec(),
-            topics: await TopicModel.find({deleted: false, status: 'active'}).select('title').exec(),
-        });
-    }
-
     async detail(req: Request, res: Response) {
+        const song = await serviceInstance.detail(req.params.id);
         res.render('admin/pages/songs/detail.pug', {
             titlePage: 'Trang chi tiết',
-            song: await SongModel.findOne({_id: req.params.id, status: 'active', deleted: false})
-                .populate('singerId', 'fullName')
-                .populate('topicId', 'title')
-                .exec()
+            song
         })
     }
 

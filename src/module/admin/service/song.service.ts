@@ -2,14 +2,17 @@ import slug from 'slug';
 
 import {SongModel} from '../../../common/model/song.model';
 import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
+import {SingerModel} from '../../../common/model/singer.model';
+import {TopicModel} from "../../../common/model/topic.model";
 
 import {ISong} from '../../../common/model/song.model';
 import {convertTextToSlug} from "../../../shared/ulti/unidecode.ulti";
 
 export class songService {
     async index(q): Promise<{ songs: ISong[]; status: string; sort: string }> {
-        const filter: any = {status: 'active', deleted: false};
-        if (q.status) filter.status = q.status === 'all' || q.status === 'active' ? 'active' : 'inactive';
+        const filter: any = {deleted: false};
+        if (q.status && q.status !== 'all') filter.status = q.status;
+
 
         let sortOption: Record<string, 1 | -1> = {createdAt: -1}
         if (q.sort && q.sort !== 'all') {
@@ -37,7 +40,24 @@ export class songService {
         };
     }
 
-    async create(body): Promise<void> {
+    async detail(id) {
+        const data = await SongModel.findOne({_id: id, deleted: false})
+            .populate('singerId', 'fullName')
+            .populate('topicId', 'title')
+            .exec()
+        return data;
+    }
+
+    async create() {
+        const filter = {status: 'active', deleted: false};
+        const [singers, topics] = await Promise.all([
+            SingerModel.find(filter).select('fullName'),
+            TopicModel.find(filter).select('title')
+        ])
+        return { singers, topics }
+    }
+
+    async createPost(body): Promise<void> {
         const newBlog = new BlogUpdatedModel();
         const dataSong: Record<string, any> = {
             title: body.title,
@@ -57,7 +77,17 @@ export class songService {
         await newDataSong.save();
     }
 
-    async edit(id, body, manager): Promise<void> {
+    async edit(id) {
+        const filter = {status: 'active', deleted: false};
+        const [song, singers, topics] = await Promise.all([
+            SongModel.findOne({_id: id, deleted: false}).exec(),
+            SingerModel.find(filter).select('fullName').exec(),
+            TopicModel.find(filter).select('title').exec()
+        ])
+        return { song, singers, topics }
+    }
+
+    async editPatch(id, body, manager): Promise<void> {
         const existingSong = await SongModel.findById(id);
         if (!existingSong) throw new Error('Bài hát không tồn tại');
 
