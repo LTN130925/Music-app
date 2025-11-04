@@ -65,4 +65,9 @@ export class controller {
                 .exec()
         })
     }
+
+    async changeStatus(req: Request, res: Response) {
+        await serviceInstance.changeStatus(req.params.id, req.body);
+        res.json({status: 'active'});
+    }
 }

@@ -78,4 +78,8 @@ export class songService {
         await SongModel.findByIdAndUpdate(id, dataSong);
     }
 
+
+    async changeStatus(id, body): Promise<void> {
+        await SongModel.findByIdAndUpdate(id, body);
+    }
 }
