@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 
-import {isValidPassword} from '../../shared/util/isPass.ulti'
+import {isValidPassword} from '../../shared/util/isPass.util'
 
 export const updatedLikeSongUser = (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {

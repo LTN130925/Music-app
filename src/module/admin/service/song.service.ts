@@ -6,9 +6,9 @@ import {SingerModel} from '../../../common/model/singer.model';
 import {TopicModel} from "../../../common/model/topic.model";
 
 import {ISong} from '../../../common/model/song.model';
-import {convertTextToSlug} from "../../../shared/util/unidecode.ulti";
+import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 
-import {pagination} from '../../../shared/util/pagination.ulti';
+import {pagination} from '../../../shared/util/pagination.util';
 import {countSongs} from '../../../shared/helper/cntDocument.helper';
 
 export class songService {
