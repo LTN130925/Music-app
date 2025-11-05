@@ -8,6 +8,7 @@ export interface IUser extends Document {
     listLikesSong: Schema.Types.ObjectId;
     listFavoritesSong: Schema.Types.ObjectId;
     listViewsSong: Schema.Types.ObjectId;
+    subscribers: Schema.Types.ObjectId;
     createdBy: {managerId: Schema.Types.ObjectId, at: Date};
     updatedBlogId?: Schema.Types.ObjectId;
     deletedBy: {managerId: Schema.Types.ObjectId, at: Date};
@@ -26,6 +27,7 @@ const UserSchema = new Schema<IUser>(
         listLikesSong: { type: Schema.Types.ObjectId, ref: 'SongLike' },
         listFavoritesSong: { type: Schema.Types.ObjectId, ref: 'SongFavourite' },
         listViewsSong: { type: Schema.Types.ObjectId, ref: 'SongView' },
+        subscribers: { type: Schema.Types.ObjectId, ref: 'Subscriber' },
         createdBy: {
             managerId: { type: Schema.Types.ObjectId, ref: 'Manager' },
             at: { type: Date, default: Date.now },

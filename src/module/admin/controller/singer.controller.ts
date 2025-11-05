@@ -8,4 +8,25 @@ export class controller {
         const singers = await serviceInstance.index();
         res.render('admin/pages/singer/list', { singers });
     }
+
+    async create(req: Request, res: Response) {
+        res.render('admin/pages/singer/create', {
+            titlePage: 'Trang tạo mới ca sĩ',
+        });
+    }
+
+    async createPost(req: Request, res: Response) {
+        try {
+            await serviceInstance.createPost(req.body, req.user);
+            req.flash('success', 'Tạo mới ca sĩ thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi tạo ca sĩ');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
+
+    async detail(req: Request, res: Response) {
+        const data = await serviceInstance.detail();
+        res.render('admin/pages/singer/detail', { singer: data });
+    }
 }

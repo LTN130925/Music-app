@@ -75,7 +75,7 @@ export class songService {
         return { singers, topics }
     }
 
-    async createPost(body): Promise<void> {
+    async createPost(body, manager): Promise<void> {
         const newBlog = new BlogUpdatedModel();
         const dataSong: Record<string, any> = {
             title: body.title,
@@ -88,6 +88,10 @@ export class songService {
             avatar: body.avatar ? body.avatar[0] : '',
             audio: body.audio ? body.audio[0] : '',
             slug: slug(body.title),
+            createdBy: {
+                managerId: manager._id,
+                at: new Date()
+            }
         }
 
         const newDataSong = new SongModel(dataSong);
