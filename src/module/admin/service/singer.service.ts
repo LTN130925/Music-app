@@ -132,4 +132,45 @@ export class singerService {
             }
         });
     }
+
+    async changeMulti(ids, action, manager): Promise<{result: boolean; data: {text?: string; value?: number}}> {
+        const actionsMap: Record<string, any> = {
+            active: {
+                update: { status: 'active' },
+                log: { title: 'Kích hoạt ca sĩ' }
+            },
+            inactive: {
+                update: { status: 'inactive' },
+                log: { title: 'Ẩn ca sĩ' }
+            },
+            delete: {
+                update: { deleted: true },
+                log: { title: 'Xóa ca sĩ' }
+            }
+        };
+
+        const actionData = actionsMap[action];
+        if (!actionData) return { result: true, data: { text: 'Lỗi dữ liệu' } };
+
+        await SingerModel.updateMany(
+            { _id: { $in: ids }} ,
+            actionData.update
+        );
+        const singers = await SingerModel.find({ _id: { $in: ids }}).select('updatedBlogId').exec();
+        const blogIds = singers.map(singer => singer.updatedBlogId).filter(Boolean);
+
+        await BlogUpdatedModel.updateMany(
+            {_id: {$in: blogIds}},
+            {
+                $push: {
+                    list_blog: {
+                        managerId: manager._id,
+                        title: actionData.log.title,
+                        updatedAt: new Date()
+                    }
+                }
+            }
+        );
+        return {result: false, data: {value: ids.length}};
+    }
 }
