@@ -11,7 +11,7 @@ passport.use(
         async (email: string, password: string, done) => {
             try {
                 const manager = await ManagerModel.findOne({email, deleted: false}).exec();
-                if (!manager) return done(null, false, {message: 'Tài khoản hoặc mật khẩu không đúng!'});
+                if (!manager) return done(null, false, {message: 'Tài khoản không tồn tại!'});
                 if (manager.status === 'inactive') return done(null, false, {message: 'Tài khoản đã bị khóa!'});
                 const isMatch = await bcrypt.compare(password, manager.password);
                 if (!isMatch) return done(null, false, {message: 'Tài khoản hoặc mật khẩu không đúng!'});

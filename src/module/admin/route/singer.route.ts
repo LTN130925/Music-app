@@ -21,4 +21,6 @@ router.get('/detail/:id', controllerInstance.detail);
 
 router.get('/edit/:id', controllerInstance.edit);
 
+router.patch('/edit/:id', upload.single('avatar'), uploadSingle, controllerInstance.editPatch);
+
 export default router;

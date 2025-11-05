@@ -11,13 +11,13 @@ export class singerService {
         return singers;
     }
 
-    async detail(id: string) {
+    async detail(id) {
         const filter = {_id: id, deleted: false};
         const singer = await SingerModel.findOne(filter).exec();
         return singer;
     }
 
-    async edit(id: string) {
+    async edit(id) {
         const filter = {_id: id, deleted: false};
         const singer = await SingerModel.findOne(filter).exec();
         return singer;
@@ -28,8 +28,8 @@ export class singerService {
         const dataSinger: Record<string, any> = {
             fullName: body.fullName,
             slug: slug(body.fullName),
-            status: body.status || 'active',
-            avatar: body.avatar ? body.avatar[0] : '',
+            status: body.status,
+            avatar: body.avatar || '',
             updatedBlogId: newBlog._id,
             createdBy: {
                 managerId: user._id,
@@ -40,5 +40,29 @@ export class singerService {
         const newSinger = new SingerModel(dataSinger);
         await newBlog.save();
         await newSinger.save();
+    }
+
+    async editPatch(id, body, manager): Promise<void> {
+        const existingSinger = await SingerModel.findById(id);
+        if (!existingSinger) throw new Error('Ca sĩ không tồn tại');
+
+        const dataSinger: Record<string, any> = {
+            fullName: body.fullName,
+            slug: body.slug ? slug(body.fullName) : '',
+            description: body.description,
+            status: body.status,
+            avatar: body.avatar || existingSinger.avatar,
+        };
+        await BlogUpdatedModel.findByIdAndUpdate(existingSinger.updatedBlogId, {
+            $push: {
+                list_blog: {
+                    managerId: manager._id,
+                    title: 'Chỉnh sửa ca sĩ',
+                    updatedAt: new Date(),
+                },
+            },
+        });
+
+        await SingerModel.findByIdAndUpdate(id, dataSinger);
     }
 }

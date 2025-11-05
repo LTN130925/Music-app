@@ -5,7 +5,7 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
             i.fas.fa-bars.fa-lg.text-white
 
         //- Logo
-        a.navbar-brand.ml-2.font-weight-bold.text-white(href="/topics") MusicApp
+        a.navbar-brand.ml-2.font-weight-bold.text-white(href=prefixName + "/topic") MusicApp
 
         //- Menu phải
         ul.navbar-nav.ml-auto.d-flex.flex-row.align-items-center
@@ -17,11 +17,12 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
                     aria-haspopup="true"
                     aria-expanded="false"
                 )
-                    if manager.avatar
+                    if manager
                         img.rounded-circle.mr-2(src=manager.avatar, alt="avatar", width="28", height="28")
                     else
                         i.fas.fa-user-circle.fa-lg.mr-1
-                    | #{manager.fullName || manager.email}
+                    if manager
+                        | #{manager.fullName || manager.email}
                 ul.dropdown-menu.dropdown-menu-right(aria-labelledby="userDropdown")
                     li
                         a.dropdown-item(href=prefixName + "/profile") Hồ sơ cá nhân

@@ -34,4 +34,14 @@ export class controller {
         const data = await serviceInstance.edit(req.params.id);
         res.render('admin/pages/singer/edit', { singer: data });
     }
+
+    async editPatch(req: Request, res: Response) {
+        try {
+            await serviceInstance.editPatch(req.params.id, req.body, req.user);
+            req.flash('success', 'Tạo mới ca sĩ thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi tạo ca sĩ');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
 }

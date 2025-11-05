@@ -123,7 +123,7 @@ export class songService {
             avatar: body.avatar?.[0] || existingSong.avatar,
             audio: body.audio?.[0] || existingSong.audio,
         };
-        await BlogUpdatedModel.findByIdAndUpdate(manager.updatedBlogId, {
+        await BlogUpdatedModel.findByIdAndUpdate(existingSong.updatedBlogId, {
             $push: {
                 list_blog: {
                     managerId: manager._id,
