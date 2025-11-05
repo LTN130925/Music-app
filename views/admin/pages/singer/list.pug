@@ -15,13 +15,20 @@ block content
                 .search-container
                     form.search-box(action= prefixName + '/singer', method='GET')
                         i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm ca sĩ...')
+                        input(type='text', name='q', placeholder='Tìm kiếm ca sĩ...', value=keyword)
                     .filter-group
                         form#filterForm(action='/server/singer', method='GET', class='filter-form')
                             select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
                                 option(value='all' selected=(status === 'all')) Tất cả
                                 option(value='active' selected=(status === 'active')) Active
                                 option(value='inactive' selected=(status === 'inactive')) Inactive
+                        form#filterForm(action='/server/singer', method='GET', class='filter-form')
+                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                option(value='all' selected=(sort === 'all')) sắp xếp
+                                option(value='fullName-desc' selected=(sort === 'fullName-desc')) Tiêu đề giảm dần
+                                option(value='fullName-asc' selected=(sort === 'fullName-asc')) Tiêu đề tăng dần
+                                option(value='registrationNumber-desc' selected=(sort === 'registrationNumber-desc')) Lượt đăng kí giảm dần
+                                option(value='registrationNumber-asc' selected=(sort === 'registrationNumber-asc')) Lượt đăng kí tăng dần
                         form#multiActionForm(action='/server/singer/change-multi?_method=PATCH', method='POST', style='display:none;')
                             input(type='hidden', name='ids', id='selectedIds')
                             input(type='hidden', name='action', id='selectedAction')
@@ -39,6 +46,7 @@ block content
                             th STT
                             th.text-center hình ảnh
                             th Họ và tên
+                            th.text-center Lượt đăng kí
                             th.text-center trạng thái
                             th.text-center ngày tạo
                             th.text-center hành động
@@ -53,6 +61,7 @@ block content
                                         img.song-thumbnail(src=singer.avatar || '/images/no-image.png', alt=singer.fullName)
                                     td
                                         a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/singer/detail/${singer._id}`)= singer.fullName
+                                    td.text-center #{singer.registrationNumber}
                                     td.text-center
                                         if singer.status === 'active'
                                             span.badge.bg-success.status-toggle(
@@ -81,4 +90,4 @@ block content
                                 td(colspan='8' class='text-center py-4 text-muted') Không có ca sĩ nào.
 
     // Pagination + Limit control
-    +pagination('singer')
+    +pagination('singer', totalPages, currentPage, limit, q, status)

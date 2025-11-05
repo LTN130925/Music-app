@@ -16,7 +16,6 @@ export class songService {
         const filter: any = {deleted: false};
         if (q.status && q.status !== 'all') filter.status = q.status;
 
-
         let sortOption: Record<string, 1 | -1> = {createdAt: -1}
         if (q.sort && q.sort !== 'all') {
             const [key, value] = q.sort.split('-');

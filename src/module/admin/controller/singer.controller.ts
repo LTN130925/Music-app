@@ -5,8 +5,17 @@ const serviceInstance = new singerService();
 
 export class controller {
     async index(req: Request, res: Response) {
-        const singers = await serviceInstance.index();
-        res.render('admin/pages/singer/list', { singers });
+        const data = await serviceInstance.index(req.query);
+        res.render('admin/pages/singer/list', {
+            titlePage: 'Quản lý ca sĩ',
+            singers: data.singers,
+            status: data.status,
+            sort: data.sort,
+            totalPages: data.totalPages,
+            currentPage: data.currentPage,
+            limit: data.limit,
+            keyword: data.keyword,
+        });
     }
 
     async create(req: Request, res: Response) {
