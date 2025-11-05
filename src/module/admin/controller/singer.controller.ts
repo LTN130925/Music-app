@@ -29,4 +29,9 @@ export class controller {
         const data = await serviceInstance.detail(req.params.id);
         res.render('admin/pages/singer/detail', { singer: data });
     }
+
+    async edit(req: Request, res: Response) {
+        const data = await serviceInstance.edit(req.params.id);
+        res.render('admin/pages/singer/edit', { singer: data });
+    }
 }
