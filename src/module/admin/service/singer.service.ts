@@ -5,6 +5,7 @@ import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countSongs} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
+import {SongModel} from "../../../common/model/song.model";
 
 export class singerService {
     async index(q) {
@@ -118,6 +119,16 @@ export class singerService {
                     title: 'Sửa trạng thái ca sĩ',
                     updatedAt: new Date()
                 }
+            }
+        });
+    }
+
+    async delete(id, manager): Promise<void> {
+        await SingerModel.findByIdAndUpdate(id, {
+            deleted: true,
+            deletedBy: {
+                managerId: manager._id,
+                at: new Date()
             }
         });
     }
