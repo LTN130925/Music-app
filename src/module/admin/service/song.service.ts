@@ -135,8 +135,11 @@ export class songService {
     }
 
     async changeStatus(id, body, manager): Promise<void> {
+        const existingSong = await SongModel.findById(id);
+        if (!existingSong) throw new Error('Bài hát không tồn tại');
+
         await SongModel.findByIdAndUpdate(id, body);
-        await BlogUpdatedModel.findByIdAndUpdate(manager.updatedBlogId, {
+        await BlogUpdatedModel.findByIdAndUpdate(existingSong.updatedBlogId, {
             $push: {
                 list_blog: {
                     managerId: manager._id,

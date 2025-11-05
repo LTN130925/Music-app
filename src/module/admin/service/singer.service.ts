@@ -1,8 +1,7 @@
 import {SingerModel} from '../../../common/model/singer.model';
-
-import {ISinger} from '../../../common/model/singer.model';
-import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 import slug from 'slug';
+
+import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countSongs} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
@@ -105,5 +104,21 @@ export class singerService {
         });
 
         await SingerModel.findByIdAndUpdate(id, dataSinger);
+    }
+
+    async changeStatus(id, body, manager): Promise<void> {
+        const existingSinger = await SingerModel.findById(id);
+        if (!existingSinger) throw new Error('Ca sĩ không tồn tại');
+
+        await SingerModel.findByIdAndUpdate(id, body);
+        await BlogUpdatedModel.findByIdAndUpdate(existingSinger.updatedBlogId, {
+            $push: {
+                list_blog: {
+                    managerId: manager._id,
+                    title: 'Sửa trạng thái ca sĩ',
+                    updatedAt: new Date()
+                }
+            }
+        });
     }
 }
