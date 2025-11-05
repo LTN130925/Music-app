@@ -26,7 +26,7 @@ export class controller {
     }
 
     async detail(req: Request, res: Response) {
-        const data = await serviceInstance.detail();
+        const data = await serviceInstance.detail(req.params.id);
         res.render('admin/pages/singer/detail', { singer: data });
     }
 }

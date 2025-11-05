@@ -17,6 +17,6 @@ router.get('/create', controllerInstance.create);
 
 router.post('/create', upload.single('avatar'), uploadSingle, controllerInstance.createPost);
 
-router.get('/detail', controllerInstance.detail);
+router.get('/detail/:id', controllerInstance.detail);
 
 export default router;

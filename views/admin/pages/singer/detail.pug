@@ -4,69 +4,78 @@ block content
     .container-fluid.py-4
         .card.shadow-sm.border-0.rounded-4
             .card-body.p-4
-                // ===== Tiêu đề trang =====
-                .d-flex.justify-content-between.align-items-center.mb-4
-                    h4.fw-bold.text-dark.mb-0 Chi tiết ca sĩ
-                    a.btn.btn-light.border.shadow-sm(href=prefixName + '/singer')
-                        i.fas.fa-arrow-left.me-2
-                        | Quay lại danh sách
+                h4.fw-bold.text-dark.mb-4 Chi tiết ca sĩ
 
-                // ===== Thông tin ca sĩ =====
-                .row.g-4
-                    // Ảnh đại diện
-                    .col-md-4
-                        .card.border-0.shadow-sm.rounded-4
+                if singer
+                    .row.g-4
+                        // ===== Ảnh đại diện =====
+                        .col-md-4
                             if singer.avatar
-                                img.img-fluid.rounded-4.w-100(src=singer.avatar, alt=singer.fullName, style='object-fit: cover; max-height: 400px;')
+                                img.img-thumbnail.rounded-3.w-100(src=singer.avatar, style='max-height: 250px; object-fit: cover;')
                             else
-                                .d-flex.align-items-center.justify-content-center(style='height: 400px; background: #f8f9fa; border-radius: 12px;')
-                                    i.fas.fa-user.fa-4x.text-muted
+                                .border.rounded-3.d-flex.align-items-center.justify-content-center(style='height: 250px; background: #f8f9fa;')
+                                    span.text-muted Không có ảnh đại diện
 
-                    // Thông tin chi tiết
-                    .col-md-8
-                        .card.border-0.shadow-sm.rounded-4.p-4
-                            h5.fw-bold.text-dark.mb-3 Thông tin cơ bản
-                            dl.row.mb-0
-                                dt.col-sm-4.text-muted Tên ca sĩ:
-                                dd.col-sm-8= singer.fullName
+                        // ===== Thông tin cơ bản =====
+                        .col-md-8
+                            h5.fw-bold.mb-3.text-primary= singer.fullName
 
-                                dt.col-sm-4.text-muted Slug:
-                                dd.col-sm-8= singer.slug
+                            p.mb-2
+                                strong.text-secondary Slug:
+                                |
+                                if singer.slug
+                                    = ' ' + singer.slug
+                                else
+                                    span.text-muted Không xác định
 
-                                dt.col-sm-4.text-muted Trạng thái:
-                                dd.col-sm-8
-                                    if singer.status === 'active'
-                                        span.badge.bg-success Active
-                                    else
-                                        span.badge.bg-secondary Inactive
+                            p.mb-2
+                                strong.text-secondary Trạng thái:
+                                |
+                                if singer.status === 'active'
+                                    span.badge.bg-success.ms-1 Active
+                                else
+                                    span.badge.bg-secondary.ms-1 Inactive
 
-                                dt.col-sm-4.text-muted Ngày tạo:
-                                dd.col-sm-8= singer.createdAt ? singer.createdAt.toLocaleString() : '-'
+                            p.mb-2
+                                strong.text-secondary Ngày tạo:
+                                |
+                                if singer.createdAt
+                                    = ' ' + new Date(singer.createdAt).toLocaleDateString('vi-VN')
+                                else
+                                    span.text-muted Không xác định
 
-                                dt.col-sm-4.text-muted Ngày cập nhật:
-                                dd.col-sm-8= singer.updatedAt ? singer.updatedAt.toLocaleString() : '-'
+                            p.mb-2
+                                strong.text-secondary Cập nhật gần nhất:
+                                |
+                                if singer.updatedAt
+                                    = ' ' + new Date(singer.updatedAt).toLocaleDateString('vi-VN')
+                                else
+                                    span.text-muted Không xác định
 
-                                dt.col-sm-4.text-muted Người tạo:
-                                dd.col-sm-8
-                                    if singer.createdBy && singer.createdBy.managerId && singer.createdBy.managerId.fullName
-                                        = singer.createdBy.managerId.fullName
-                                    else
-                                        | Không xác định
+                            p.mb-2
+                                strong.text-secondary Người tạo:
+                                |
+                                if singer.createdBy && singer.createdBy.managerId && singer.createdBy.managerId.fullName
+                                    = ' ' + singer.createdBy.managerId.fullName
+                                else
+                                    span.text-muted Không xác định
 
-                                dt.col-sm-4.text-muted Xóa:
-                                dd.col-sm-8
-                                    if singer.deleted
-                                        span.text-danger Đã bị xóa
-                                    else
-                                        span.text-success Chưa bị xóa
+                        // ===== Mô tả =====
+                        .col-md-12
+                            hr
+                            label.form-label.fw-semibold.mb-2 Mô tả
+                            if singer.description
+                                .p-3.border.rounded.bg-light!= singer.description
+                            else
+                                p.text-muted Không có mô tả
 
-                hr.my-4
-
-                // ===== Nút hành động =====
-                .d-flex.justify-content-end.gap-2
-                    a.btn.btn-primary.shadow-sm(href=`${prefixName}/singer/edit/${singer._id}`)
-                        i.fas.fa-edit.me-2
-                        | Chỉnh sửa
-                    a.btn.btn-danger.shadow-sm(href=`${prefixName}/singer/delete/${singer._id}`)
-                        i.fas.fa-trash.me-2
-                        | Xóa ca sĩ
+                    hr.my-4
+                    .d-flex.justify-content-end.gap-2
+                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/singer')
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại
+                        a.btn.btn-primary.shadow-sm(href=prefixName + '/singer/edit/' + singer._id)
+                            i.fas.fa-edit.me-2
+                            | Chỉnh sửa
+                else
+                    p.text-danger Không tìm thấy ca sĩ.

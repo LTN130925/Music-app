@@ -51,7 +51,8 @@ block content
                                     td #{index + 1}
                                     td.text-center
                                         img.song-thumbnail(src=singer.avatar || '/images/no-image.png', alt=singer.fullName)
-                                    td= singer.fullName
+                                    td
+                                        a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/singer/detail/${singer._id}`)= singer.fullName
                                     td.text-center
                                         if singer.status === 'active'
                                             span.badge.bg-success.status-toggle(

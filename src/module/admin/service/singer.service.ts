@@ -10,7 +10,12 @@ export class singerService {
         const singers = await SingerModel.find(filter);
         return singers;
     }
-    
+
+    async detail(id: string) {
+        const filter = {_id: id, deleted: false};
+        const singer = await SingerModel.findOne(filter).exec();
+        return singer;
+    }
 
     async createPost(body, user): Promise<void> {
         const newBlog = new BlogUpdatedModel();
