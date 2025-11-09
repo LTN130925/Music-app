@@ -36,7 +36,7 @@ export class controller {
 
     async detail(req: Request, res: Response) {
         const data = await serviceInstance.detail(req.params.id);
-        res.render('admin/pages/singer/detail', { singer: data });
+        res.render('admin/pages/singer/detail.pug', { singer: data });
     }
 
     async edit(req: Request, res: Response) {

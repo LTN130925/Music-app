@@ -24,6 +24,14 @@ export class controller {
         });
     }
 
+    async detail(req: Request, res: Response) {
+        const data = await serviceInstance.detail(req.params.id);
+        res.render('admin/pages/role/detail.pug', {
+            titlePage: 'Trang chi tiết chức vụ',
+            role: data,
+        });
+    }
+
     async createPost(req: Request, res: Response) {
         try {
             await serviceInstance.create(req.body, req.user);

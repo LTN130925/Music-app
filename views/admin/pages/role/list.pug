@@ -13,7 +13,7 @@ block content
         .card.shadow-sm.rounded-4.border-0
             .card-body.p-4
                 .search-container
-                    form.search-box(action= prefixName + '/role', method='GET')
+                    form.search-box(action=prefixName + '/role', method='GET')
                         i.fas.fa-search
                         input(type='text', name='q', placeholder='Tìm kiếm vai trò...')
                     .filter-group
@@ -55,7 +55,13 @@ block content
                                     td.text-center
                                         input.form-check-input.song-checkbox(type='checkbox', value=role._id)
                                     td #{index + 1}
-                                    td.text-capitalize= role.title || '-'
+                                    td.text-capitalize
+                                        if role && role._id
+                                            a.text-decoration-none.fw-semibold.text-primary(
+                                                href= prefixName + '/role/detail/' + role._id
+                                            )= role.title || '(Không có tiêu đề)'
+                                        else
+                                            span.text-muted -
                                     td !{role.description}
                                     td
                                         if role.permissions && role.permissions.listPermission.length

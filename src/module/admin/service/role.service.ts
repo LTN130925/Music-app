@@ -64,4 +64,13 @@ export class roleService {
         const createRoleData = new RoleModel(dataRole);
         await createRoleData.save();
     }
+
+    async detail(id) {
+        const filter = {_id: id, deleted: false}
+        const role = await RoleModel.findOne(filter)
+            .populate('permissions', 'listPermission')
+            .populate('createdBy.managerId', 'fullName')
+            .exec();
+        return role;
+    }
 }

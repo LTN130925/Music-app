@@ -18,7 +18,7 @@ export class controller {
         const {slug} = req.params;
         const user = req.user as IUser;
         const song = await serviceInstance.getOneSong(slug, user);
-        res.render('client/pages/songs/detail', {
+        res.render('client/pages/songs/detail.pug', {
             titlePage: 'Chi tiết bài hát',
             song,
         });

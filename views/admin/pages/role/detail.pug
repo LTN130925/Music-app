@@ -1,0 +1,80 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.py-4
+        .card.shadow-sm.border-0.rounded-4
+            .card-body.p-4
+                h4.fw-bold.text-dark.mb-4 Chi tiết vai trò
+
+                if role
+                    .row.g-4
+                        // ===== Thông tin chính =====
+                        .col-md-6
+                            h5.fw-bold.text-primary.mb-3= role.title
+
+                            p.mb-2
+                                strong.text-secondary Trạng thái:
+                                |
+                                if role.status === 'active'
+                                    span.badge.bg-success.ms-1 Active
+                                else
+                                    span.badge.bg-secondary.ms-1 Inactive
+
+                            p.mb-2
+                                strong.text-secondary Đã xóa:
+                                |
+                                if role.deleted
+                                    span.badge.bg-danger.ms-1 Đã xóa
+                                else
+                                    span.badge.bg-success.ms-1 Còn hoạt động
+
+                            p.mb-2
+                                strong.text-secondary Quyền hạn:
+                                |
+                                if role.permissions && role.permissions.listPermission.length
+                                    span.badge.bg-info đã gán
+                                else
+                                    span.badge.bg-secondary chưa có
+
+                            p.mb-2
+                                strong.text-secondary Ngày tạo:
+                                |
+                                if role.createdAt
+                                    = new Date(role.createdAt).toLocaleDateString('vi-VN')
+                                else
+                                    span.text-muted Không xác định
+
+                            p.mb-2
+                                strong.text-secondary Cập nhật gần nhất:
+                                |
+                                if role.updatedAt
+                                    = new Date(role.updatedAt).toLocaleDateString('vi-VN')
+                                else
+                                    span.text-muted Không xác định
+
+                            p.mb-2
+                                strong.text-secondary Người tạo:
+                                |
+                                if role.createdBy && role.createdBy.managerId && role.createdBy.managerId.fullName
+                                    = role.createdBy.managerId.fullName
+                                else
+                                    span.text-muted Không xác định
+
+                        // ===== Mô tả =====
+                        .col-md-6
+                            label.form-label.fw-semibold.mb-2 Mô tả
+                            if role.description
+                                .p-3.border.rounded.bg-light!= role.description
+                            else
+                                p.text-muted Không có mô tả
+
+                    hr.my-4
+                    .d-flex.justify-content-end.gap-2
+                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/role')
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại
+                        a.btn.btn-primary.shadow-sm(href=prefixName + '/role/edit/' + role._id)
+                            i.fas.fa-edit.me-2
+                            | Chỉnh sửa
+                else
+                    p.text-danger Không tìm thấy vai trò.
