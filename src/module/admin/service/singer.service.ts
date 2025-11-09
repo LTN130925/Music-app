@@ -5,7 +5,6 @@ import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countSongs} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
-import {SongModel} from "../../../common/model/song.model";
 
 export class singerService {
     async index(q) {

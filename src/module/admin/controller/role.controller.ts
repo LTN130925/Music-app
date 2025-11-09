@@ -22,7 +22,7 @@ export class controller {
 
     async createPost(req: Request, res: Response) {
         try {
-            await serviceInstance.create(req.body);
+            await serviceInstance.create(req.body, req.user);
             req.flash('success', 'Tạo chức quyền thành công!');
         } catch (e) {
             req.flash('error', 'Lỗi tạo vai trò');

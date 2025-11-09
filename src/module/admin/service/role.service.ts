@@ -9,13 +9,17 @@ export class roleService {
         return roles;
     }
 
-    async create(body): Promise<void> {
+    async create(body, manager): Promise<void> {
         const createNewPermission = new PermissionModel();
         await createNewPermission.save();
         const dataRole: Record<string, any> = {
             title: body.title,
             description: body.description,
             permissions: createNewPermission._id,
+            createdBy: {
+                managerId: manager._id,
+                at: new Date()
+            }
         };
         const createRoleData = new RoleModel(dataRole);
         await createRoleData.save();
