@@ -1,17 +1,21 @@
 import {Request, Response} from 'express';
 
-import {RoleModel} from '../../../common/model/role.model';
-
 import {roleService} from '../service/role.service';
 const serviceInstance = new roleService();
 
 export class controller {
     async index(req: Request, res: Response) {
-        const roles = await serviceInstance.index();
+        const data = await serviceInstance.index(req.query);
         res.render('admin/pages/role/list', {
-            titlePage: 'Trang chức vụ',
-            roles
-        })
+            titlePage: 'Trang nhóm quyền',
+            roles: data.roles,
+            status: data.status,
+            sort: data.sort,
+            totalPages: data.totalPages,
+            currentPage: data.currentPage,
+            limit: data.limit,
+            keyword: data.keyword,
+        });
     }
 
     create(req: Request, res: Response) {

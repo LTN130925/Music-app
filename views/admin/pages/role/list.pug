@@ -22,6 +22,11 @@ block content
                                 option(value='all' selected=(status === 'all')) Tất cả
                                 option(value='active' selected=(status === 'active')) Active
                                 option(value='inactive' selected=(status === 'inactive')) Inactive
+                        form#filterForm(action='/server/role', method='GET', class='filter-form')
+                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                option(value='all' selected=(sort === 'all')) sắp xếp
+                                option(value='title-desc' selected=(sort === 'title-desc')) từ A-Z
+                                option(value='title-asc' selected=(sort === 'title-asc')) từ Z-A
                         form#multiActionForm(action='/server/role/change-multi?_method=PATCH', method='POST', style='display:none;')
                             input(type='hidden', name='ids', id='selectedIds')
                             input(type='hidden', name='action', id='selectedAction')
@@ -57,7 +62,6 @@ block content
                                             span.badge.bg-info đã gán
                                         else
                                             span.badge.bg-secondary chưa có
-                                    //td= role.createdBy?.managerId?.fullName || '-'
                                     td.text-center
                                         if role.status === 'active'
                                             span.badge.bg-success.status-toggle(
@@ -85,4 +89,4 @@ block content
                                 td(colspan='8' class='text-center py-4 text-muted') Không có vai trò nào.
 
     // Pagination + Limit control
-    +pagination('role')
+    +pagination('role', totalPages, currentPage, limit, q, status)
