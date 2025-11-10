@@ -18,4 +18,12 @@ export class controller {
             keyword: data.keyword,
         });
     }
+
+    async detail(req: Request, res: Response) {
+        const data = await serviceInstance.detail(req.params.id);
+        res.render('admin/pages/topics/detail', {
+            titlePage: 'Chi tiết chủ đề',
+            topic: data,
+        });
+    }
 }

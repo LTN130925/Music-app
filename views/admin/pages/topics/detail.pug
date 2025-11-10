@@ -1,0 +1,97 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.py-4
+        .card.shadow-sm.border-0.rounded-4
+            .card-body.p-4
+                h4.fw-bold.text-dark.mb-4 Chi tiết chủ đề
+
+                if topic
+                    .row.g-4
+                        // ===== Ảnh đại diện =====
+                        .col-md-4
+                            if topic.avatar
+                                img.img-thumbnail.rounded-3.w-100(src=topic.avatar, style='max-height: 250px; object-fit: cover;')
+                            else
+                                .border.rounded-3.d-flex.align-items-center.justify-content-center(style='height: 250px; background: #f8f9fa;')
+                                    span.text-muted Không có ảnh đại diện
+
+                        // ===== Thông tin cơ bản =====
+                        .col-md-8
+                            h5.fw-bold.mb-3.text-primary= topic.title
+
+                            p.mb-2
+                                strong.text-secondary Slug:
+                                |
+                                if topic.slug
+                                    = ' ' + topic.slug
+                                else
+                                    span.text-muted Không xác định
+
+                            p.mb-2
+                                strong.text-secondary Trạng thái:
+                                |
+                                if topic.status === 'active'
+                                    span.badge.bg-success.ms-1 Active
+                                else
+                                    span.badge.bg-secondary.ms-1 Inactive
+
+                            p.mb-2
+                                strong.text-secondary Ngày tạo:
+                                |
+                                if topic.createdAt
+                                    = ' ' + new Date(topic.createdAt).toLocaleDateString('vi-VN')
+                                else
+                                    span.text-muted Không xác định
+
+                            p.mb-2
+                                strong.text-secondary Cập nhật gần nhất:
+                                |
+                                if topic.updatedAt
+                                    = ' ' + new Date(topic.updatedAt).toLocaleDateString('vi-VN')
+                                else
+                                    span.text-muted Không xác định
+
+                            p.mb-2
+                                strong.text-secondary Người tạo:
+                                |
+                                if topic.createdBy && topic.createdBy.managerId && topic.createdBy.managerId.fullName
+                                    = ' ' + topic.createdBy.managerId.fullName
+                                else
+                                    span.text-muted Không xác định
+
+                            if topic.deleted && topic.deletedBy
+                                p.mb-2
+                                    strong.text-danger Đã xóa bởi:
+                                    |
+                                    if topic.deletedBy.managerId && topic.deletedBy.managerId.fullName
+                                        = ' ' + topic.deletedBy.managerId.fullName
+                                    else
+                                        span.text-muted Không xác định
+                                p.mb-2
+                                    strong.text-danger Ngày xóa:
+                                    |
+                                    if topic.deletedAt
+                                        = ' ' + new Date(topic.deletedAt).toLocaleDateString('vi-VN')
+                                    else
+                                        span.text-muted Không xác định
+
+                        // ===== Mô tả =====
+                        .col-md-12
+                            hr
+                            label.form-label.fw-semibold.mb-2 Mô tả
+                            if topic.description
+                                .p-3.border.rounded.bg-light!= topic.description
+                            else
+                                p.text-muted Không có mô tả
+
+                    hr.my-4
+                    .d-flex.justify-content-end.gap-2
+                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/topic')
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại
+                        a.btn.btn-primary.shadow-sm(href=prefixName + '/topic/edit/' + topic._id)
+                            i.fas.fa-edit.me-2
+                            | Chỉnh sửa
+                else
+                    p.text-danger Không tìm thấy chủ đề.

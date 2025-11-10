@@ -49,4 +49,9 @@ export class topicService {
             keyword,
         };
     }
+
+    async detail(id) {
+        const topic = await TopicModel.findOne({ _id: id, deleted: false }).exec();
+        return topic;
+    }
 }
