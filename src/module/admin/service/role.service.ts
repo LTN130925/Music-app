@@ -88,7 +88,7 @@ export class roleService {
             $push: {
                 list_blog: {
                     managerId: manager._id,
-                    title: 'Sửa trạng thái chức vụ',
+                    title: 'Sửa trạng thái nhóm quyền',
                     updatedAt: new Date()
                 }
             }
