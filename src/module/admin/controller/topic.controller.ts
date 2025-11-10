@@ -6,10 +6,16 @@ const serviceInstance = new topicService();
 
 export class controller {
     async index(req: Request, res: Response) {
-        const topics = await serviceInstance.index();
+        const data = await serviceInstance.index(req.query);
         res.render('admin/pages/topics/list', {
             titlePage: 'Quản lý chủ đề',
-            topics,
+            topics: data.topics,
+            status: data.status,
+            sort: data.sort,
+            totalPages: data.totalPages,
+            currentPage: data.currentPage,
+            limit: data.limit,
+            keyword: data.keyword,
         });
     }
 }
