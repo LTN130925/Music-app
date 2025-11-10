@@ -1,8 +1,12 @@
+import slug from "slug";
+
 import {TopicModel} from '../../../common/model/topic.model';
+import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 
 import {convertTextToSlug} from '../../../shared/util/unidecode.util';
 import {countSongs} from '../../../shared/helper/cntDocument.helper';
 import {pagination} from '../../../shared/util/pagination.util';
+
 
 export class topicService {
     async index(q) {
@@ -53,5 +57,25 @@ export class topicService {
     async detail(id) {
         const topic = await TopicModel.findOne({ _id: id, deleted: false }).exec();
         return topic;
+    }
+
+    async createPost(body, manager): Promise<void> {
+        const newBlog = new BlogUpdatedModel();
+        const dataTopic: Record<string, any> = {
+            title: body.title,
+            description: body.description || '',
+            slug: slug(body.title),
+            avatar: body.avatar || '',
+            status: body.status,
+            updatedBlogId: newBlog._id,
+            createdBy: {
+                managerId: manager._id,
+                at: new Date(),
+            },
+        };
+
+        const newTopic = new TopicModel(dataTopic);
+        await newBlog.save();
+        await newTopic.save();
     }
 }

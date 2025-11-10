@@ -32,4 +32,14 @@ export class controller {
             titlePage: 'Trang tạo mới chủ đề',
         });
     }
+
+    async createPost(req: Request, res: Response) {
+        try {
+            await serviceInstance.createPost(req.body, req.user);
+            req.flash('success', 'Tạo mới chủ đề thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi khi tạo chủ đề!');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
 }
