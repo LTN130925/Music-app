@@ -5,6 +5,7 @@ import {BlogUpdatedModel} from "../../../common/model/blog_updated.model";
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countSongs} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
+import {SongModel} from "../../../common/model/song.model";
 
 export class roleService {
     async index(q) {
@@ -77,6 +78,33 @@ export class roleService {
             .populate('createdBy.managerId', 'fullName')
             .exec();
         return role;
+    }
+
+    async edit(id) {
+        const filter = {_id: id, deleted: false}
+        const role = await RoleModel.findOne(filter).exec();
+        return role;
+    }
+
+    async editPatch(id, body, manager) {
+        const existingRole = await RoleModel.findById(id);
+        if (!existingRole) throw new Error('Chức vụ không tồn tại');
+
+        const dataRole = {
+            title: body.title,
+            description: body.description,
+        };
+        await BlogUpdatedModel.findByIdAndUpdate(existingRole.updatedBlogId, {
+            $push: {
+                list_blog: {
+                    managerId: manager._id,
+                    title: 'chỉnh sửa chức vụ ',
+                    updatedAt: new Date()
+                }
+            }
+        });
+
+        await RoleModel.findByIdAndUpdate(id, dataRole);
     }
 
     async changeStatus(id, body, manager): Promise<void> {

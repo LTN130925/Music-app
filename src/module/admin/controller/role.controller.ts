@@ -32,6 +32,24 @@ export class controller {
         });
     }
 
+    async edit(req: Request, res: Response) {
+        const data = await serviceInstance.edit(req.params.id);
+        res.render('admin/pages/role/edit.pug', {
+            titlePage: 'Trang chỉnh sửa chức vụ',
+            role: data,
+        });
+    }
+
+    async editPatch(req: Request, res: Response) {
+        try {
+            await serviceInstance.editPatch(req.params.id, req.body, req.user);
+            req.flash('success', 'Cập nhật chức vụ thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi cập nhật chức vụ!');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
+
     async createPost(req: Request, res: Response) {
         try {
             await serviceInstance.createPost(req.body, req.user);
