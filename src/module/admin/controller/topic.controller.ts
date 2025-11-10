@@ -26,4 +26,10 @@ export class controller {
             topic: data,
         });
     }
+
+    create(req: Request, res: Response) {
+        res.render('admin/pages/topics/create', {
+            titlePage: 'Trang tạo mới chủ đề',
+        });
+    }
 }
