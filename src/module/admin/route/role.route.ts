@@ -17,6 +17,8 @@ router.get('/edit/:id', controllerInstance.edit);
 
 router.patch('/edit/:id', controllerInstance.editPatch);
 
+router.delete('/delete/:id', controllerInstance.delete);
+
 router.patch('/change-status/:id', controllerInstance.changeStatus);
 
 export default router;

@@ -60,6 +60,16 @@ export class controller {
         res.redirect(req.get('Referrer') || '/');
     }
 
+    async delete(req: Request, res: Response) {
+        try {
+            await serviceInstance.delete(req.params.id, req.user);
+            req.flash('success', 'Xóa chức quyền thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi xóa chức quyền!');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
+
     async changeStatus(req: Request, res: Response) {
         await serviceInstance.changeStatus(req.params.id, req.body, req.user);
         res.json({status: 'active'});

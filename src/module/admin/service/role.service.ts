@@ -60,6 +60,7 @@ export class roleService {
             description: body.description,
             permissions: newPermission._id,
             updatedBlogId: newBlog._id,
+            status: body.status,
             createdBy: {
                 managerId: manager._id,
                 at: new Date()
@@ -93,6 +94,7 @@ export class roleService {
         const dataRole = {
             title: body.title,
             description: body.description,
+            status: body.status,
         };
         await BlogUpdatedModel.findByIdAndUpdate(existingRole.updatedBlogId, {
             $push: {
@@ -119,6 +121,16 @@ export class roleService {
                     title: 'Sửa trạng thái nhóm quyền',
                     updatedAt: new Date()
                 }
+            }
+        });
+    }
+
+    async delete(id, manager) {
+        await RoleModel.findByIdAndUpdate(id, {
+            deleted: true,
+            deletedBy: {
+                managerId: manager._id,
+                at: new Date()
             }
         });
     }
