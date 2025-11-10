@@ -134,4 +134,45 @@ export class roleService {
             }
         });
     }
+
+    async changeMulti(ids, action, manager): Promise<{result: boolean; data: {text?: string; value?: number}}> {
+        const actionsMap: Record<string, any> = {
+            active: {
+                update: { status: 'active' },
+                log: { title: 'Kích hoạt chức quyền' }
+            },
+            inactive: {
+                update: { status: 'inactive' },
+                log: { title: 'Ẩn chức quyền' }
+            },
+            delete: {
+                update: { deleted: true },
+                log: { title: 'Xóa chức quyền' }
+            }
+        };
+
+        const actionData = actionsMap[action];
+        if (!actionData) return { result: true, data: { text: 'Lỗi dữ liệu' } };
+
+        await RoleModel.updateMany(
+            { _id: { $in: ids }},
+            actionData.update
+        );
+        const songs = await RoleModel.find({ _id: { $in: ids }}).select('updatedBlogId').exec();
+        const blogIds = songs.map(song => song.updatedBlogId).filter(Boolean);
+
+        await BlogUpdatedModel.updateMany(
+            {_id: {$in: blogIds}},
+            {
+                $push: {
+                    list_blog: {
+                        managerId: manager._id,
+                        title: actionData.log.title,
+                        updatedAt: new Date()
+                    }
+                }
+            }
+        );
+        return {result: false, data: {value: ids.length}};
+    }
 }

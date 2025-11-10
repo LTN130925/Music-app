@@ -74,4 +74,19 @@ export class controller {
         await serviceInstance.changeStatus(req.params.id, req.body, req.user);
         res.json({status: 'active'});
     }
+
+    async changeMulti(req: Request, res: Response) {
+        try {
+            const {ids, action} = req.body;
+            const result = await serviceInstance.changeMulti(JSON.parse(ids), action, req.user);
+            if (result.result) {
+                req.flash('error', result.data.text);
+                return res.redirect(req.get('Referrer') || '/');
+            }
+            req.flash('success', `Cập nhật ${result.data.value} chức vụ thành công!`);
+        } catch (e) {
+            req.flash('error', 'Lỗi cập nhật chức vụ');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
 }

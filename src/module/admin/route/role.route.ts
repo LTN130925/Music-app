@@ -21,4 +21,6 @@ router.delete('/delete/:id', controllerInstance.delete);
 
 router.patch('/change-status/:id', controllerInstance.changeStatus);
 
+router.patch('/change-multi', controllerInstance.changeMulti)
+
 export default router;
