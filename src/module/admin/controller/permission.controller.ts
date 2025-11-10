@@ -18,7 +18,7 @@ export class controller {
     async update(req: Request, res: Response) {
         try {
             const data = JSON.parse(req.body.permissions);
-            const result = await serviceInstance.updateDataRoles(data);
+            const result = await serviceInstance.updateDataRoles(data, req.user);
             if (result) {
                 req.flash('error', result as string);
                 return res.redirect(req.get('Referrer') || '/');

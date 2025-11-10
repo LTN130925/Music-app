@@ -13,4 +13,6 @@ router.post('/create', controllerInstance.createPost);
 
 router.get('/detail/:id', controllerInstance.detail);
 
+router.patch('/change-status/:id', controllerInstance.changeStatus);
+
 export default router;

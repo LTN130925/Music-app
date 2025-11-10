@@ -6,9 +6,9 @@ export interface IRole extends Document {
     permissions?: Schema.Types.ObjectId;
     status: 'active' | 'inactive';
     deleted: boolean;
-    createdBy: {managerId: Schema.Types.ObjectId, at: Date};
+    createdBy?: {managerId: Schema.Types.ObjectId, at: Date};
     updatedBlogId?: Schema.Types.ObjectId;
-    deletedBy: {managerId: Schema.Types.ObjectId, at: Date};
+    deletedBy?: {managerId: Schema.Types.ObjectId, at: Date};
     createdAt: Date;
     updatedAt: Date;
 }

@@ -1,5 +1,7 @@
 import {PermissionModel} from '../../../common/model/permission.model';
 import {RoleModel} from '../../../common/model/role.model';
+import {BlogUpdatedModel} from "../../../common/model/blog_updated.model";
+
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countSongs} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
@@ -12,7 +14,7 @@ export class roleService {
         let sortOption: Record<string, 1 | -1> = {createdAt: -1}
         if (q.sort && q.sort !== 'all') {
             const [key, value] = q.sort.split('-');
-            sortOption = { [key]: value === 'desc' ? -1 : 1 };
+            sortOption = {[key]: value === 'desc' ? -1 : 1};
         }
 
         let keyword = '';
@@ -49,19 +51,22 @@ export class roleService {
         };
     }
 
-    async create(body, manager): Promise<void> {
-        const createNewPermission = new PermissionModel();
-        await createNewPermission.save();
-        const dataRole: Record<string, any> = {
+    async createPost(body, manager): Promise<void> {
+        const newBlog = new BlogUpdatedModel();
+        const newPermission = new PermissionModel();
+        const dataRole = {
             title: body.title,
             description: body.description,
-            permissions: createNewPermission._id,
+            permissions: newPermission._id,
+            updatedBlogId: newBlog._id,
             createdBy: {
                 managerId: manager._id,
                 at: new Date()
             }
         };
         const createRoleData = new RoleModel(dataRole);
+        await newPermission.save();
+        await newBlog.save();
         await createRoleData.save();
     }
 
@@ -72,5 +77,21 @@ export class roleService {
             .populate('createdBy.managerId', 'fullName')
             .exec();
         return role;
+    }
+
+    async changeStatus(id, body, manager): Promise<void> {
+        const existingRole = await RoleModel.findById(id);
+        if (!existingRole) throw new Error('Chức vụ không tồn tại');
+
+        await RoleModel.findByIdAndUpdate(id, body);
+        await BlogUpdatedModel.findByIdAndUpdate(existingRole.updatedBlogId, {
+            $push: {
+                list_blog: {
+                    managerId: manager._id,
+                    title: 'Sửa trạng thái chức vụ',
+                    updatedAt: new Date()
+                }
+            }
+        });
     }
 }

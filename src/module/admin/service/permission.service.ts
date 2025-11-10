@@ -1,5 +1,6 @@
 import {RoleModel} from '../../../common/model/role.model';
 import {PermissionModel} from '../../../common/model/permission.model';
+import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 
 export class permissionService {
     async permission() {
@@ -7,7 +8,7 @@ export class permissionService {
         return roles;
     }
 
-    async updateDataRoles(data): Promise<string> {
+    async updateDataRoles(data, manager): Promise<string> {
         for (const item of data) {
             const role = await RoleModel.findOne({_id: item.role_id, deleted: false, status: 'active'})
                 .select('permissions')
@@ -16,8 +17,19 @@ export class permissionService {
             await PermissionModel.findByIdAndUpdate(
                 role.permissions,
                 {listPermission: item.permissions}
-            )
+            );
         }
+        await BlogUpdatedModel.findByIdAndUpdate(
+            manager.updatedBlogId, {
+                $push: {
+                    list_blog: {
+                        managerId: manager._id,
+                        title: 'chỉnh sửa phân quyền',
+                        updatedAt: new Date()
+                    }
+                }
+            }
+        )
         return '';
     }
 }
