@@ -108,4 +108,21 @@ export class topicService {
 
         await TopicModel.findByIdAndUpdate(id, dataTopic);
     }
+
+    async changeStatus(id, body, manager): Promise<void> {
+        const existingTopic = await TopicModel.findById(id);
+        if (!existingTopic) throw new Error('Chủ đề không tồn tại');
+
+        await TopicModel.findByIdAndUpdate(id, body);
+        await BlogUpdatedModel.findByIdAndUpdate(existingTopic.updatedBlogId, {
+            $push: {
+                list_blog: {
+                    managerId: manager._id,
+                    title: 'Thay đổi trạng thái chủ đề',
+                    updatedAt: new Date(),
+                },
+            },
+        });
+    }
+
 }

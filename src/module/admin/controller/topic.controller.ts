@@ -60,4 +60,9 @@ export class controller {
         }
         res.redirect(req.get('Referrer') || '/');
     }
+
+    async changeStatus(req: Request, res: Response) {
+        await serviceInstance.changeStatus(req.params.id, req.body, req.user);
+        res.json({ status: 'active' });
+    }
 }
