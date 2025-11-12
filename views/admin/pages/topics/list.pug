@@ -59,7 +59,7 @@ block content
                                         img.song-thumbnail(src=topic.avatar || '/images/no-image.png', alt=topic.title)
                                     td
                                         a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/topic/detail/${topic._id}`)= topic.title
-                                    td.text-muted #{topic.description || '-'}
+                                    td.text-muted !{topic.description || '-'}
                                     td.text-center= topic.slug
                                     td.text-center
                                         if topic.status === 'active'

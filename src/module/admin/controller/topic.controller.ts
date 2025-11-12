@@ -42,4 +42,12 @@ export class controller {
         }
         res.redirect(req.get('Referrer') || '/');
     }
+
+    async edit(req: Request, res: Response) {
+        const data = await serviceInstance.edit(req.params.id);
+        res.render('admin/pages/topics/edit', {
+            titlePage: 'Chỉnh sửa chủ đề',
+            topic: data,
+        });
+    }
 }

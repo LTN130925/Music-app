@@ -78,4 +78,9 @@ export class topicService {
         await newBlog.save();
         await newTopic.save();
     }
+
+    async edit(id) {
+        const topic = await TopicModel.findOne({ _id: id, deleted: false }).exec();
+        return topic;
+    }
 }
