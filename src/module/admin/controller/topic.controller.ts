@@ -50,4 +50,14 @@ export class controller {
             topic: data,
         });
     }
+
+    async editPatch(req: Request, res: Response) {
+        try {
+            await serviceInstance.editPatch(req.params.id, req.body, req.user);
+            req.flash('success', 'Cập nhật chủ đề thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi cập nhật chủ đề!');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
 }

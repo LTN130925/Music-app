@@ -20,4 +20,6 @@ router.post('/create', upload.single('avatar'), uploadSingle, controllerInstance
 
 router.get('/edit/:id', controllerInstance.edit);
 
+router.patch('/edit/:id', upload.single('avatar'), uploadSingle, controllerInstance.editPatch);
+
 export default router;

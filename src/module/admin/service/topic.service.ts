@@ -83,4 +83,29 @@ export class topicService {
         const topic = await TopicModel.findOne({ _id: id, deleted: false }).exec();
         return topic;
     }
+
+    async editPatch(id, body, manager): Promise<void> {
+        const existingTopic = await TopicModel.findById(id);
+        if (!existingTopic) throw new Error('Chủ đề không tồn tại');
+
+        const dataTopic: Record<string, any> = {
+            title: body.title,
+            description: body.description,
+            slug: slug(body.title),
+            avatar: body.avatar || existingTopic.avatar,
+            status: body.status,
+        };
+
+        await BlogUpdatedModel.findByIdAndUpdate(existingTopic.updatedBlogId, {
+            $push: {
+                list_blog: {
+                    managerId: manager._id,
+                    title: 'Chỉnh sửa chủ đề',
+                    updatedAt: new Date(),
+                },
+            },
+        });
+
+        await TopicModel.findByIdAndUpdate(id, dataTopic);
+    }
 }
