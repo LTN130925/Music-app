@@ -125,4 +125,15 @@ export class topicService {
         });
     }
 
+    async delete(id, manager): Promise<void> {
+        await TopicModel.findByIdAndUpdate(id, {
+            deleted: true,
+            deletedBy: {
+                managerId: manager._id,
+                at: new Date(),
+            },
+            deletedAt: new Date(),
+        });
+    }
+
 }

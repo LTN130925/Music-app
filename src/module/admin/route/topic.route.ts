@@ -24,4 +24,6 @@ router.patch('/edit/:id', upload.single('avatar'), uploadSingle, controllerInsta
 
 router.patch('/change-status/:id', controllerInstance.changeStatus);
 
+router.delete('/delete/:id', controllerInstance.delete);
+
 export default router;

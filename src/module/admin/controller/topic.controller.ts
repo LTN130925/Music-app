@@ -65,4 +65,14 @@ export class controller {
         await serviceInstance.changeStatus(req.params.id, req.body, req.user);
         res.json({ status: 'active' });
     }
+
+    async delete(req: Request, res: Response) {
+        try {
+            await serviceInstance.delete(req.params.id, req.user);
+            req.flash('success', 'Xóa chủ đề thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi xóa chủ đề!');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
 }
