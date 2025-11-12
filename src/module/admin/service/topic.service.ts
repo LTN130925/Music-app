@@ -136,4 +136,43 @@ export class topicService {
         });
     }
 
+    async changeMulti(ids, action, manager): Promise<{ result: boolean; data: { text?: string; value?: number } }> {
+        const actionsMap: Record<string, any> = {
+            active: {
+                update: { status: 'active' },
+                log: { title: 'Kích hoạt chủ đề' },
+            },
+            inactive: {
+                update: { status: 'inactive' },
+                log: { title: 'Ẩn chủ đề' },
+            },
+            delete: {
+                update: { deleted: true },
+                log: { title: 'Xóa chủ đề' },
+            },
+        };
+
+        const actionData = actionsMap[action];
+        if (!actionData) return { result: true, data: { text: 'Lỗi dữ liệu' } };
+
+        await TopicModel.updateMany({ _id: { $in: ids } }, actionData.update);
+
+        const topics = await TopicModel.find({ _id: { $in: ids } }).select('updatedBlogId').exec();
+        const blogIds = topics.map((topic) => topic.updatedBlogId).filter(Boolean);
+
+        await BlogUpdatedModel.updateMany(
+            { _id: { $in: blogIds } },
+            {
+                $push: {
+                    list_blog: {
+                        managerId: manager._id,
+                        title: actionData.log.title,
+                        updatedAt: new Date(),
+                    },
+                },
+            }
+        );
+
+        return { result: false, data: { value: ids.length } };
+    }
 }

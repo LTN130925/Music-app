@@ -75,4 +75,19 @@ export class controller {
         }
         res.redirect(req.get('Referrer') || '/');
     }
+
+    async changeMulti(req: Request, res: Response) {
+        try {
+            const { ids, action } = req.body;
+            const result = await serviceInstance.changeMulti(JSON.parse(ids), action, req.user);
+            if (result.result) {
+                req.flash('error', result.data.text);
+                return res.redirect(req.get('Referrer') || '/');
+            }
+            req.flash('success', `Cập nhật ${result.data.value} chủ đề thành công!`);
+        } catch (e) {
+            req.flash('error', 'Lỗi cập nhật chủ đề!');
+        }
+        res.redirect(req.get('Referrer') || '/');
+    }
 }
