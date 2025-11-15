@@ -6,7 +6,7 @@ block content
             .card-body.p-4
                 h4.fw-bold.text-dark.mb-4 Cập nhật thông tin quản lý
 
-                form(method='POST', action=prefixName + '/manager/' + manager._id + '?_method=PATCH', enctype='multipart/form-data')
+                form(method='POST', action=prefixName + '/manager/edit/' + manager._id + '?_method=PATCH', enctype='multipart/form-data')
                     .row.g-4
                         // ===== Họ và tên =====
                         .col-md-12
@@ -74,28 +74,18 @@ block content
 
                         // ===== Ảnh đại diện =====
                         .col-md-6
-                            label.form-label.fw-semibold(for='avatar') Ảnh đại diện
+                            label.form-label.fw-semibold(for='thumbnailInput') Ảnh đại diện
                             input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
-                            #previewContainer.mt-3.position-relative
-                                if manager.avatar
-                                    img#previewImage.img-thumbnail.rounded-3.w-100(
-                                        src=manager.avatar,
-                                        style='max-height:200px; object-fit:cover;'
-                                    )
-                                    button#removeImageBtn(
-                                        type='button',
-                                        class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
-                                        style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;'
-                                    )
+
+                            if manager.avatar
+                                #previewContainer.mt-3.position-relative
+                                    img#previewImage.img-thumbnail.rounded-3.w-100(src=manager.avatar, style='max-height: 200px; object-fit: cover;')
+                                    button#removeImageBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
                                         i.fas.fa-times
-                                else
-                                    img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height:200px; object-fit:cover; display:none;')
-                                    button#removeImageBtn(
-                                        type='button',
-                                        class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
-                                        style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:none; align-items:center; justify-content:center;'
-                                    )
-                                        i.fas.fa-times
+                            else
+                                #previewContainer.mt-3.position-relative(style='display:none;')
+                                    img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height: 200px; object-fit: cover;')
+
 
                         // ===== Ghi chú (mô tả) =====
                         .col-md-12
