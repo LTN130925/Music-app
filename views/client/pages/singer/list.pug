@@ -38,13 +38,20 @@ block content
                 // ================================
                 .artist-list
                     each singer in singers
-                        a.artist-item(href=`/singer/detail/${singer.slug}`)
+                        .artist-item
                             .artist-avatar(style=`background-image: url('${singer.avatar || "/images/default-avatar.png"}')`)
                             .artist-info
-                                h5.name= singer.fullName
+                                h5.name
+                                    a(href=`/singer/detail/${singer.slug}` style="text-decoration:none; color:inherit;")
+                                        = singer.fullName
                                 .meta
+                                    - const desc = singer.description.length > 0 ? singer.description.slice(0, 50) + '...' : "Không tồn tại tiêu đề";
+                                    p.desc !{desc}
                                     span
                                         i.fas.fa-id-card
                                         | #{singer.registrationNumber} đăng ký
 
-                                p.desc !{singer.description || 'Chưa có mô tả'}
+
+
+
+
