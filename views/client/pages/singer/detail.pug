@@ -1,0 +1,60 @@
+extends ../../layouts/default
+include ../../mixins/box-head
+
+block content
+    .container
+        .row
+            .col-md-12
+                +box-head(`Bài hát của ${singer.fullName}`)
+
+                // AVATAR + INFO
+                .singer-header(style="display:flex; gap:2rem; align-items:center; margin-bottom:2rem;")
+                    img.singer-avatar(
+                        src=singer.avatar || "/images/default-avatar.png",
+                        style="width:150px; height:150px; border-radius:50%; object-fit:cover;"
+                    )
+                    .info
+                        h2= singer.fullName
+                        p.text-muted= singer.description || "Chưa có mô tả"
+
+                // ================================
+                // FILTER + TÌM KIẾM
+                // ================================
+                form(action=`/singer/detail/${singer.slug}` method="GET")
+                    .filter-bar(style="display:flex; gap:1rem; align-items:center; margin-bottom:2rem;")
+
+                        input.form-control(
+                            type="text",
+                            name="search",
+                            placeholder="Tìm bài hát...",
+                            style="flex:1;",
+                            value=(query && query.search ? query.search : "")
+                        )
+
+                        select.form-select(name="sort" onchange="this.form.submit()")
+                            option(value="") Sắp xếp theo
+                            option(value="name_asc" selected=(query.sort=='name_asc')) Tên A → Z
+                            option(value="name_desc" selected=(query.sort=='name_desc')) Tên Z → A
+                            option(value="views_asc" selected=(query.sort=='views_asc')) Lượt xem ↑
+                            option(value="views_desc" selected=(query.sort=='views_desc')) Lượt xem ↓
+                            option(value="newest" selected=(query.sort=='newest')) Mới nhất
+                            option(value="oldest" selected=(query.sort=='oldest')) Cũ nhất
+
+
+                // ================================
+                //   DANH SÁCH BÀI HÁT
+                // ================================
+                .song-list
+                    each song in songs
+                        a.song-item(href=`/song/detail/${song.slug}`)
+                            .song-avatar(style=`background-image:url('${song.avatar || "/images/default-avatar.png"}')`)
+                            .song-info
+                                h5= song.title
+                                .meta
+                                    span
+                                        i.fas.fa-eye
+                                        | #{song.views} lượt xem
+                                    span
+                                        i.fas.fa-heart
+                                        | #{song.likes} lượt thích
+                                p !{song.description || 'Chưa có mô tả'}
