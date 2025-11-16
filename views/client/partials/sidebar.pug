@@ -1,9 +1,10 @@
 //- Sidebar
 aside#sidebar.hidden
+    - const sidebarMap = {'dashboard': 'Tổng quan', 'topic': 'Chủ đề', 'singer': 'Ca sĩ', 'favourite': 'Yêu thích'}
     ul.list-group.list-group-flush
-        each url in ['song', 'topic', 'favourite']
+        each url, key in sidebarMap
             li.list-group-item
-                a(href='/' + url)= url
+                a(href='/' + key)= url
 
 //- Backdrop
 div#sidebar-backdrop

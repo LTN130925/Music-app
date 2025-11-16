@@ -1,0 +1,50 @@
+extends ../../layouts/default
+include ../../mixins/box-head
+
+block content
+    .container
+        .row
+            .col-md-12
+                +box-head("Danh sách ca sĩ")
+                p.text-muted.text-center Thư viện ca sĩ nổi bật
+
+                // ================================
+                //   FILTER + SEARCH + SORT (1 form)
+                // ================================
+                form(action="/singer" method="GET")
+                    .filter-bar(style="display:flex; gap:1rem; align-items:center; margin-bottom:1.5rem;")
+
+                        // Ô tìm kiếm
+                        input.form-control(
+                            type="text",
+                            name="search",
+                            placeholder="Tìm ca sĩ...",
+                            style="flex:1;",
+                            value=(query && query.search ? query.search : "")
+                        )
+
+                        // Bộ SẮP XẾP
+                        select.form-select(name="sort" onchange="this.form.submit()")
+                            option(value="") Sắp xếp theo
+                            option(value="name_asc" selected=(query && query.sort == 'name_asc')) Tên A → Z
+                            option(value="name_desc" selected=(query && query.sort == 'name_desc')) Tên Z → A
+                            option(value="reg_asc" selected=(query && query.sort == 'reg_asc')) Số đăng ký ↑
+                            option(value="reg_desc" selected=(query && query.sort == 'reg_desc')) Số đăng ký ↓
+                            option(value="newest" selected=(query && query.sort == 'newest')) Mới nhất
+                            option(value="oldest" selected=(query && query.sort == 'oldest')) Cũ nhất
+
+                // ================================
+                //   DANH SÁCH CA SĨ
+                // ================================
+                .artist-list
+                    each singer in singers
+                        a.artist-item(href=`/singer/detail/${singer.slug}`)
+                            .artist-avatar(style=`background-image: url('${singer.avatar || "/images/default-avatar.png"}')`)
+                            .artist-info
+                                h5.name= singer.fullName
+                                .meta
+                                    span
+                                        i.fas.fa-id-card
+                                        | #{singer.registrationNumber} đăng ký
+
+                                p.desc !{singer.description || 'Chưa có mô tả'}
