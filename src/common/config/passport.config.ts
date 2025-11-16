@@ -2,7 +2,6 @@ import passport from 'passport';
 
 import {UserModel} from '../model/user.model';
 import {ManagerModel} from '../model/manager.model';
-import {populate} from "dotenv";
 
 // Serialize user (lưu id vào session)
 passport.serializeUser((user: any, done) => {
@@ -26,6 +25,7 @@ passport.deserializeUser(async (data, done) => {
                 .populate('listLikesSong', 'listId')
                 .populate('listFavoritesSong', 'listId')
                 .populate('listViewsSong', 'listId')
+                .populate('subscribers', 'listId')
                 .select('-password')
                 .exec();
             done(null, user);

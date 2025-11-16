@@ -15,5 +15,5 @@ block content
                                 .music-card-img(style=`background-image: url('${item.avatar}')`)
                                     .overlay
                                         h5.title= item.title
-                                        p.desc= item.description
+                                        p.desc !{item.description}
                                         a.btn-listen(href=`/song/${item.slug}`) Nghe ngay

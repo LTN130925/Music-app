@@ -22,11 +22,13 @@ block content
                                 option(value='all' selected=(status === 'all')) Tất cả
                                 option(value='active' selected=(status === 'active')) Hoạt động
                                 option(value='inactive' selected=(status === 'inactive')) Ngưng hoạt động
-                        form#filterForm(action='/server/topic', method='GET', class='filter-form')
+                        form#filterForm(action='/server/manager', method='GET', class='filter-form')
                             select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
                                 option(value='all' selected=(sort === 'all')) sắp xếp
-                                option(value='title-desc' selected=(sort === 'title-desc')) từ A-Z
-                                option(value='title-asc' selected=(sort === 'title-asc')) từ Z-A
+                                option(value='fullName-desc' selected=(sort === 'fullName-desc')) từ tên A-Z
+                                option(value='fullName-asc' selected=(sort === 'fullName-asc')) từ tên Z-A
+                                option(value='email-desc' selected=(sort === 'email-desc')) từ email A-Z
+                                option(value='email-asc' selected=(sort === 'email-asc')) từ email Z-A
                         form#multiActionForm(action='/server/manager/change-multi?_method=PATCH', method='POST', style='display:none;')
                             input(type='hidden', name='ids', id='selectedIds')
                             input(type='hidden', name='action', id='selectedAction')

@@ -7,7 +7,7 @@ export class controller {
     async index(req: Request, res: Response) {
         const data = await serviceInstance.index(req.query);
         res.render('admin/pages/manager/list', {
-            titlePage: 'Trang chức vụ',
+            titlePage: 'Trang quản lý',
             managers: data.managers,
             status: data.status,
             sort: data.sort,

@@ -18,7 +18,6 @@ export class controller {
                 req.flash('error', 'Email đã tồn tại, vui lòng tạo bằng email mới!');
                 return res.redirect(`/auth/register`);
             }
-
             req.flash('success', 'Đăng kí thành công, Vui lòng đăng nhập!');
             res.redirect('/auth/login');
         } catch (err) {

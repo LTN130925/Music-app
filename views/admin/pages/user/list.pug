@@ -6,22 +6,26 @@ block content
     .container-fluid.p-4
         .d-flex.justify-content-between.align-items-center.mb-4
             h2.fw-semibold.text-dark.mb-0 Quản lý người dùng
-            a.btn-add(href= prefixName + '/user/create.pug')
-                i.fas.fa-plus
-                |  Thêm người dùng
 
         .card.shadow-sm.rounded-4.border-0
             .card-body.p-4
                 .search-container
                     form.search-box(action= prefixName + '/user', method='GET')
                         i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm người dùng...')
+                        input(type='text', name='q', placeholder='Tìm kiếm người dùng...', value=keyword)
                     .filter-group
                         form#filterForm(action='/server/user', method='GET', class='filter-form')
                             select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
                                 option(value='all' selected=(status === 'all')) Tất cả
                                 option(value='active' selected=(status === 'active')) Active
                                 option(value='inactive' selected=(status === 'inactive')) Inactive
+                        form#filterForm(action='/server/user', method='GET', class='filter-form')
+                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                option(value='all' selected=(sort === 'all')) sắp xếp
+                                option(value='fullName-desc' selected=(sort === 'fullName-desc')) từ tên A-Z
+                                option(value='fullName-asc' selected=(sort === 'fullName-asc')) từ tên Z-A
+                                option(value='email-desc' selected=(sort === 'email-desc')) từ email A-Z
+                                option(value='email-asc' selected=(sort === 'email-asc')) từ email Z-A
                         form#multiActionForm(action='/server/user/change-multi?_method=PATCH', method='POST', style='display:none;')
                             input(type='hidden', name='ids', id='selectedIds')
                             input(type='hidden', name='action', id='selectedAction')
@@ -70,8 +74,6 @@ block content
                                                 style='cursor:pointer;'
                                             ) ngưng hoạt động
                                     td.text-center
-                                        a.btn-icon.edit(href=`/server/user/edit/${user._id}`)
-                                            i.fas.fa-pen
                                         form#singleDeleteForm(action='', method='POST', style='display:none;')
                                             input(type='hidden', name='_method', value='DELETE')
                                         a.btn-icon.delete(data-id=user._id, data-entity='user')
@@ -81,4 +83,4 @@ block content
                                 td(colspan='7' class='text-center py-4 text-muted') Không có người dùng nào.
 
     // Pagination + Limit control
-    +pagination('user')
+    +pagination('user', totalPages, currentPage, limit, q, status)
