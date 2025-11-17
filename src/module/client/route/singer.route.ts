@@ -11,4 +11,6 @@ router.get('/', controllerInstance.index);
 
 router.get('/detail/:id', controllerInstance.detail);
 
+router.patch('/:type/:singerId', controllerInstance.subscribe);
+
 export default router;

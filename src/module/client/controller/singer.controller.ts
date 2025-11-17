@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 
 import {singerService} from '../service/singer.service';
+import {IUser} from "../../../common/model/user.model";
 const serviceInstance = new singerService();
 
 export class controller {
@@ -29,5 +30,14 @@ export class controller {
             req.flash('error', 'lỗi dữ liệu');
             res.redirect(req.get('Referrent') || '/');
         }
+    }
+
+    async subscribe(req: Request, res: Response) {
+        const {type, singerId} = req.params;
+        const user = req.user as IUser;
+        await serviceInstance.subscribe(type, singerId, user.subscribers);
+        res.status(200).json({
+            message: 'success'
+        });
     }
 }

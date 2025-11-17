@@ -9,13 +9,11 @@ block content
 
                 // Nút Đăng ký ca sĩ nằm trên phần ca sĩ
                 if user
-                    span.button-register-singer(
-                        class={active: user.subscribers.listId.includes(singer._id)},
-                        data-id=singer._id,
-                        style="cursor:pointer; display:inline-flex; align-items:center; gap:0.5rem; margin-bottom:1rem; font-weight:600; color:#3b82f6;"
+                    span.meta-item.button-register-singer(
+                        class={active: user.subscribers.listId.includes(singer._id)}
                     )
                         i.fas.fa-user-plus
-                        | Đăng ký ca sĩ
+                        span(data-id=singer._id) Đăng ký ca sĩ
 
                 // AVATAR + INFO
                 .singer-header(style="display:flex; gap:2rem; align-items:center; margin-bottom:2rem;")

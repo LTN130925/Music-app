@@ -1,5 +1,8 @@
+import {Schema} from "mongoose";
+
 import { SingerModel } from '../../../common/model/singer.model';
 import {SongModel} from '../../../common/model/song.model';
+import {SubscribersModel} from '../../../common/model/subscribers.model';
 
 export class singerService {
     async index(query: any) {
@@ -82,5 +85,17 @@ export class singerService {
         body.songs = songs;
         body.singer = singer;
         return '';
+    }
+
+    async subscribe(type: string, singerId: string, subscribeId: Schema.Types.ObjectId): Promise<void> {
+        try {
+            const updateAction = type === 'unsubscribe' ? '$pull' : '$push';
+            await SubscribersModel.findByIdAndUpdate(
+                subscribeId,
+                { [updateAction]: { listId: singerId } },
+            );
+        } catch (err) {
+            throw new Error(err.message);
+        }
     }
 }

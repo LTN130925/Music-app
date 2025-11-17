@@ -34,10 +34,10 @@ block content
                             i.far.fa-heart
                             span(data-id=song._id) Yêu thích
                         span.meta-item.button-register-singer(
-                            class={active: user.subscribers.listId.includes(song.singerId)}
+                            class={active: user.subscribers.listId.includes(song.singerId._id)}
                         )
                             i.fas.fa-user-plus
-                            span(data-id=song.singerId) Đăng ký ca sĩ
+                            span(data-id=song.singerId._id) Đăng ký ca sĩ
 
                     .song-play.mt-4
                         .cover
