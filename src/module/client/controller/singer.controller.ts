@@ -35,9 +35,10 @@ export class controller {
     async subscribe(req: Request, res: Response) {
         const {type, singerId} = req.params;
         const user = req.user as IUser;
-        await serviceInstance.subscribe(type, singerId, user.subscribers);
+        const data = await serviceInstance.subscribe(type, singerId, user.subscribers);
         res.status(200).json({
-            message: 'success'
+            message: 'success',
+            data
         });
     }
 }

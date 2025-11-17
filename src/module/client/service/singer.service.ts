@@ -6,45 +6,21 @@ import {SubscribersModel} from '../../../common/model/subscribers.model';
 
 export class singerService {
     async index(query: any) {
-
-        // 1. FILTER
         const filter: any = { deleted: false };
 
-        // 2. SEARCH
         if (query.search) {
             filter.fullName = { $regex: query.search, $options: 'i' };
         }
 
-        // 3. SORT
         let sort: any = {};
-
         switch (query.sort) {
-            case 'name_asc':
-                sort.fullName = 1;
-                break;
-
-            case 'name_desc':
-                sort.fullName = -1;
-                break;
-
-            case 'reg_asc':
-                sort.registrationNumber = 1;
-                break;
-
-            case 'reg_desc':
-                sort.registrationNumber = -1;
-                break;
-
-            case 'newest':
-                sort.createdAt = -1;
-                break;
-
-            case 'oldest':
-                sort.createdAt = 1;
-                break;
-
-            default:
-                sort.createdAt = -1;
+            case 'name_asc': sort.fullName = 1; break;
+            case 'name_desc': sort.fullName = -1; break;
+            case 'reg_asc': sort.registrationNumber = 1; break;
+            case 'reg_desc': sort.registrationNumber = -1; break;
+            case 'newest': sort.createdAt = -1; break;
+            case 'oldest': sort.createdAt = 1; break;
+            default: sort.createdAt = -1;
         }
 
         const data = await SingerModel.find(filter).sort(sort);
@@ -87,13 +63,19 @@ export class singerService {
         return '';
     }
 
-    async subscribe(type: string, singerId: string, subscribeId: Schema.Types.ObjectId): Promise<void> {
+    async subscribe(type: string, singerId: string, subscribeId: Schema.Types.ObjectId): Promise<number> {
         try {
             const updateAction = type === 'unsubscribe' ? '$pull' : '$push';
             await SubscribersModel.findByIdAndUpdate(
                 subscribeId,
                 { [updateAction]: { listId: singerId } },
             );
+            const data = await SingerModel.findByIdAndUpdate(
+                singerId,
+                {$inc: {registrationNumber: type === 'unsubscribe' ? -1 : 1}},
+                {new: true}
+            )
+            return data.registrationNumber;
         } catch (err) {
             throw new Error(err.message);
         }

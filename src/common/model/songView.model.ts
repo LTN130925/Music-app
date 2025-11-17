@@ -1,16 +1,21 @@
-import {Schema, Document, model} from 'mongoose';
+import { Schema, Document, model } from 'mongoose';
+
+interface ObjectView {
+    idSong: string;
+    at: Date;
+}
 
 export interface ISongView extends Document {
-    listId: string[];
+    listId: ObjectView[];
 }
 
 const songViewSchema: Schema = new Schema({
-    listId: {
-        type: [String],
-        default: []
-    },
-}, {
-    timestamps: true
-});
+    listId: [
+        {
+            idSong: { type: String },
+            at: { type: Date, default: Date.now }
+        }
+    ]
+}, { timestamps: true });
 
 export const SongViewModel = model<ISongView>('SongView', songViewSchema, 'songsView');

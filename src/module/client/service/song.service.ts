@@ -37,26 +37,40 @@ export class songService {
     async getOneSong(slug: string, user: IUser): Promise<ISong | null> {
         try {
             const song = await SongModel
-                .findOne({slug: slug})
+                .findOne({ slug })
                 .populate('singerId', 'fullName')
                 .populate('topicId', 'title')
                 .exec();
+
             if (!song) throw new Error('Song not found');
 
             // set views
-            if (!user.listViewsSong["listId"].includes(song._id)) {
-                song.views += 1; await song.save();
+            const viewed = user.listViewsSong['listId'].some(
+                item => item.idSong === song._id.toString()
+            );
+            if (!viewed) {
+                song.views += 1;
+                await song.save();
                 await SongViewModel.findByIdAndUpdate(
                     user.listViewsSong,
-                    { $push: { listId: song._id } }
-                )
+                    {
+                        $push: {
+                            listId: {
+                                idSong: song._id,
+                                at: new Date()
+                            }
+                        }
+                    }
+                );
             }
 
             return song;
+
         } catch (err: any) {
             throw new Error(err.message);
         }
     }
+
 
     async updatedLike(typeLike: string, songId: string, songLikeId: Schema.Types.ObjectId): Promise<number> {
         try {

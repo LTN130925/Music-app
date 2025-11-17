@@ -50,6 +50,12 @@ block content
                                     span
                                         i.fas.fa-id-card
                                         | #{singer.registrationNumber} đăng ký
+                                    if user
+                                        span.meta-item.button-register-singer(
+                                            class={active: user.subscribers.listId.includes(singer._id)}
+                                        )
+                                            i.fas.fa-user-plus
+                                            span(data-id=singer._id) Đăng ký ca sĩ
 
 
 
