@@ -4,7 +4,7 @@ if (btnRegisterSinger.length > 0) {
     btnRegisterSinger.forEach(btn => {
         btn.addEventListener('click', async () => {
 
-            const span = btn.querySelector('span');
+            const span = btn.querySelector('span[data-id]');
             const singerId = span.getAttribute('data-id');
 
             const isActive = btn.classList.contains('active');
@@ -27,8 +27,13 @@ if (btnRegisterSinger.length > 0) {
                 icon.offsetHeight; // reset
                 icon.style.animation = '';
 
-            } catch (err) {
-                console.error('Lỗi đăng ký ca sĩ:', err);
+                const metaSpan = btn.closest('.artist-info').querySelector('.meta span');
+                if (metaSpan) {
+                    metaSpan.innerHTML = `<i class="fas fa-id-card"></i> ${data.data} đăng ký`;
+                }
+
+            } catch (e) {
+                console.error('Lỗi đăng ký ca sĩ:');
             }
         });
     });
