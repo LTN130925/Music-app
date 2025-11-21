@@ -4,7 +4,7 @@ import {TopicModel} from '../../../common/model/topic.model';
 import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 
 import {convertTextToSlug} from '../../../shared/util/unidecode.util';
-import {countSongs} from '../../../shared/helper/cntDocument.helper';
+import {countTopics} from '../../../shared/helper/cntDocument.helper';
 import {pagination} from '../../../shared/util/pagination.util';
 
 
@@ -34,7 +34,7 @@ export class topicService {
             currentPage: 1,
         };
 
-        const countRecords = await countSongs(filter);
+        const countRecords = await countTopics(filter);
         const utilsPagination = pagination(objectPagination, Number(countRecords), q);
 
         const topics = await TopicModel.find(filter)

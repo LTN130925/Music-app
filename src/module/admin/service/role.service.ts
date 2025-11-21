@@ -3,9 +3,8 @@ import {RoleModel} from '../../../common/model/role.model';
 import {BlogUpdatedModel} from "../../../common/model/blog_updated.model";
 
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
-import {countSongs} from "../../../shared/helper/cntDocument.helper";
+import {countRoles} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
-import {SongModel} from "../../../common/model/song.model";
 
 export class roleService {
     async index(q) {
@@ -32,7 +31,7 @@ export class roleService {
             limit: 5,
             currentPage: 1,
         }
-        const countRecords = await countSongs(filter);
+        const countRecords = await countRoles(filter);
         const utilsPagination = pagination(objectPagination, Number(countRecords), q);
         const roles = await RoleModel.find(filter)
             .populate('permissions', 'listPermission')

@@ -2,7 +2,7 @@ import {UserModel} from '../../../common/model/user.model';
 import {BlogUpdatedModel} from '../../../common/model/blog_updated.model'
 
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
-import {countManagers} from "../../../shared/helper/cntDocument.helper";
+import {countUsers} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
 export class userService {
@@ -30,7 +30,7 @@ export class userService {
             limit: 5,
             currentPage: 1,
         };
-        const countRecords = await countManagers(filter);
+        const countRecords = await countUsers(filter);
         const utilsPagination = pagination(objectPagination, Number(countRecords), q);
 
         const users = await UserModel.find(filter)
