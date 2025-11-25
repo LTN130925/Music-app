@@ -124,9 +124,9 @@ export class songService {
                     seen: false,
                     $push: {
                         listId: {
-                            singer: singer,
-                            title: song.title,
-                            description: '',
+                            singer: singer.fullName,
+                            title: `${singer.fullName} vừa mới có bài hát mới: ${song.title}!`,
+                            description: 'trãi nghiệm phút giây thư giản',
                             link: `/song/detail/${song.slug}`
                         }
                     }
