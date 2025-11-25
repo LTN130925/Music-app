@@ -6,8 +6,8 @@ import {countUsers} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
 export class userService {
-    async index(q) {
-        const filter: any = { deleted: false };
+    async index(q, manager) {
+        const filter: any = { managerUser: manager._id, deleted: false };
         if (q.status && q.status !== "all") filter.status = q.status;
 
         let sortOption: Record<string, 1 | -1> = { createdAt: -1 };

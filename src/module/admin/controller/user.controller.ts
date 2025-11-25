@@ -5,7 +5,7 @@ const serviceInstance = new userService();
 
 export class controller {
     async index(req: Request, res: Response) {
-        const data = await serviceInstance.index(req.query);
+        const data = await serviceInstance.index(req.query, req.user);
         res.render('admin/pages/user/list', {
             titlePage: 'Trang người dùng',
             users: data.users,
