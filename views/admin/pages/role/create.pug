@@ -18,6 +18,16 @@ block content
                             label.form-label.fw-semibold(for='description') Mô tả
                             textarea.form-control.shadow-sm.tinymce-editor(id='description', name='description', rows='4', placeholder='Nhập mô tả vai trò...')
 
+                        .col-md-6
+                            label.form-label.fw-semibold(for='role') Vai trò
+                            select.form-select.shadow-sm(name='role', id='role', required)
+                                option(value='') -- Chọn vai trò --
+                                if roles && roles.length
+                                    each r in roles
+                                        option(value=r._id)= r.title
+                                else
+                                    option(value='') Không có vai trò nào
+
                         // ===== Trạng thái =====
                         .col-md-6
                             label.form-label.fw-semibold(for='status') Trạng thái

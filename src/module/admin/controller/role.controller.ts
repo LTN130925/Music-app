@@ -19,8 +19,10 @@ export class controller {
     }
 
     create(req: Request, res: Response) {
+        const roles = serviceInstance.create();
         res.render('admin/pages/role/create', {
             titlePage: 'Trang tạo mới chức vự',
+            roles,
         });
     }
 

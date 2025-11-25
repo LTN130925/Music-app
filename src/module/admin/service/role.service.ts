@@ -6,6 +6,29 @@ import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countRoles} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
+const dictRoleMain: Record<string, string[]> = {
+    'admin-server': [
+        "song_view", "song_create", "song_edit", "song_delete",
+        "manager_view", "manager_create", "manager_edit", "manager_delete",
+        "topic_view", "topic_create", "topic_edit", "topic_delete",
+        "role_view", "role_create", "role_edit", "role_delete",
+        "user_view", "user_create", "user_edit", "user_delete",
+        "singer_view", "singer_create", "singer_edit", "singer_delete"
+    ],
+    'admin-user': [
+        "user_view", "user_create", "user_edit", "user_delete"
+    ],
+    'admin-manager': [
+        "manager_view", "manager_create", "manager_edit", "manager_delete"
+    ],
+    'admin-singer': [
+        "singer_view", "singer_create", "singer_edit", "singer_delete"
+    ],
+    'admin-role': [
+        "role_view", "role_create", "role_edit", "role_delete"
+    ]
+};
+
 export class roleService {
     async index(q) {
         const filter: any = {deleted: false};
@@ -51,6 +74,22 @@ export class roleService {
         };
     }
 
+    create() {
+        const dictRole: Record<string, string> = {
+            'Quản trị viên': 'admin-server',
+            'Quản trị người dùng': 'admin-user',
+            'Quản trị ca sĩ': 'admin-singer',
+            'Quản trị tài khoản quản lý': 'admin-manager',
+            'Quản trị vai trò': 'admin-role'
+        }
+        const roles = Object.entries(dictRole).map(([title, value]) => ({
+            _id: value,
+            title
+        }));
+
+        return roles;
+    }
+
     async createPost(body, manager): Promise<void> {
         const newBlog = new BlogUpdatedModel();
         const newPermission = new PermissionModel();
@@ -59,12 +98,14 @@ export class roleService {
             description: body.description,
             permissions: newPermission._id,
             updatedBlogId: newBlog._id,
+            role: body.role,
             status: body.status,
             createdBy: {
                 managerId: manager._id,
                 at: new Date()
             }
         };
+        newPermission.listPermission = dictRoleMain[body.role];
         const createRoleData = new RoleModel(dataRole);
         await newPermission.save();
         await newBlog.save();
