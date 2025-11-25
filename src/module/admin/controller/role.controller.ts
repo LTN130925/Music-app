@@ -38,7 +38,8 @@ export class controller {
         const data = await serviceInstance.edit(req.params.id);
         res.render('admin/pages/role/edit.pug', {
             titlePage: 'Trang chỉnh sửa chức vụ',
-            role: data,
+            role: data.role,
+            roles: data.roleDataSelect,
         });
     }
 

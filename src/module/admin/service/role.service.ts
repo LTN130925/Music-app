@@ -6,28 +6,7 @@ import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countRoles} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
-const dictRoleMain: Record<string, string[]> = {
-    'admin-server': [
-        "song_view", "song_create", "song_edit", "song_delete",
-        "manager_view", "manager_create", "manager_edit", "manager_delete",
-        "topic_view", "topic_create", "topic_edit", "topic_delete",
-        "role_view", "role_create", "role_edit", "role_delete",
-        "user_view", "user_create", "user_edit", "user_delete",
-        "singer_view", "singer_create", "singer_edit", "singer_delete"
-    ],
-    'admin-user': [
-        "user_view", "user_create", "user_edit", "user_delete"
-    ],
-    'admin-manager': [
-        "manager_view", "manager_create", "manager_edit", "manager_delete"
-    ],
-    'admin-singer': [
-        "singer_view", "singer_create", "singer_edit", "singer_delete"
-    ],
-    'admin-role': [
-        "role_view", "role_create", "role_edit", "role_delete"
-    ]
-};
+import {dictRoleMain} from '../../../shared/helper/dataRole.helper'
 
 export class roleService {
     async index(q) {
@@ -124,7 +103,11 @@ export class roleService {
     async edit(id) {
         const filter = {_id: id, deleted: false}
         const role = await RoleModel.findOne(filter).exec();
-        return role;
+        const roleDataSelect = this.create();
+        return {
+            role,
+            roleDataSelect
+        };
     }
 
     async editPatch(id, body, manager) {
@@ -135,7 +118,12 @@ export class roleService {
             title: body.title,
             description: body.description,
             status: body.status,
+            role: body.role,
         };
+        await PermissionModel.findByIdAndUpdate(
+            existingRole.permissions,
+            { listPermission: dictRoleMain[body.role] },
+        )
         await BlogUpdatedModel.findByIdAndUpdate(existingRole.updatedBlogId, {
             $push: {
                 list_blog: {
