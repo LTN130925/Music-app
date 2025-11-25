@@ -2,10 +2,6 @@ import {Request, Response} from 'express';
 
 import prefixNameConfig from "../../../common/config/prefixName.config";
 
-import {authService} from '../service/auth.service';
-const serviceInstance = new authService();
-
-
 export class controller {
     login(req: Request, res: Response) {
         res.render('admin/pages/auth/login', {

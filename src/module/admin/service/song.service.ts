@@ -4,6 +4,9 @@ import {SongModel} from '../../../common/model/song.model';
 import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 import {SingerModel} from '../../../common/model/singer.model';
 import {TopicModel} from "../../../common/model/topic.model";
+import {UserModel} from "../../../common/model/user.model";
+import {MassagesModel} from '../../../common/model/message.model';
+import {SubscribersModel} from "../../../common/model/subscribers.model";
 
 import {ISong} from '../../../common/model/song.model';
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
@@ -96,7 +99,42 @@ export class songService {
         const newDataSong = new SongModel(dataSong);
         await newBlog.save();
         await newDataSong.save();
+
+        await this.pushNotificationToSubscribers(newDataSong);
     }
+
+    async pushNotificationToSubscribers(song) {
+        const subsDocs = await SubscribersModel.find({
+            listId: song.singerId.toString(),
+        });
+        const subsIds = subsDocs.map(s => s._id);
+        const followers = await UserModel.find({
+            subscribers: subsIds,
+        })
+            .populate('messageId')
+            .select('messageId')
+            .exec()
+        for (const user of followers) {
+            const singer = await SingerModel.findOne({_id: song.singerId, deleted: false})
+                .select('fullName')
+                .exec();
+            await MassagesModel.findByIdAndUpdate(
+                user.messageId,
+                {
+                    seen: false,
+                    $push: {
+                        listId: {
+                            singer: singer,
+                            title: song.title,
+                            description: '',
+                            link: `/song/detail/${song.slug}`
+                        }
+                    }
+                }
+            );
+        }
+    }
+
 
     async edit(id) {
         const filter = {status: 'active', deleted: false};

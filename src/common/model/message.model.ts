@@ -1,9 +1,10 @@
 import { Schema, Document, model } from 'mongoose';
 
 export interface IListItem {
-    singer: string;
+    singer: Schema.Types.ObjectId;
     title: string;
     description: string;
+    link: string;
 }
 
 export interface IMassage extends Document {
@@ -18,8 +19,9 @@ const MassageSchema = new Schema<IMassage>(
         listId: {
             type: [
                 {
-                    singer: { type: String, required: true },
+                    singer: { type: Schema.Types.ObjectId, ref: 'List' },
                     title: { type: String, required: true },
+                    link: { type: String, required: true },
                     description: { type: String, required: true }
                 }
             ],

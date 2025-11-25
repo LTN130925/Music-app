@@ -6,6 +6,7 @@ import {SongViewModel} from '../../../common/model/songView.model';
 import {SongFavouriteModel} from '../../../common/model/songFavourite.model';
 import {SubscribersModel} from '../../../common/model/subscribers.model';
 import {MassagesModel} from '../../../common/model/message.model';
+import {ManagerModel} from '../../../common/model/manager.model';
 
 export class authService {
     async register(fullName: string, email: string, password: string) {
@@ -20,6 +21,15 @@ export class authService {
             new SubscribersModel().save(),
             new MassagesModel().save(),
         ]);
+        const manager = await ManagerModel.find({deleted: false, status: 'active'})
+            .select('roleId')
+            .populate('roleId', 'role')
+            .exec();
+        const managerUserId = manager.reduce((array, objectM) => {
+            if (objectM.roleId && ['admin-server', 'admin-user'].includes(objectM['roleId']['role']))
+                array.push(objectM._id);
+            return array;
+        }, []);
 
         const newUser = new UserModel({
             fullName,
@@ -30,9 +40,9 @@ export class authService {
             listViewsSong: newSongView._id,
             subscribers: newSubscribers._id,
             messageId: newMassage._id,
+            managerUser: managerUserId
         });
         await newUser.save();
-
         return newUser;
     }
 }

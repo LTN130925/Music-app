@@ -1,19 +1,21 @@
 extends ../../layouts/default.pug
 
 block content
-    p #{user}
     .container.mt-5.pt-4
         .card.shadow-sm.border-0.rounded-3
             .card-body.p-4
                 h3.mb-3.text-primary Hồ sơ cá nhân
                 hr
+
                 .row
                     .col-md-3.text-center
                         if user.avatar
                             img.rounded-circle.mb-3(src=user.avatar, alt="avatar", width="120", height="120")
                         else
                             i.fas.fa-user-circle.fa-5x.text-secondary.mb-3
+
                         a.btn.btn-outline-primary.btn-sm(href="/profile/edit") Chỉnh sửa hồ sơ
+
                     .col-md-9
                         dl.row
                             dt.col-sm-4 Họ và tên
@@ -27,3 +29,46 @@ block content
 
                             dt.col-sm-4 Ngày tạo
                             dd.col-sm-8 #{user.createdAt ? user.createdAt.toLocaleString() : '-'}
+
+                hr.mt-4
+                h4.text-primary.mb-3 Hoạt động của bạn
+
+                // Bài hát đã thích (LIKE)
+                .card.mb-3.shadow-sm.border-0.rounded-3
+                    .card-body.d-flex.justify-content-between.align-items-center
+                        .d-flex.align-items-center
+                            i.far.fa-thumbs-up.fa-2x.text-primary.mr-3
+                            .ml-2
+                                h5.mb-0 Bài hát đã thích
+                                small.text-muted Các bài hát bạn đã nhấn Thích
+                        a.btn.btn-outline-primary.btn-sm(href="/profile/likes") Xem tất cả
+
+                // Yêu thích (FAVOURITE)
+                .card.mb-3.shadow-sm.border-0.rounded-3
+                    .card-body.d-flex.justify-content-between.align-items-center
+                        .d-flex.align-items-center
+                            i.fas.fa-heart.fa-2x.text-danger.mr-3
+                            .ml-2
+                                h5.mb-0 Danh sách yêu thích
+                                small.text-muted Những bài hát bạn thêm vào Yêu thích
+                        a.btn.btn-outline-danger.btn-sm(href="/profile/favourite") Xem tất cả
+
+                // Đăng ký ca sĩ (REGISTER SINGER)
+                .card.mb-3.shadow-sm.border-0.rounded-3
+                    .card-body.d-flex.justify-content-between.align-items-center
+                        .d-flex.align-items-center
+                            i.fas.fa-user-plus.fa-2x.text-success.mr-3
+                            .ml-2
+                                h5.mb-0 Ca sĩ đã đăng ký
+                                small.text-muted Những ca sĩ bạn theo dõi
+                        a.btn.btn-outline-success.btn-sm(href="/profile/subscribe") Xem tất cả
+
+                // Lịch sử nghe (HISTORY / VIEWS)
+                .card.mb-3.shadow-sm.border-0.rounded-3
+                    .card-body.d-flex.justify-content-between.align-items-center
+                        .d-flex.align-items-center
+                            i.fas.fa-history.fa-2x.text-secondary.mr-3
+                            .ml-2
+                                h5.mb-0 Lịch sử nghe nhạc
+                                small.text-muted Những bài hát bạn đã nghe gần đây
+                        a.btn.btn-outline-secondary.btn-sm(href="/profile/history") Xem tất cả

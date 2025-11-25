@@ -5,6 +5,7 @@ export interface IRole extends Document {
     description?: string;
     permissions?: Schema.Types.ObjectId;
     status: 'active' | 'inactive';
+    role: string;
     deleted: boolean;
     createdBy?: {managerId: Schema.Types.ObjectId, at: Date};
     updatedBlogId?: Schema.Types.ObjectId;
@@ -17,6 +18,7 @@ const roleSchema = new Schema<IRole>({
     title: String,
     description: String,
     permissions: {type: Schema.Types.ObjectId, ref: 'Permission'},
+    role: String,
     status: {type: String, enum: ['active', 'inactive'], default: 'active'},
     deleted: {type: Boolean, default: false},
     createdBy: {

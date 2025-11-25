@@ -12,6 +12,7 @@ export interface IUser extends Document {
     subscribers: Schema.Types.ObjectId;
     messageId: Schema.Types.ObjectId;
     updatedBlogId?: Schema.Types.ObjectId;
+    managerUser: Schema.Types.ObjectId[];
     deletedBy?: {managerId: Schema.Types.ObjectId, at: Date};
     status?: 'active' | 'inactive';
     deleted?: boolean;
@@ -31,7 +32,8 @@ const UserSchema = new Schema<IUser>(
         listViewsSong: { type: Schema.Types.ObjectId, ref: 'SongView' },
         subscribers: { type: Schema.Types.ObjectId, ref: 'Subscribers' },
         updatedBlogId: {type: Schema.Types.ObjectId, ref: 'BlogUpdated'},
-        messageId: { type: Schema.Types.ObjectId, ref: 'Message' },
+        messageId: { type: Schema.Types.ObjectId, ref: 'Massage' },
+        managerUser: { type: [Schema.Types.ObjectId], ref: 'Manager' },
         deletedBy: {
             managerId: {type: Schema.Types.ObjectId, ref: 'Manager'},
             at: { type: Date, default: Date.now },
