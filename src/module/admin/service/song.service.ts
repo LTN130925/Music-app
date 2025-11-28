@@ -108,11 +108,8 @@ export class songService {
             listId: song.singerId.toString(),
         });
         const subsIds = subsDocs.map(s => s._id);
-        const followers = await UserModel.find({
-            subscribers: subsIds,
-        })
+        const followers = await UserModel.find({subscribers: subsIds})
             .populate('messageId')
-            .select('messageId')
             .exec()
         for (const user of followers) {
             const singer = await SingerModel.findOne({_id: song.singerId, deleted: false})
@@ -121,13 +118,14 @@ export class songService {
             await MassagesModel.findByIdAndUpdate(
                 user.messageId,
                 {
+                    $inc: { notificationsLength: 1 },
                     seen: false,
                     $push: {
                         listId: {
                             singer: singer.fullName,
                             title: `${singer.fullName} vừa mới có bài hát mới: ${song.title}!`,
                             description: 'trãi nghiệm phút giây thư giản',
-                            link: `/song/detail/${song.slug}`
+                            link: `/notification/${song.slug}`
                         }
                     }
                 }

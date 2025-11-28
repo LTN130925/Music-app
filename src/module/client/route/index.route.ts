@@ -7,6 +7,7 @@ import userRoute from './auth.route';
 import singerRoute from './singer.route';
 import profileRoute from './profile.route';
 import favouriteRoute from './favourite.route';
+import notification from './notification.route';
 
 // middleware
 import {isAuthenticated} from '../../../common/middleware/auth.middleware'
@@ -20,7 +21,9 @@ export default (app: Application) => {
 
     app.use('/profile', isAuthenticated, profileRoute);
 
-    app.use('/favourite', isAuthenticated, favouriteRoute)
+    app.use('/favourite', isAuthenticated, favouriteRoute);
+
+    app.use('/notification', isAuthenticated, notification);
 
     app.use('/auth', userRoute);
 }

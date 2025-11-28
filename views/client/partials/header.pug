@@ -7,37 +7,42 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
         //- Logo
         a.navbar-brand.ml-2.font-weight-bold.text-white(href="/topic") MusicApp
 
-        //- Nút thông báo
-        li.nav-item.dropdown.mx-2
-            a#notificationDropdown.nav-link.position-relative.text-white(
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-            )
-                i.fas.fa-bell.fa-lg
+        if user
+            //- Nút thông báo
+            li.nav-item.dropdown.mx-2
+                a#notificationDropdown.nav-link.position-relative.text-white(
+                    href="#"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                )
+                    i.fas.fa-bell.fa-lg
 
-                //- Badge số lượng thông báo
-                if notificationsCount && notificationsCount > 0
-                    span.badge.badge-danger.position-absolute(
-                        style="top: 0; right: 0; transform: translate(50%, -30%); font-size: 10px;"
-                    ) #{notificationsCount}
+                    //- Badge số lượng thông báo
+                    if totalNotifications
+                        span.badge.badge-danger.position-absolute(
+                            style="top: 0; right: 0; transform: translate(50%, -30%); font-size: 10px;"
+                        ) #{totalNotifications}
 
-            //- Dropdown danh sách thông báo
-            ul.dropdown-menu.dropdown-menu-right.shadow(aria-labelledby="notificationDropdown")
-                if notifications && notifications.length > 0
-                    each noti in notifications
-                        li.px-3.py-2.border-bottom
-                            a.text-dark.text-decoration-none(href=noti.link)
-                                strong #{noti.title}
-                                br
-                                span.text-muted(style="font-size: 12px;")
-                                    | #{new Date(noti.createdAt).toLocaleString('vi-VN')}
-                    li.text-center.p-2
-                        a.text-primary(href="/notifications") Xem tất cả
-                else
-                    li.p-3.text-center.text-muted Không có thông báo mới
+                //- Dropdown danh sách thông báo
+                ul.dropdown-menu.dropdown-menu-right.shadow(aria-labelledby="notificationDropdown")
+                    if user.messageId && user.messageId.listId.length > 0
+                        each noti in user.messageId.listId
+                            li.px-3.py-2.border-bottom
+                                a.text-dark.text-decoration-none(href=noti.link)
+                                    strong #{noti.title}
+                                    br
+                                    span.text-muted(style="font-size: 12px;") #{noti.description}
+                                    br
+                                    span.text-muted(style="font-size: 12px;")
+                                        | #{noti.createdAt ? new Date(noti.createdAt).toLocaleString('vi-VN') : '00:00'}
+                                    br
+                                    span.text-muted(style="font-size: 12px;") #{noti.seen === false ? 'chưa đọc' : 'đã đọc'}
+                        li.text-center.p-2
+                            a.text-primary(href="/notifications") Xem tất cả
+                    else
+                        li.p-3.text-center.text-muted Không có thông báo mới
 
         //- Menu phải
         ul.navbar-nav.ml-auto.d-flex.flex-row.align-items-center

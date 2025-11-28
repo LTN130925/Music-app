@@ -26,6 +26,7 @@ passport.deserializeUser(async (data, done) => {
                 .populate('listFavoritesSong', 'listId')
                 .populate('listViewsSong', 'listId')
                 .populate('subscribers', 'listId')
+                .populate('messageId')
                 .select('-password')
                 .exec();
             done(null, user);

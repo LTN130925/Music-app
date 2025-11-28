@@ -3,13 +3,13 @@ import { Schema, Document, model } from 'mongoose';
 export interface IListItem {
     singer: Schema.Types.ObjectId;
     title: string;
+    seen: boolean;
     description: string;
     link: string;
 }
 
 export interface IMassage extends Document {
     listId: IListItem[];
-    seen: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -19,7 +19,8 @@ const MassageSchema = new Schema<IMassage>(
         listId: {
             type: [
                 {
-                    singer: { type: Schema.Types.ObjectId, ref: 'List' },
+                    singer: { type: Schema.Types.ObjectId, ref: 'Singer' },
+                    seen: { type: Boolean, default: false },
                     title: { type: String, required: true },
                     link: { type: String, required: true },
                     description: { type: String, required: true }
@@ -27,10 +28,6 @@ const MassageSchema = new Schema<IMassage>(
             ],
             default: []
         },
-        seen: {
-            type: Boolean,
-            default: false
-        }
     },
     { timestamps: true }
 );

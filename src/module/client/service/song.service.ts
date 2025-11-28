@@ -5,8 +5,7 @@ import {TopicModel} from '../../../common/model/topic.model';
 import {SongLikeModel} from '../../../common/model/songLike.model';
 import {SongViewModel} from '../../../common/model/songView.model';
 import {SongFavouriteModel} from '../../../common/model/songFavourite.model';
-
-import '../../../common/model/singer.model';
+import {MassagesModel} from '../../../common/model/message.model';
 
 import {ISong} from '../../../common/model/song.model';
 import {IUser} from '../../../common/model/user.model';
@@ -37,10 +36,15 @@ export class songService {
     async getOneSong(slug: string, user: IUser): Promise<ISong | null> {
         try {
             const song = await SongModel
-                .findOne({ slug })
+                .findOne({slug})
                 .populate('singerId', 'fullName')
                 .populate('topicId', 'title')
                 .exec();
+
+            await MassagesModel.updateOne(
+                {_id: user.messageId, 'listId.singer': song.singerId},
+                {$set: {'listId.$.seen': true}}
+            )
 
             if (!song) throw new Error('Song not found');
 
@@ -76,15 +80,15 @@ export class songService {
         try {
             const updatedSong = await SongModel.findByIdAndUpdate(
                 songId,
-                { $inc: { likes: typeLike === 'dislike' ? -1 : 1 } },
-                { new: true }
+                {$inc: {likes: typeLike === 'dislike' ? -1 : 1}},
+                {new: true}
             );
             if (!updatedSong) throw new Error('Song not found');
             const updateAction = typeLike === 'dislike' ? '$pull' : '$push';
 
             await SongLikeModel.findByIdAndUpdate(
                 songLikeId,
-                { [updateAction]: { listId: songId } },
+                {[updateAction]: {listId: songId}},
             );
 
             return updatedSong.likes;
@@ -98,7 +102,7 @@ export class songService {
             const updateAction = typeFav === 'disfav' ? '$pull' : '$push';
             await SongFavouriteModel.findByIdAndUpdate(
                 songFavId,
-                { [updateAction]: { listId: songId } },
+                {[updateAction]: {listId: songId}},
             );
         } catch (err) {
             throw new Error(err.message);
@@ -112,8 +116,8 @@ export class songService {
             if (q) {
                 const convertText = convertTextToSlug(q);
                 filter['$or'] = [
-                    { title: new RegExp(q, 'i') },
-                    { slug: new RegExp(convertText, 'i') },
+                    {title: new RegExp(q, 'i')},
+                    {slug: new RegExp(convertText, 'i')},
                 ];
                 songs = await SongModel.find(filter)
                     .populate('singerId', 'fullName')
