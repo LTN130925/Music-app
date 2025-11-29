@@ -1,7 +1,6 @@
 extends ../../layouts/default.pug
 
 block content
-    p #{user}
     .container.mt-5.pt-4
         .card.shadow-sm.border-0.rounded-3
             .card-body.p-4
@@ -42,7 +41,7 @@ block content
                             .ml-2
                                 h5.mb-0 Bài hát đã thích
                                 small.text-muted Các bài hát bạn đã nhấn Thích
-                        a.btn.btn-outline-primary.btn-sm(href="/profile/likes") Xem tất cả
+                        a.btn.btn-outline-primary.btn-sm(href="/playlist/likes") Xem tất cả
 
                 // Yêu thích (FAVOURITE)
                 .card.mb-3.shadow-sm.border-0.rounded-3
@@ -52,7 +51,7 @@ block content
                             .ml-2
                                 h5.mb-0 Danh sách yêu thích
                                 small.text-muted Những bài hát bạn thêm vào Yêu thích
-                        a.btn.btn-outline-danger.btn-sm(href="/profile/favourite") Xem tất cả
+                        a.btn.btn-outline-danger.btn-sm(href="/playlist/favourite") Xem tất cả
 
                 // Đăng ký ca sĩ (REGISTER SINGER)
                 .card.mb-3.shadow-sm.border-0.rounded-3
@@ -62,7 +61,7 @@ block content
                             .ml-2
                                 h5.mb-0 Ca sĩ đã đăng ký
                                 small.text-muted Những ca sĩ bạn theo dõi
-                        a.btn.btn-outline-success.btn-sm(href="/profile/subscribe") Xem tất cả
+                        a.btn.btn-outline-success.btn-sm(href="/feed/subscribe") Xem tất cả
 
                 // Lịch sử nghe (HISTORY / VIEWS)
                 .card.mb-3.shadow-sm.border-0.rounded-3
@@ -72,4 +71,4 @@ block content
                             .ml-2
                                 h5.mb-0 Lịch sử nghe nhạc
                                 small.text-muted Những bài hát bạn đã nghe gần đây
-                        a.btn.btn-outline-secondary.btn-sm(href="/profile/history") Xem tất cả
+                        a.btn.btn-outline-secondary.btn-sm(href="/feed/history") Xem tất cả

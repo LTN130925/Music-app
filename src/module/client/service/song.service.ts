@@ -5,7 +5,6 @@ import {TopicModel} from '../../../common/model/topic.model';
 import {SongLikeModel} from '../../../common/model/songLike.model';
 import {SongViewModel} from '../../../common/model/songView.model';
 import {SongFavouriteModel} from '../../../common/model/songFavourite.model';
-import {MassagesModel} from '../../../common/model/message.model';
 
 import {ISong} from '../../../common/model/song.model';
 import {IUser} from '../../../common/model/user.model';
