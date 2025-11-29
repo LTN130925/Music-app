@@ -41,11 +41,6 @@ export class songService {
                 .populate('topicId', 'title')
                 .exec();
 
-            await MassagesModel.updateOne(
-                {_id: user.messageId, 'listId.singer': song.singerId},
-                {$set: {'listId.$.seen': true}}
-            )
-
             if (!song) throw new Error('Song not found');
 
             // set views

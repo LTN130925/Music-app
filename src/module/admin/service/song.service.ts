@@ -108,23 +108,24 @@ export class songService {
             listId: song.singerId.toString(),
         });
         const subsIds = subsDocs.map(s => s._id);
-        const followers = await UserModel.find({subscribers: subsIds})
+        const followers = await UserModel.find({subscribers: { $in: subsIds }})
             .populate('messageId')
-            .exec()
+            .exec();
+
+        const singer = await SingerModel.findOne({
+            _id: song.singerId,
+            deleted: false
+        }).exec();
+
         for (const user of followers) {
-            const singer = await SingerModel.findOne({_id: song.singerId, deleted: false})
-                .select('fullName')
-                .exec();
             await MassagesModel.findByIdAndUpdate(
                 user.messageId,
                 {
-                    $inc: { notificationsLength: 1 },
-                    seen: false,
                     $push: {
                         listId: {
-                            singer: singer.fullName,
-                            title: `${singer.fullName} vừa mới có bài hát mới: ${song.title}!`,
-                            description: 'trãi nghiệm phút giây thư giản',
+                            singer: singer._id,
+                            title: song.title,
+                            description: `Ca sỹ ${singer.fullName} đã có bài hát mới. Trải nghiệm ngay!`,
                             link: `/notification/${song.slug}`
                         }
                     }
