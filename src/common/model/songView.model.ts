@@ -13,7 +13,7 @@ const songViewSchema: Schema = new Schema({
     listId: [
         {
             idSong: { type: String },
-            at: { type: Date, default: Date.now }
+            at: { type: Date, default: new Date() },
         }
     ]
 }, { timestamps: true });

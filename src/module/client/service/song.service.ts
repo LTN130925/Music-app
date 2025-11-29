@@ -61,10 +61,14 @@ export class songService {
                         }
                     }
                 );
+            } else {
+                await SongViewModel.updateOne(
+                    {_id: user.listViewsSong, 'listId.idSong': song._id.toString()},
+                    {$set: {'listId.$.at': new Date()}},
+                );
             }
 
             return song;
-
         } catch (err: any) {
             throw new Error(err.message);
         }
