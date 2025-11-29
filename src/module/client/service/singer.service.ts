@@ -6,7 +6,7 @@ import {SubscribersModel} from '../../../common/model/subscribers.model';
 
 export class singerService {
     async index(query: any) {
-        const filter: any = { deleted: false };
+        const filter: any = { deleted: false, status: 'active' };
 
         if (query.search) {
             filter.fullName = { $regex: query.search, $options: 'i' };

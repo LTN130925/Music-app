@@ -1,8 +1,8 @@
 import {Request, Response} from 'express';
 
-import {playlistLikeService} from '../service/playlist.service';
+import {playlistService} from '../service/playlist.service';
 import {IUser} from "../../../common/model/user.model";
-const serviceInstance = new playlistLikeService();
+const serviceInstance = new playlistService();
 
 export class controller {
     async index(req: Request, res: Response) {

@@ -1,6 +1,6 @@
 //- Sidebar
 aside#sidebar.hidden
-    - const sidebarMap = {'dashboard': 'Tổng quan', 'topic': 'Chủ đề', 'singer': 'Ca sĩ', 'favourite': 'Yêu thích'}
+    - const sidebarMap = {'dashboard': 'Tổng quan', 'topic': 'Chủ đề', 'singer': 'Ca sĩ', 'playlist/likes': 'thích', 'playlist/favourite': 'Yêu thích', 'feed/subscribe': 'Đăng ký'}
     ul.list-group.list-group-flush
         each url, key in sidebarMap
             li.list-group-item
