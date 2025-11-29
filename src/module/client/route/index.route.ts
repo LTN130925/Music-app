@@ -6,7 +6,6 @@ import songRoute from './song.route';
 import userRoute from './auth.route';
 import singerRoute from './singer.route';
 import profileRoute from './profile.route';
-import favouriteRoute from './favourite.route';
 import notification from './notification.route';
 import playlistRoute from './playlist.route';
 
@@ -21,8 +20,6 @@ export default (app: Application) => {
     app.use('/singer', isAuthenticated, singerRoute);
 
     app.use('/profile', isAuthenticated, profileRoute);
-
-    app.use('/favourite', isAuthenticated, favouriteRoute);
 
     app.use('/notification', isAuthenticated, notification);
 

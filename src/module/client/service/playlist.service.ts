@@ -13,4 +13,22 @@ export class playlistLikeService {
             .exec();
         return playlistLikeSongs;
     }
+
+    async favourite(user) {
+        try {
+            const filter = {
+                _id: user.listFavoritesSong['listId'],
+                deleted: false,
+                status: 'active',
+            };
+            const songs = await SongModel.find(filter)
+                .select('title avatar singerId slug createdAt')
+                .populate('singerId', 'fullName')
+                .exec();
+
+            return songs;
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
 }
