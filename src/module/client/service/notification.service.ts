@@ -9,4 +9,11 @@ export class notificationsService {
             {$set: {'listId.$.seen': true}}
         )
     }
+
+    async removeAll(user) {
+        await MassagesModel.findByIdAndUpdate(
+            user.messageId,
+            { $set: {listId: []} },
+        )
+    }
 }

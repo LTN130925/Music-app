@@ -27,14 +27,17 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
 
                 //- Dropdown danh sách thông báo
                 ul.dropdown-menu.dropdown-menu-right.shadow(aria-labelledby="notificationDropdown")
+
+                    //- Nút X xoá tất cả nằm NGAY TRONG dropdown
+                    if user.messageId && user.messageId.listId.length > 0
+                        li.px-3.py-2.border-bottom.text-end
+                            form(method="POST" action="/notification/remove-all?_method=DELETE" style="display:inline;")
+                                button.btn.btn-sm.btn-link.text-danger(type="submit")
+                                    i.fas.fa-times #{'   xóa hết tất cả thông báo'}
+
                     if user.messageId && user.messageId.listId.length > 0
                         each noti in user.messageId.listId
                             li.px-3.py-2.border-bottom.position-relative
-                                //- Nút X xoá
-                                form(position="absolute" method="POST" action=`/notifications/${noti._id}?_method=DELETE` style="right:10px; top:10px;")
-                                    button.btn.btn-sm.btn-link.text-danger(type="submit" style="padding:0;")
-                                        i.fas.fa-times
-
                                 a.text-dark.text-decoration-none(href=noti.link)
                                     strong #{noti.title}
                                     br
@@ -44,10 +47,12 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
                                         | #{noti.createdAt ? new Date(noti.createdAt).toLocaleString('vi-VN') : '00:00'}
                                     br
                                     span.text-muted(style="font-size: 12px;") #{noti.seen === false ? 'chưa đọc' : 'đã đọc'}
+
                         li.text-center.p-2
                             a.text-primary(href="/notifications") Xem tất cả
                     else
                         li.p-3.text-center.text-muted Không có thông báo mới
+
 
         //- Menu phải
         ul.navbar-nav.ml-auto.d-flex.flex-row.align-items-center

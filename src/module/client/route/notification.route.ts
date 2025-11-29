@@ -7,4 +7,6 @@ const controllerInstance = new controller();
 
 router.get('/:slug', controllerInstance.index);
 
+router.delete('/remove-all', controllerInstance.removeAll);
+
 export default router;
