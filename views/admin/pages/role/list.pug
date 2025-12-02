@@ -3,96 +3,108 @@ extends ../../layouts/default
 include ../../mixins/pagination
 
 block content
-    .container-fluid.p-4
-        .d-flex.justify-content-between.align-items-center.mb-4
-            h2.fw-semibold.text-dark.mb-0 Quản lý vai trò
-            a.btn-add(href= prefixName + '/role/create')
-                i.fas.fa-plus
-                |  Thêm vai trò
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('role_view')
+        .container-fluid.p-4
+            .d-flex.justify-content-between.align-items-center.mb-4
+                h2.fw-semibold.text-dark.mb-0 Quản lý vai trò
 
-        .card.shadow-sm.rounded-4.border-0
-            .card-body.p-4
-                .search-container
-                    form.search-box(action=prefixName + '/role', method='GET')
-                        i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm vai trò...')
-                    .filter-group
-                        form#filterForm(action='/server/role', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
-                                option(value='all' selected=(status === 'all')) Tất cả
-                                option(value='active' selected=(status === 'active')) Active
-                                option(value='inactive' selected=(status === 'inactive')) Inactive
-                        form#filterForm(action='/server/role', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
-                                option(value='all' selected=(sort === 'all')) sắp xếp
-                                option(value='title-desc' selected=(sort === 'title-desc')) từ A-Z
-                                option(value='title-asc' selected=(sort === 'title-asc')) từ Z-A
-                        form#multiActionForm(action='/server/role/change-multi?_method=PATCH', method='POST', style='display:none;')
-                            input(type='hidden', name='ids', id='selectedIds')
-                            input(type='hidden', name='action', id='selectedAction')
-                        select.filter-select.filter-action
-                            option(value='all' selected disabled) Hành động
-                            option(value='delete') Xóa
-                            option(value='active') Hoạt động
-                            option(value='inactive') Ngưng hoạt động
+                if checked.includes('role_create')
+                    a.btn-add(href= prefixName + '/role/create')
+                        i.fas.fa-plus
+                        |  Thêm vai trò
 
-                table.table.align-middle.mt-4
-                    thead
-                        tr
-                            th.text-center
-                                input#selectAll.form-check-input(type='checkbox')
-                            th STT
-                            th tên vai trò
-                            th mô tả
-                            th quyền
-                            //th người tạo
-                            th.text-center trạng thái
-                            th.text-center hành động
-                    tbody
-                        if roles && roles.length
-                            each role, index in roles
-                                tr
-                                    td.text-center
-                                        input.form-check-input.song-checkbox(type='checkbox', value=role._id)
-                                    td #{index + 1}
-                                    td.text-capitalize
-                                        if role && role._id
-                                            a.text-decoration-none.fw-semibold.text-primary(
-                                                href= prefixName + '/role/detail/' + role._id
-                                            )= role.title || '(Không có tiêu đề)'
-                                        else
-                                            span.text-muted -
-                                    td !{role.description}
-                                    td
-                                        if role.permissions && role.permissions.listPermission.length
-                                            span.badge.bg-info đã gán
-                                        else
-                                            span.badge.bg-secondary chưa có
-                                    td.text-center
-                                        if role.status === 'active'
-                                            span.badge.bg-success.status-toggle(
-                                                data-id=role._id,
-                                                data-status='active',
-                                                data-entity='role',
-                                                style='cursor:pointer;'
-                                            ) hoạt động
-                                        else
-                                            span.badge.bg-secondary.status-toggle(
-                                                data-id=role._id,
-                                                data-status='inactive',
-                                                data-entity='role',
-                                                style='cursor:pointer;'
-                                            ) ngưng hoạt động
-                                    td.text-center
-                                        a.btn-icon.edit(href=prefixName + `/role/edit/${role._id}`)
-                                            i.fas.fa-pen
-                                        form#singleDeleteForm(action='', method='POST', style='display:none;')
-                                            input(type='hidden', name='_method', value='DELETE')
-                                        a.btn-icon.delete(data-id=role._id, data-entity='role')
-                                            i.fas.fa-trash
-                        else
+            .card.shadow-sm.rounded-4.border-0
+                .card-body.p-4
+                    .search-container
+                        form.search-box(action=prefixName + '/role', method='GET')
+                            i.fas.fa-search
+                            input(type='text', name='q', placeholder='Tìm kiếm vai trò...')
+                        .filter-group
+                            form#filterForm(action='/server/role', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
+                                    option(value='all' selected=(status === 'all')) Tất cả
+                                    option(value='active' selected=(status === 'active')) Active
+                                    option(value='inactive' selected=(status === 'inactive')) Inactive
+                            form#filterForm(action='/server/role', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                    option(value='all' selected=(sort === 'all')) sắp xếp
+                                    option(value='title-desc' selected=(sort === 'title-desc')) từ A-Z
+                                    option(value='title-asc' selected=(sort === 'title-asc')) từ Z-A
+
+                            if checked.includes('role_edit')
+                                form#multiActionForm(action='/server/role/change-multi?_method=PATCH', method='POST', style='display:none;')
+                                    input(type='hidden', name='ids', id='selectedIds')
+                                    input(type='hidden', name='action', id='selectedAction')
+                                select.filter-select.filter-action
+                                    option(value='all' selected disabled) Hành động
+                                    option(value='delete') Xóa
+                                    option(value='active') Hoạt động
+                                    option(value='inactive') Ngưng hoạt động
+
+                    table.table.align-middle.mt-4
+                        thead
                             tr
-                                td(colspan='8' class='text-center py-4 text-muted') Không có vai trò nào.
+                                th.text-center
+                                    input#selectAll.form-check-input(type='checkbox')
+                                th STT
+                                th tên vai trò
+                                th mô tả
+                                th quyền
+                                //th người tạo
+                                th.text-center trạng thái
+                                th.text-center hành động
+                        tbody
+                            if roles && roles.length
+                                each role, index in roles
+                                    tr
+                                        td.text-center
+                                            input.form-check-input.song-checkbox(type='checkbox', value=role._id)
+                                        td #{index + 1}
+                                        td.text-capitalize
+                                            if role && role._id
+                                                a.text-decoration-none.fw-semibold.text-primary(
+                                                    href= prefixName + '/role/detail/' + role._id
+                                                )= role.title || '(Không có tiêu đề)'
+                                            else
+                                                span.text-muted -
+                                        td !{role.description}
+                                        td
+                                            if role.permissions && role.permissions.listPermission.length
+                                                span.badge.bg-info đã gán
+                                            else
+                                                span.badge.bg-secondary chưa có
+                                        td.text-center
+                                            if checked.includes('role_edit')
+                                                if role.status === 'active'
+                                                    span.badge.bg-success.status-toggle(
+                                                        data-id=role._id,
+                                                        data-status='active',
+                                                        data-entity='role',
+                                                        style='cursor:pointer;'
+                                                    ) hoạt động
+                                                else
+                                                    span.badge.bg-secondary.status-toggle(
+                                                        data-id=role._id,
+                                                        data-status='inactive',
+                                                        data-entity='role',
+                                                        style='cursor:pointer;'
+                                                    ) ngưng hoạt động
+                                        td.text-center
+                                            if checked.includes('role_edit')
+                                                a.btn-icon.edit(href=prefixName + `/role/edit/${role._id}`)
+                                                    i.fas.fa-pen
+                                            if checked.includes('role_delete')
+                                                form#singleDeleteForm(action='', method='POST', style='display:none;')
+                                                    input(type='hidden', name='_method', value='DELETE')
+                                                a.btn-icon.delete(data-id=role._id, data-entity='role')
+                                                    i.fas.fa-trash
+                            else
+                                tr
+                                    td(colspan='8' class='text-center py-4 text-muted') Không có vai trò nào.
 
-    // Pagination + Limit control
-    +pagination('role', totalPages, currentPage, limit, q, status)
+        // Pagination + Limit control
+        +pagination('role', totalPages, currentPage, limit, q, status)
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!
+

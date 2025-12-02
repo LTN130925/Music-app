@@ -1,46 +1,50 @@
 extends ../../layouts/default
 
 block content
-    .container-fluid.py-4
-        .card.shadow-sm.border-0.rounded-4
-            .card-body.p-4
-                h4.fw-bold.text-dark.mb-4 Thêm mới vai trò
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('role_create')
+        .container-fluid.py-4
+            .card.shadow-sm.border-0.rounded-4
+                .card-body.p-4
+                    h4.fw-bold.text-dark.mb-4 Thêm mới vai trò
 
-                form(method='POST', action=prefixName + '/role/create')
-                    .row.g-4
-                        // ===== Tên vai trò =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='title') Tên vai trò
-                            input.form-control.shadow-sm(type='text', id='title', name='title', placeholder='Nhập tên vai trò', required)
+                    form(method='POST', action=prefixName + '/role/create')
+                        .row.g-4
+                            // ===== Tên vai trò =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='title') Tên vai trò
+                                input.form-control.shadow-sm(type='text', id='title', name='title', placeholder='Nhập tên vai trò', required)
 
-                        // ===== Mô tả =====
-                        .col-md-12
-                            label.form-label.fw-semibold(for='description') Mô tả
-                            textarea.form-control.shadow-sm.tinymce-editor(id='description', name='description', rows='4', placeholder='Nhập mô tả vai trò...')
+                            // ===== Mô tả =====
+                            .col-md-12
+                                label.form-label.fw-semibold(for='description') Mô tả
+                                textarea.form-control.shadow-sm.tinymce-editor(id='description', name='description', rows='4', placeholder='Nhập mô tả vai trò...')
 
-                        .col-md-6
-                            label.form-label.fw-semibold(for='role') Vai trò
-                            select.form-select.shadow-sm(name='role', id='role', required)
-                                option(value='') -- Chọn vai trò --
-                                if roles && roles.length
-                                    each r in roles
-                                        option(value=r._id)= r.title
-                                else
-                                    option(value='') Không có vai trò nào
+                            .col-md-6
+                                label.form-label.fw-semibold(for='role') Vai trò
+                                select.form-select.shadow-sm(name='role', id='role', required)
+                                    option(value='') -- Chọn vai trò --
+                                    if roles && roles.length
+                                        each r in roles
+                                            option(value=r._id)= r.title
+                                    else
+                                        option(value='') Không có vai trò nào
 
-                        // ===== Trạng thái =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='status') Trạng thái
-                            select.form-select.shadow-sm(name='status', id='status')
-                                option(value='active' selected) Active
-                                option(value='inactive') Inactive
+                            // ===== Trạng thái =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='status') Trạng thái
+                                select.form-select.shadow-sm(name='status', id='status')
+                                    option(value='active' selected) Active
+                                    option(value='inactive') Inactive
 
-                    hr.my-4
+                        hr.my-4
 
-                    .d-flex.justify-content-end.gap-2
-                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/role')
-                            i.fas.fa-arrow-left.me-2
-                            | Quay lại
-                        button.btn.btn-primary.shadow-sm(type='submit')
-                            i.fas.fa-plus.me-2
-                            | Thêm vai trò
+                        .d-flex.justify-content-end.gap-2
+                            a.btn.btn-light.border.shadow-sm(href=prefixName + '/role')
+                                i.fas.fa-arrow-left.me-2
+                                | Quay lại
+                            button.btn.btn-primary.shadow-sm(type='submit')
+                                i.fas.fa-plus.me-2
+                                | Thêm vai trò
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!
