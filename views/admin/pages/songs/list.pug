@@ -3,96 +3,108 @@ extends ../../layouts/default
 include ../../mixins/pagination
 
 block content
-    .container-fluid.p-4
-        .d-flex.justify-content-between.align-items-center.mb-4
-            h2.fw-semibold.text-dark.mb-0 Quản lý bài hát
-            a.btn-add(href= prefixName + '/song/create')
-                i.fas.fa-plus
-                |  Thêm bài hát
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('song_view')
+        .container-fluid.p-4
+            .d-flex.justify-content-between.align-items-center.mb-4
+                h2.fw-semibold.text-dark.mb-0 Quản lý bài hát
 
-        .card.shadow-sm.rounded-4.border-0
-            .card-body.p-4
-                .search-container
-                    form.search-box(action= prefixName + '/song', method='GET')
-                        i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm bài hát...', value=keyword)
-                    .filter-group
-                        form#filterForm(action='/server/song', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
-                                option(value='all' selected=(status === 'all')) Tất cả
-                                option(value='active' selected=(status === 'active')) Active
-                                option(value='inactive' selected=(status === 'inactive')) Inactive
-                        form#filterForm(action='/server/song', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
-                                option(value='all' selected=(sort === 'all')) sắp xếp
-                                option(value='views-desc' selected=(sort === 'views-desc')) Lượt xem giảm dần
-                                option(value='views-asc' selected=(sort === 'views-asc')) Lượt xem tăng dần
-                                option(value='likes-desc' selected=(sort === 'likes-desc')) Lượt thích giảm dần
-                                option(value='likes-asc' selected=(sort === 'likes-asc')) Lượt thích tăng dần
-                        form#multiActionForm(action='/server/song/change-multi?_method=PATCH', method='POST', style='display:none;')
-                            input(type='hidden', name='ids', id='selectedIds')
-                            input(type='hidden', name='action', id='selectedAction')
-                        select.filter-select.filter-action
-                            option(value='all' selected disabled) Hành động
-                            option(value='delete') Xóa
-                            option(value='active') Hoạt động
-                            option(value='inactive') Ngưng hoạt động
+                if checked.includes('song_create')
+                    a.btn-add(href= prefixName + '/song/create')
+                        i.fas.fa-plus
+                        |  Thêm bài hát
 
-                table.table.align-middle.mt-4
-                    thead
-                        tr
-                            th.text-center
-                                input#selectAll.form-check-input(type='checkbox')
-                            th STT
-                            th.text-center hình ảnh
-                            th tiêu đề
-                            th ca sĩ
-                            th chủ đề
-                            th.text-center nghe
-                            th.text-center thích
-                            th.text-center trạng thái
-                            th.text-center hành động
-                    tbody
-                        if songs && songs.length
-                            each song, index in songs
-                                tr
-                                    td.text-center
-                                        input.form-check-input.song-checkbox(type='checkbox', value=song._id)
-                                    td #{index + 1}
-                                    td.text-center
-                                        img.song-thumbnail(src=song.avatar || '/images/no-image.png', alt=song.title)
-                                    td
-                                        a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/song/detail/${song._id}`)= song.title
-                                    td= song.singerId.fullName || '-'
-                                    td= song.topicId.title || '-'
-                                    td.text-center #{song.views ? song.views.toLocaleString() : 0}
-                                    td.text-center #{song.likes ? song.likes.toLocaleString() : 0}
-                                    td.text-center
-                                        if song.status === 'active'
-                                            span.badge.bg-success.status-toggle(
-                                                data-id=song._id,
-                                                data-status='active',
-                                                data-entity='song',
-                                                style='cursor:pointer;'
-                                            ) hoạt động
-                                        else
-                                            span.badge.bg-secondary.status-toggle(
-                                                data-id=song._id,
-                                                data-status='inactive',
-                                                data-entity='song',
-                                                style='cursor:pointer;'
-                                            ) ngưng hoạt động
-                                    td.text-center
-                                        a.btn-icon.edit(href=prefixName + `/song/edit/${song._id}`)
-                                            i.fas.fa-pen
-                                        form#singleDeleteForm(action='', method='POST', style='display:none;')
-                                            input(type='hidden', name='_method', value='DELETE')
-                                        a.btn-icon.delete(data-id=song._id, data-entity='song')
-                                            i.fas.fa-trash
-                        else
+            .card.shadow-sm.rounded-4.border-0
+                .card-body.p-4
+                    .search-container
+                        form.search-box(action= prefixName + '/song', method='GET')
+                            i.fas.fa-search
+                            input(type='text', name='q', placeholder='Tìm kiếm bài hát...', value=keyword)
+                        .filter-group
+                            form#filterForm(action='/server/song', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
+                                    option(value='all' selected=(status === 'all')) Tất cả
+                                    option(value='active' selected=(status === 'active')) Active
+                                    option(value='inactive' selected=(status === 'inactive')) Inactive
+                            form#filterForm(action='/server/song', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                    option(value='all' selected=(sort === 'all')) sắp xếp
+                                    option(value='views-desc' selected=(sort === 'views-desc')) Lượt xem giảm dần
+                                    option(value='views-asc' selected=(sort === 'views-asc')) Lượt xem tăng dần
+                                    option(value='likes-desc' selected=(sort === 'likes-desc')) Lượt thích giảm dần
+                                    option(value='likes-asc' selected=(sort === 'likes-asc')) Lượt thích tăng dần
+                            if checked.includes('song_edit')
+                                form#multiActionForm(action='/server/song/change-multi?_method=PATCH', method='POST', style='display:none;')
+                                    input(type='hidden', name='ids', id='selectedIds')
+                                    input(type='hidden', name='action', id='selectedAction')
+                                select.filter-select.filter-action
+                                    option(value='all' selected disabled) Hành động
+                                    option(value='delete') Xóa
+                                    option(value='active') Hoạt động
+                                    option(value='inactive') Ngưng hoạt động
+
+                    table.table.align-middle.mt-4
+                        thead
                             tr
-                                td(colspan='8' class='text-center py-4 text-muted') Không có bài hát nào.
+                                th.text-center
+                                    input#selectAll.form-check-input(type='checkbox')
+                                th STT
+                                th.text-center hình ảnh
+                                th tiêu đề
+                                th ca sĩ
+                                th chủ đề
+                                th.text-center nghe
+                                th.text-center thích
+                                th.text-center trạng thái
+                                th.text-center hành động
+                        tbody
+                            if songs && songs.length
+                                each song, index in songs
+                                    tr
+                                        td.text-center
+                                            input.form-check-input.song-checkbox(type='checkbox', value=song._id)
+                                        td #{index + 1}
+                                        td.text-center
+                                            img.song-thumbnail(src=song.avatar || '/images/no-image.png', alt=song.title)
+                                        td
+                                            a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/song/detail/${song._id}`)= song.title
+                                        td= song.singerId.fullName || '-'
+                                        td= song.topicId.title || '-'
+                                        td.text-center #{song.views ? song.views.toLocaleString() : 0}
+                                        td.text-center #{song.likes ? song.likes.toLocaleString() : 0}
+                                        td.text-center
 
-    // Pagination + Limit control
-    +pagination('song', totalPages, currentPage, limit, q, status)
+                                            if checked.includes('song_edit')
+                                                if song.status === 'active'
+                                                    span.badge.bg-success.status-toggle(
+                                                        data-id=song._id,
+                                                        data-status='active',
+                                                        data-entity='song',
+                                                        style='cursor:pointer;'
+                                                    ) hoạt động
+                                                else
+                                                    span.badge.bg-secondary.status-toggle(
+                                                        data-id=song._id,
+                                                        data-status='inactive',
+                                                        data-entity='song',
+                                                        style='cursor:pointer;'
+                                                    ) ngưng hoạt động
+                                        td.text-center
+
+                                            if checked.includes('song_edit')
+                                                a.btn-icon.edit(href=prefixName + `/song/edit/${song._id}`)
+                                                    i.fas.fa-pen
+
+                                            if checked.includes('song_delete')
+                                                form#singleDeleteForm(action='', method='POST', style='display:none;')
+                                                    input(type='hidden', name='_method', value='DELETE')
+                                                a.btn-icon.delete(data-id=song._id, data-entity='song')
+                                                    i.fas.fa-trash
+                            else
+                                tr
+                                    td(colspan='8' class='text-center py-4 text-muted') Không có bài hát nào.
+        // Pagination + Limit control
+        +pagination('song', totalPages, currentPage, limit, q, status)
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!
 
