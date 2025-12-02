@@ -9,4 +9,6 @@ import {updatedLikeSongUser} from "../../../common/validate/songView.validate";
 
 router.get('/subscribe', updatedLikeSongUser, controllerInstance.index);
 
+router.get('/history', updatedLikeSongUser, controllerInstance.history);
+
 export default router;

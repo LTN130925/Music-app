@@ -1,5 +1,6 @@
 import {SubscribersModel} from '../../../common/model/subscribers.model';
 import {SingerModel} from '../../../common/model/singer.model';
+import {SongViewModel} from "../../../common/model/songView.model";
 
 export class feedService {
     async getSubscribers(user, q) {
@@ -24,5 +25,18 @@ export class feedService {
             .sort(sort)
             .exec();
         return feedSingerSubscriber;
+    }
+
+    async getHistory(user) {
+        const viewDoc = await SongViewModel.findOne({_id: user.listViewsSong})
+            .populate({
+                path: 'listId.idSong',
+                populate: [{ path: "singerId", select: "fullName" }]
+            })
+            .exec();
+        const recent = viewDoc.listId
+            .sort((a, b) => b.at.getTime() - a.at.getTime())
+            .map(item => item.idSong);
+        return recent;
     }
 }

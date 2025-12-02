@@ -1,7 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
 
 interface ObjectView {
-    idSong: string;
+    idSong: Schema.Types.ObjectId;
     at: Date;
 }
 
@@ -12,7 +12,7 @@ export interface ISongView extends Document {
 const songViewSchema: Schema = new Schema({
     listId: [
         {
-            idSong: { type: String },
+            idSong: { type: Schema.Types.ObjectId, ref: 'Song' },
             at: { type: Date, default: new Date() },
         }
     ]

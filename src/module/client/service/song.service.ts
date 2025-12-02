@@ -44,7 +44,7 @@ export class songService {
 
             // set views
             const viewed = user.listViewsSong['listId'].some(
-                item => item.idSong === song._id.toString()
+                item => item.idSong.toString() == song._id.toString(),
             );
             if (!viewed) {
                 song.views += 1;

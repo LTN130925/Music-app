@@ -13,4 +13,12 @@ export class controller {
             query
         });
     }
+
+    async history(req: Request, res: Response) {
+        const songs = await serviceInstance.getHistory(req.user);
+        res.render('client/pages/songs/list', {
+            titlePage: 'Danh sách các bài hát đã xem gần đây',
+            songs,
+        });
+    }
 }
