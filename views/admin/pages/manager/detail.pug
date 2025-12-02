@@ -1,117 +1,122 @@
 extends ../../layouts/default
 
 block content
-    .container-fluid.py-4
-        .card.shadow-sm.border-0.rounded-4
-            .card-body.p-4
-                h4.fw-bold.text-dark.mb-4 Chi tiết quản lý
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('manager_view')
+        .container-fluid.py-4
+            .card.shadow-sm.border-0.rounded-4
+                .card-body.p-4
+                    h4.fw-bold.text-dark.mb-4 Chi tiết quản lý
 
-                if manager
-                    .row.g-4
+                    if mana
+                        .row.g-4
 
-                        // ===== Avatar =====
-                        .col-md-4
-                            if manager.avatar
-                                img.img-thumbnail.rounded-3.w-100(
-                                    src=manager.avatar,
-                                    style='max-height: 250px; object-fit: cover;'
-                                )
+                            // ===== Avatar =====
+                            .col-md-4
+                                if mana.avatar
+                                    img.img-thumbnail.rounded-3.w-100(
+                                        src=mana.avatar,
+                                        style='max-height: 250px; object-fit: cover;'
+                                    )
+                                else
+                                    .border.rounded-3.d-flex.align-items-center.justify-content-center(
+                                        style='height: 250px; background: #f8f9fa;'
+                                    )
+                                        span.text-muted Không có ảnh đại diện
+
+                            // ===== Thông tin cơ bản =====
+                            .col-md-8
+                                h5.fw-bold.mb-3.text-primary= mana.fullName
+
+                                p.mb-2
+                                    strong.text-secondary Email:
+                                    |
+                                    = mana.email
+
+                                p.mb-2
+                                    strong.text-secondary Số điện thoại:
+                                    |
+                                    if mana.phone
+                                        = mana.phone
+                                    else
+                                        span.text-muted Không có
+
+                                p.mb-2
+                                    strong.text-secondary Vai trò:
+                                    |
+                                    if mana.roleId && mana.roleId.title
+                                        = mana.roleId.title
+                                    else
+                                        span.text-muted Không xác định
+
+                                p.mb-2
+                                    strong.text-secondary Trạng thái:
+                                    |
+                                    if mana.status === 'active'
+                                        span.badge.bg-success.ms-1 Active
+                                    else
+                                        span.badge.bg-secondary.ms-1 Inactive
+
+
+
+                        // ===== Ngày tạo + cập nhật =====
+                        p.mb-2
+                            strong.text-secondary Ngày tạo:
+                            |
+                            if mana.createdAt
+                                = new Date(mana.createdAt).toLocaleDateString('vi-VN')
                             else
-                                .border.rounded-3.d-flex.align-items-center.justify-content-center(
-                                    style='height: 250px; background: #f8f9fa;'
-                                )
-                                    span.text-muted Không có ảnh đại diện
+                                span.text-muted Không xác định
 
-                        // ===== Thông tin cơ bản =====
-                        .col-md-8
-                            h5.fw-bold.mb-3.text-primary= manager.fullName
+                        p.mb-2
+                            strong.text-secondary Cập nhật gần nhất:
+                            |
+                            if mana.updatedAt
+                                = new Date(mana.updatedAt).toLocaleDateString('vi-VN')
+                            else
+                                span.text-muted Không xác định
 
-                            p.mb-2
-                                strong.text-secondary Email:
-                                |
-                                = manager.email
+                        // ===== Tạo bởi =====
+                        p.mb-2
+                            strong.text-secondary Tạo bởi:
+                            |
+                            if mana.createdBy && mana.createdBy.managerId && mana.createdBy.managerId.fullName
+                                = mana.createdBy.managerId.fullName + ' (' + new Date(mana.createdBy.at).toLocaleDateString('vi-VN') + ')'
+                            else
+                                span.text-muted Không xác định
 
-                            p.mb-2
-                                strong.text-secondary Số điện thoại:
-                                |
-                                if manager.phone
-                                    = manager.phone
-                                else
-                                    span.text-muted Không có
-
-                            p.mb-2
-                                strong.text-secondary Vai trò:
-                                |
-                                if manager.roleId && manager.roleId.title
-                                    = manager.roleId.title
-                                else
-                                    span.text-muted Không xác định
-
-                            p.mb-2
-                                strong.text-secondary Trạng thái:
-                                |
-                                if manager.status === 'active'
-                                    span.badge.bg-success.ms-1 Active
-                                else
-                                    span.badge.bg-secondary.ms-1 Inactive
+                        // ===== Xóa bởi =====
+                        p.mb-2
+                            strong.text-secondary Xóa bởi:
+                            |
+                            if mana.deletedBy && mana.deletedBy.managerId && mana.deletedBy.mana.fullName
+                                = mana.deletedBy.managerId.fullName + ' (' + new Date(mana.deletedBy.at).toLocaleDateString('vi-VN') + ')'
+                            else
+                                span.text-muted Không có
 
 
-
-                    // ===== Ngày tạo + cập nhật =====
-                    p.mb-2
-                        strong.text-secondary Ngày tạo:
-                        |
-                        if manager.createdAt
-                            = new Date(manager.createdAt).toLocaleDateString('vi-VN')
-                        else
-                            span.text-muted Không xác định
-
-                    p.mb-2
-                        strong.text-secondary Cập nhật gần nhất:
-                        |
-                        if manager.updatedAt
-                            = new Date(manager.updatedAt).toLocaleDateString('vi-VN')
-                        else
-                            span.text-muted Không xác định
-
-                    // ===== Tạo bởi =====
-                    p.mb-2
-                        strong.text-secondary Tạo bởi:
-                        |
-                        if manager.createdBy && manager.createdBy.managerId && manager.createdBy.managerId.fullName
-                            = manager.createdBy.managerId.fullName + ' (' + new Date(manager.createdBy.at).toLocaleDateString('vi-VN') + ')'
-                        else
-                            span.text-muted Không xác định
-
-                    // ===== Xóa bởi =====
-                    p.mb-2
-                        strong.text-secondary Xóa bởi:
-                        |
-                        if manager.deletedBy && manager.deletedBy.managerId && manager.deletedBy.managerId.fullName
-                            = manager.deletedBy.managerId.fullName + ' (' + new Date(manager.deletedBy.at).toLocaleDateString('vi-VN') + ')'
-                        else
-                            span.text-muted Không có
+                        // ===== Mô tả =====
+                        .col-md-12
+                            hr
+                            label.form-label.fw-semibold.mb-2 Mô tả
+                            if mana.description
+                                .p-3.border.rounded.bg-light!= mana.description
+                            else
+                                p.text-muted Không có mô tả
 
 
-                    // ===== Mô tả =====
-                    .col-md-12
-                        hr
-                        label.form-label.fw-semibold.mb-2 Mô tả
-                        if manager.description
-                            .p-3.border.rounded.bg-light!= manager.description
-                        else
-                            p.text-muted Không có mô tả
+                        hr.my-4
+                        .d-flex.justify-content-end.gap-2
+                            a.btn.btn-light.border.shadow-sm(href=prefixName + '/manager')
+                                i.fas.fa-arrow-left.me-2
+                                | Quay lại
 
+                            if checked.includes('manager_edit')
+                                a.btn.btn-primary.shadow-sm(href=prefixName + '/manager/edit/' + mana._id)
+                                    i.fas.fa-edit.me-2
+                                    | Chỉnh sửa
 
-                    hr.my-4
-                    .d-flex.justify-content-end.gap-2
-                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/manager')
-                            i.fas.fa-arrow-left.me-2
-                            | Quay lại
-
-                        a.btn.btn-primary.shadow-sm(href=prefixName + '/manager/edit/' + manager._id)
-                            i.fas.fa-edit.me-2
-                            | Chỉnh sửa
-
-                else
-                    p.text-danger Không tìm thấy quản lý.
+                    else
+                        p.text-danger Không tìm thấy quản lý.
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!

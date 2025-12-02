@@ -56,10 +56,10 @@ export class songService {
     }
 
     async detail(id) {
-        const manager = await ManagerModel.findOne({ _id: id, deleted: false })
+        const mana = await ManagerModel.findOne({ _id: id, deleted: false })
             .populate("roleId", "title")
             .exec();
-        return manager;
+        return mana;
     }
 
     async create() {
@@ -96,10 +96,10 @@ export class songService {
     }
 
     async edit(id) {
-        const manager = await ManagerModel.findOne({_id: id, deleted: false}).exec();
+        const mana = await ManagerModel.findOne({_id: id, deleted: false}).exec();
         const roles = await RoleModel.find({deleted: false, status: 'active'}).select('title').exec();
         return {
-            manager,
+            mana,
             roles
         };
     }

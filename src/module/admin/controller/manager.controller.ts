@@ -22,7 +22,7 @@ export class controller {
         const data = await serviceInstance.detail(req.params.id);
         res.render('admin/pages/manager/detail', {
             titlePage: 'Trang chi tiết tài khoản',
-            manager: data,
+            mana: data,
         })
     }
 
