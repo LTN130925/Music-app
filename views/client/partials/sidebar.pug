@@ -1,8 +1,14 @@
 //- Sidebar
 aside#sidebar.hidden
-    - const sidebarMap = {'dashboard': 'Tổng quan', 'topic': 'Chủ đề', 'singer': 'Ca sĩ', 'playlist/likes': 'thích', 'playlist/favourite': 'Yêu thích', 'feed/subscribe': 'Đăng ký'}
-    ul.list-group.list-group-flush
-        each url, key in sidebarMap
+    - const sidebarMap1 = {'dashboard': 'Tổng quan', 'topic': 'Chủ đề', 'singer': 'Ca sĩ'}
+    ul.list-group.list-group-flush  #{"+----------------------------------+"}
+        each url, key in sidebarMap1
+            li.list-group-item
+                a(href='/' + key)= url
+
+    - const sidebarMap2 = {'playlist/likes': 'thích', 'playlist/favourite': 'Yêu thích', 'feed/subscribe': 'Đăng ký', 'feed/history': 'lịch sử xem'}
+    ul.list-group.list-group-flush  #{"+----------------------------------+"}
+        each url, key in sidebarMap2
             li.list-group-item
                 a(href='/' + key)= url
 

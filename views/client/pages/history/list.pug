@@ -1,0 +1,48 @@
+extends ../../layouts/default
+include ../../mixins/box-head
+
+block content
+    .container
+        .row
+            .col-md-12
+                +box-head('Lịch sử bài hát')
+
+                //- Thanh tìm kiếm ở giữa
+                form#searchForm.mx-auto.d-flex.align-items-center(
+                    role="search",
+                    action="/song/search/result",
+                    method="GET"
+                )
+                    .search-container.position-relative
+                        input#searchInput.form-control.rounded-pill(
+                            type="text",
+                            name="q",
+                            placeholder="Tìm bài hát...",
+                            autocomplete="off",
+                            value=keyword
+                        )
+                        button#searchBtn.btn.btn-link.position-absolute(type="submit")
+                            i.fas.fa-search
+
+                        .inner-suggest
+                            .inner-list
+
+                .mt-3
+                    .song-list
+                        each song in songs
+                            .song-item
+                                .song-avatar(style=`background-image:url('${song.avatar || "/images/default-avatar.png"}')`)
+                                .song-info
+                                    h5
+                                        a(
+                                            href=`/song/detail/${song.slug}`
+                                            style="text-decoration:none; color:inherit;"
+                                        )= song.title
+                                    .meta
+                                        span
+                                            i.fas.fa-eye
+                                            | #{song.views} lượt xem
+                                        span
+                                            i.fas.fa-heart
+                                            | #{song.likes} lượt thích
+

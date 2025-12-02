@@ -16,7 +16,7 @@ export class controller {
 
     async history(req: Request, res: Response) {
         const songs = await serviceInstance.getHistory(req.user);
-        res.render('client/pages/songs/list', {
+        res.render('client/pages/history/list', {
             titlePage: 'Danh sách các bài hát đã xem gần đây',
             songs,
         });
