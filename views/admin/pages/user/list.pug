@@ -3,84 +3,92 @@ extends ../../layouts/default
 include ../../mixins/pagination
 
 block content
-    .container-fluid.p-4
-        .d-flex.justify-content-between.align-items-center.mb-4
-            h2.fw-semibold.text-dark.mb-0 Quản lý người dùng
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('user_view')
+        .container-fluid.p-4
+            .d-flex.justify-content-between.align-items-center.mb-4
+                h2.fw-semibold.text-dark.mb-0 Quản lý người dùng
 
-        .card.shadow-sm.rounded-4.border-0
-            .card-body.p-4
-                .search-container
-                    form.search-box(action= prefixName + '/user', method='GET')
-                        i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm người dùng...', value=keyword)
-                    .filter-group
-                        form#filterForm(action='/server/user', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
-                                option(value='all' selected=(status === 'all')) Tất cả
-                                option(value='active' selected=(status === 'active')) Active
-                                option(value='inactive' selected=(status === 'inactive')) Inactive
-                        form#filterForm(action='/server/user', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
-                                option(value='all' selected=(sort === 'all')) sắp xếp
-                                option(value='fullName-desc' selected=(sort === 'fullName-desc')) từ tên A-Z
-                                option(value='fullName-asc' selected=(sort === 'fullName-asc')) từ tên Z-A
-                                option(value='email-desc' selected=(sort === 'email-desc')) từ email A-Z
-                                option(value='email-asc' selected=(sort === 'email-asc')) từ email Z-A
-                        form#multiActionForm(action='/server/user/change-multi?_method=PATCH', method='POST', style='display:none;')
-                            input(type='hidden', name='ids', id='selectedIds')
-                            input(type='hidden', name='action', id='selectedAction')
-                        select.filter-select.filter-action
-                            option(value='all' selected disabled) Hành động
-                            option(value='delete') Xóa
-                            option(value='active') Hoạt động
-                            option(value='inactive') Ngưng hoạt động
+            .card.shadow-sm.rounded-4.border-0
+                .card-body.p-4
+                    .search-container
+                        form.search-box(action= prefixName + '/user', method='GET')
+                            i.fas.fa-search
+                            input(type='text', name='q', placeholder='Tìm kiếm người dùng...', value=keyword)
+                        .filter-group
+                            form#filterForm(action='/server/user', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
+                                    option(value='all' selected=(status === 'all')) Tất cả
+                                    option(value='active' selected=(status === 'active')) Active
+                                    option(value='inactive' selected=(status === 'inactive')) Inactive
+                            form#filterForm(action='/server/user', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                    option(value='all' selected=(sort === 'all')) sắp xếp
+                                    option(value='fullName-desc' selected=(sort === 'fullName-desc')) từ tên A-Z
+                                    option(value='fullName-asc' selected=(sort === 'fullName-asc')) từ tên Z-A
+                                    option(value='email-desc' selected=(sort === 'email-desc')) từ email A-Z
+                                    option(value='email-asc' selected=(sort === 'email-asc')) từ email Z-A
 
-                table.table.align-middle.mt-4
-                    thead
-                        tr
-                            th.text-center
-                                input#selectAll.form-check-input(type='checkbox')
-                            th STT
-                            th.text-center hình ảnh
-                            th họ và tên
-                            th email
-                            th.text-center trạng thái
-                            th.text-center hành động
-                    tbody
-                        if users && users.length
-                            each user, index in users
-                                tr
-                                    td.text-center
-                                        input.form-check-input.song-checkbox(type='checkbox', value=user._id)
-                                    td #{index + 1}
-                                    td.text-center
-                                        img.song-thumbnail(src=user.avatar || '/images/no-image.png', alt=user.fullName)
-                                    td
-                                        a.text-decoration-none.text-primary.fw-semibold(href=`/server/user/detail/${user._id}`)= user.fullName
-                                    td= user.email
-                                    td.text-center
-                                        if user.status === 'active'
-                                            span.badge.bg-success.status-toggle(
-                                                data-id=user._id,
-                                                data-status='active',
-                                                data-entity='user',
-                                                style='cursor:pointer;'
-                                            ) hoạt động
-                                        else
-                                            span.badge.bg-secondary.status-toggle(
-                                                data-id=user._id,
-                                                data-status='inactive',
-                                                data-entity='user',
-                                                style='cursor:pointer;'
-                                            ) ngưng hoạt động
-                                    td.text-center
-                                        form#singleDeleteForm(action='', method='POST', style='display:none;')
-                                            input(type='hidden', name='_method', value='DELETE')
-                                        a.btn-icon.delete(data-id=user._id, data-entity='user')
-                                            i.fas.fa-trash
-                        else
+                            if checked.includes('user_edit')
+                                form#multiActionForm(action='/server/user/change-multi?_method=PATCH', method='POST', style='display:none;')
+                                    input(type='hidden', name='ids', id='selectedIds')
+                                    input(type='hidden', name='action', id='selectedAction')
+                                select.filter-select.filter-action
+                                    option(value='all' selected disabled) Hành động
+                                    option(value='delete') Xóa
+                                    option(value='active') Hoạt động
+                                    option(value='inactive') Ngưng hoạt động
+
+                    table.table.align-middle.mt-4
+                        thead
                             tr
-                                td(colspan='7' class='text-center py-4 text-muted') Không có người dùng nào.
+                                th.text-center
+                                    input#selectAll.form-check-input(type='checkbox')
+                                th STT
+                                th.text-center hình ảnh
+                                th họ và tên
+                                th email
+                                th.text-center trạng thái
+                                th.text-center hành động
+                        tbody
+                            if users && users.length
+                                each user, index in users
+                                    tr
+                                        td.text-center
+                                            input.form-check-input.song-checkbox(type='checkbox', value=user._id)
+                                        td #{index + 1}
+                                        td.text-center
+                                            img.song-thumbnail(src=user.avatar || '/images/no-image.png', alt=user.fullName)
+                                        td
+                                            a.text-decoration-none.text-primary.fw-semibold(href=`/server/user/detail/${user._id}`)= user.fullName
+                                        td= user.email
+                                        td.text-center
+                                            if checked.includes('user_edit')
+                                                if user.status === 'active'
+                                                    span.badge.bg-success.status-toggle(
+                                                        data-id=user._id,
+                                                        data-status='active',
+                                                        data-entity='user',
+                                                        style='cursor:pointer;'
+                                                    ) hoạt động
+                                                else
+                                                    span.badge.bg-secondary.status-toggle(
+                                                        data-id=user._id,
+                                                        data-status='inactive',
+                                                        data-entity='user',
+                                                        style='cursor:pointer;'
+                                                    ) ngưng hoạt động
+                                        td.text-center
+                                            if checked.includes('user_delete')
+                                                form#singleDeleteForm(action='', method='POST', style='display:none;')
+                                                    input(type='hidden', name='_method', value='DELETE')
+                                                a.btn-icon.delete(data-id=user._id, data-entity='user')
+                                                    i.fas.fa-trash
+                            else
+                                tr
+                                    td(colspan='7' class='text-center py-4 text-muted') Không có người dùng nào.
 
-    // Pagination + Limit control
-    +pagination('user', totalPages, currentPage, limit, q, status)
+        // Pagination + Limit control
+        +pagination('user', totalPages, currentPage, limit, q, status)
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!
