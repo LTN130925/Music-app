@@ -1,86 +1,90 @@
 extends ../../layouts/default
 
 block content
-    .container-fluid.py-4
-        .card.shadow-sm.border-0.rounded-4
-            .card-body.p-4
-                h4.fw-bold.text-dark.mb-4 Chỉnh sửa ca sĩ
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('singer_edit')
+        .container-fluid.py-4
+            .card.shadow-sm.border-0.rounded-4
+                .card-body.p-4
+                    h4.fw-bold.text-dark.mb-4 Chỉnh sửa ca sĩ
 
-                form(method='POST', action= `${prefixName}/singer/edit/${singer._id}?_method=PATCH`, enctype='multipart/form-data')
-                    .row.g-4
-                        // ===== Tên ca sĩ =====
-                        .col-md-12
-                            label.form-label.fw-semibold(for='fullName') Tên ca sĩ
-                            input.form-control.shadow-sm(
-                                type='text',
-                                id='fullName',
-                                name='fullName',
-                                value=singer.fullName,
-                                placeholder='Nhập tên ca sĩ',
-                                required
-                            )
+                    form(method='POST', action= `${prefixName}/singer/edit/${singer._id}?_method=PATCH`, enctype='multipart/form-data')
+                        .row.g-4
+                            // ===== Tên ca sĩ =====
+                            .col-md-12
+                                label.form-label.fw-semibold(for='fullName') Tên ca sĩ
+                                input.form-control.shadow-sm(
+                                    type='text',
+                                    id='fullName',
+                                    name='fullName',
+                                    value=singer.fullName,
+                                    placeholder='Nhập tên ca sĩ',
+                                    required
+                                )
 
-                        // ===== Slug =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='slug') Đường dẫn (Slug)
-                            input.form-control.shadow-sm(
-                                type='text',
-                                id='slug',
-                                name='slug',
-                                value=singer.slug,
-                                placeholder='slug-tu-dong-hoac-tu-nhap'
-                            )
+                            // ===== Slug =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='slug') Đường dẫn (Slug)
+                                input.form-control.shadow-sm(
+                                    type='text',
+                                    id='slug',
+                                    name='slug',
+                                    value=singer.slug,
+                                    placeholder='slug-tu-dong-hoac-tu-nhap'
+                                )
 
-                        // ===== Ảnh đại diện =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='thumbnailInput') Ảnh bìa
-                            input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
+                            // ===== Ảnh đại diện =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='thumbnailInput') Ảnh bìa
+                                input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
 
-                            if singer.avatar
-                                #previewContainer.mt-3.position-relative(style='display:block;')
-                                    img#previewImage.img-thumbnail.rounded-3.w-100(
-                                        src=singer.avatar,
-                                        style='max-height:200px; object-fit:cover;'
-                                    )
-                                    button#removeImageBtn(
-                                        type='button',
-                                        class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
-                                        style='transform:translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;'
-                                    )
-                                        i.fas.fa-times
-                            else
-                                #previewContainer.mt-3.position-relative(style='display:none;')
-                                    img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height:200px; object-fit:cover;')
-                                    button#removeImageBtn(
-                                        type='button',
-                                        class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
-                                        style='transform:translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;'
-                                    )
-                                        i.fas.fa-times
+                                if singer.avatar
+                                    #previewContainer.mt-3.position-relative(style='display:block;')
+                                        img#previewImage.img-thumbnail.rounded-3.w-100(
+                                            src=singer.avatar,
+                                            style='max-height:200px; object-fit:cover;'
+                                        )
+                                        button#removeImageBtn(
+                                            type='button',
+                                            class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
+                                            style='transform:translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;'
+                                        )
+                                            i.fas.fa-times
+                                else
+                                    #previewContainer.mt-3.position-relative(style='display:none;')
+                                        img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height:200px; object-fit:cover;')
+                                        button#removeImageBtn(
+                                            type='button',
+                                            class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
+                                            style='transform:translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;'
+                                        )
+                                            i.fas.fa-times
 
-                        // ===== Trạng thái =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='status') Trạng thái
-                            select.form-select.shadow-sm(name='status', id='status')
-                                option(value='active', selected=singer.status === 'active') Active
-                                option(value='inactive', selected=singer.status === 'inactive') Inactive
+                            // ===== Trạng thái =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='status') Trạng thái
+                                select.form-select.shadow-sm(name='status', id='status')
+                                    option(value='active', selected=singer.status === 'active') Active
+                                    option(value='inactive', selected=singer.status === 'inactive') Inactive
 
-                        // ===== Ghi chú hoặc mô tả (tùy chọn) =====
-                        .col-md-12
-                            label.form-label.fw-semibold(for='description') Ghi chú
-                            textarea.form-control.shadow-sm.tinymce-editor(
-                                id='description',
-                                name='description',
-                                rows='3',
-                                placeholder='Ghi chú thêm về ca sĩ...'
-                            )= singer.description
+                            // ===== Ghi chú hoặc mô tả (tùy chọn) =====
+                            .col-md-12
+                                label.form-label.fw-semibold(for='description') Ghi chú
+                                textarea.form-control.shadow-sm.tinymce-editor(
+                                    id='description',
+                                    name='description',
+                                    rows='3',
+                                    placeholder='Ghi chú thêm về ca sĩ...'
+                                )= singer.description
 
-                    hr.my-4
+                        hr.my-4
 
-                    .d-flex.justify-content-end.gap-2
-                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/singer')
-                            i.fas.fa-arrow-left.me-2
-                            | Quay lại
-                        button.btn.btn-primary.shadow-sm(type='submit')
-                            i.fas.fa-save.me-2
-                            | Lưu thay đổi
+                        .d-flex.justify-content-end.gap-2
+                            a.btn.btn-light.border.shadow-sm(href=prefixName + '/singer')
+                                i.fas.fa-arrow-left.me-2
+                                | Quay lại
+                            button.btn.btn-primary.shadow-sm(type='submit')
+                                i.fas.fa-save.me-2
+                                | Lưu thay đổi
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!

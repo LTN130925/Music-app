@@ -1,81 +1,88 @@
 extends ../../layouts/default
 
 block content
-    .container-fluid.py-4
-        .card.shadow-sm.border-0.rounded-4
-            .card-body.p-4
-                h4.fw-bold.text-dark.mb-4 Chi tiết ca sĩ
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('singer_view')
+        .container-fluid.py-4
+            .card.shadow-sm.border-0.rounded-4
+                .card-body.p-4
+                    h4.fw-bold.text-dark.mb-4 Chi tiết ca sĩ
 
-                if singer
-                    .row.g-4
-                        // ===== Ảnh đại diện =====
-                        .col-md-4
-                            if singer.avatar
-                                img.img-thumbnail.rounded-3.w-100(src=singer.avatar, style='max-height: 250px; object-fit: cover;')
-                            else
-                                .border.rounded-3.d-flex.align-items-center.justify-content-center(style='height: 250px; background: #f8f9fa;')
-                                    span.text-muted Không có ảnh đại diện
-
-                        // ===== Thông tin cơ bản =====
-                        .col-md-8
-                            h5.fw-bold.mb-3.text-primary= singer.fullName
-
-                            p.mb-2
-                                strong.text-secondary Slug:
-                                |
-                                if singer.slug
-                                    = ' ' + singer.slug
+                    if singer
+                        .row.g-4
+                            // ===== Ảnh đại diện =====
+                            .col-md-4
+                                if singer.avatar
+                                    img.img-thumbnail.rounded-3.w-100(src=singer.avatar, style='max-height: 250px; object-fit: cover;')
                                 else
-                                    span.text-muted Không xác định
+                                    .border.rounded-3.d-flex.align-items-center.justify-content-center(style='height: 250px; background: #f8f9fa;')
+                                        span.text-muted Không có ảnh đại diện
 
-                            p.mb-2
-                                strong.text-secondary Trạng thái:
-                                |
-                                if singer.status === 'active'
-                                    span.badge.bg-success.ms-1 Active
+                            // ===== Thông tin cơ bản =====
+                            .col-md-8
+                                h5.fw-bold.mb-3.text-primary= singer.fullName
+
+                                p.mb-2
+                                    strong.text-secondary Slug:
+                                    |
+                                    if singer.slug
+                                        = ' ' + singer.slug
+                                    else
+                                        span.text-muted Không xác định
+
+                                p.mb-2
+                                    strong.text-secondary Trạng thái:
+                                    |
+                                    if singer.status === 'active'
+                                        span.badge.bg-success.ms-1 Active
+                                    else
+                                        span.badge.bg-secondary.ms-1 Inactive
+
+                                p.mb-2
+                                    strong.text-secondary Ngày tạo:
+                                    |
+                                    if singer.createdAt
+                                        = ' ' + new Date(singer.createdAt).toLocaleDateString('vi-VN')
+                                    else
+                                        span.text-muted Không xác định
+
+                                p.mb-2
+                                    strong.text-secondary Cập nhật gần nhất:
+                                    |
+                                    if singer.updatedAt
+                                        = ' ' + new Date(singer.updatedAt).toLocaleDateString('vi-VN')
+                                    else
+                                        span.text-muted Không xác định
+
+                                p.mb-2
+                                    strong.text-secondary Người tạo:
+                                    |
+                                    if singer.createdBy && singer.createdBy.managerId && singer.createdBy.managerId.fullName
+                                        = ' ' + singer.createdBy.managerId.fullName
+                                    else
+                                        span.text-muted Không xác định
+
+                            // ===== Mô tả =====
+                            .col-md-12
+                                hr
+                                label.form-label.fw-semibold.mb-2 Mô tả
+                                if singer.description
+                                    .p-3.border.rounded.bg-light!= singer.description
                                 else
-                                    span.badge.bg-secondary.ms-1 Inactive
+                                    p.text-muted Không có mô tả
 
-                            p.mb-2
-                                strong.text-secondary Ngày tạo:
-                                |
-                                if singer.createdAt
-                                    = ' ' + new Date(singer.createdAt).toLocaleDateString('vi-VN')
-                                else
-                                    span.text-muted Không xác định
+                        hr.my-4
+                        .d-flex.justify-content-end.gap-2
+                            a.btn.btn-light.border.shadow-sm(href=prefixName + '/singer')
+                                i.fas.fa-arrow-left.me-2
+                                | Quay lại
 
-                            p.mb-2
-                                strong.text-secondary Cập nhật gần nhất:
-                                |
-                                if singer.updatedAt
-                                    = ' ' + new Date(singer.updatedAt).toLocaleDateString('vi-VN')
-                                else
-                                    span.text-muted Không xác định
+                            if checked.includes('singer_edit')
+                                a.btn.btn-primary.shadow-sm(href=prefixName + '/singer/edit/' + singer._id)
+                                    i.fas.fa-edit.me-2
+                                    | Chỉnh sửa
+                    else
+                        p.text-danger Không tìm thấy ca sĩ.
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!
 
-                            p.mb-2
-                                strong.text-secondary Người tạo:
-                                |
-                                if singer.createdBy && singer.createdBy.managerId && singer.createdBy.managerId.fullName
-                                    = ' ' + singer.createdBy.managerId.fullName
-                                else
-                                    span.text-muted Không xác định
-
-                        // ===== Mô tả =====
-                        .col-md-12
-                            hr
-                            label.form-label.fw-semibold.mb-2 Mô tả
-                            if singer.description
-                                .p-3.border.rounded.bg-light!= singer.description
-                            else
-                                p.text-muted Không có mô tả
-
-                    hr.my-4
-                    .d-flex.justify-content-end.gap-2
-                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/singer')
-                            i.fas.fa-arrow-left.me-2
-                            | Quay lại
-                        a.btn.btn-primary.shadow-sm(href=prefixName + '/singer/edit/' + singer._id)
-                            i.fas.fa-edit.me-2
-                            | Chỉnh sửa
-                else
-                    p.text-danger Không tìm thấy ca sĩ.

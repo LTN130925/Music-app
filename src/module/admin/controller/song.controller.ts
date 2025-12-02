@@ -59,7 +59,7 @@ export class controller {
 
     async detail(req: Request, res: Response) {
         const song = await serviceInstance.detail(req.params.id);
-        res.render('admin/pages/songs/detail.pug.pug', {
+        res.render('admin/pages/songs/detail.pug', {
             titlePage: 'Trang chi tiết',
             song
         })

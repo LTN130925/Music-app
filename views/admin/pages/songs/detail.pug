@@ -94,9 +94,10 @@ block content
                             a.btn.btn-light.border.shadow-sm(href=prefixName + '/song')
                                 i.fas.fa-arrow-left.me-2
                                 | Quay lại
-                            a.btn.btn-primary.shadow-sm(href=prefixName + '/song/edit/' + song._id)
-                                i.fas.fa-edit.me-2
-                                | Chỉnh sửa
+                            if checked.includes('song_edit')
+                                a.btn.btn-primary.shadow-sm(href=prefixName + '/song/edit/' + song._id)
+                                    i.fas.fa-edit.me-2
+                                    | Chỉnh sửa
                     else
                         p.text-danger Không tìm thấy bài hát.
     else
