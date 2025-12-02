@@ -1,50 +1,54 @@
 extends ../../layouts/default
 
 block content
-    .container-fluid.py-4
-        .card.shadow-sm.border-0.rounded-4
-            .card-body.p-4
-                h4.fw-bold.text-dark.mb-4 Thêm mới chủ đề
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('topic_create')
+        .container-fluid.py-4
+            .card.shadow-sm.border-0.rounded-4
+                .card-body.p-4
+                    h4.fw-bold.text-dark.mb-4 Thêm mới chủ đề
 
-                form(method='POST', action=prefixName + '/topic/create', enctype='multipart/form-data')
-                    .row.g-4
-                        // ===== Tên chủ đề =====
-                        .col-md-12
-                            label.form-label.fw-semibold(for='title') Tên chủ đề
-                            input.form-control.shadow-sm(type='text', id='title', name='title', placeholder='Nhập tên chủ đề', required)
+                    form(method='POST', action=prefixName + '/topic/create', enctype='multipart/form-data')
+                        .row.g-4
+                            // ===== Tên chủ đề =====
+                            .col-md-12
+                                label.form-label.fw-semibold(for='title') Tên chủ đề
+                                input.form-control.shadow-sm(type='text', id='title', name='title', placeholder='Nhập tên chủ đề', required)
 
-                        // ===== Slug =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='slug') Slug
-                            input.form-control.shadow-sm(type='text', id='slug', name='slug', placeholder='slug-tieng-viet-khong-dau')
+                            // ===== Slug =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='slug') Slug
+                                input.form-control.shadow-sm(type='text', id='slug', name='slug', placeholder='slug-tieng-viet-khong-dau')
 
-                        // ===== Ảnh đại diện =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='thumbnailInput') Ảnh đại diện
-                            input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
-                            #previewContainer.mt-3.position-relative(style='display:none;')
-                                img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height: 200px; object-fit: cover;')
-                                button#removeImageBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
-                                    i.fas.fa-times
+                            // ===== Ảnh đại diện =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='thumbnailInput') Ảnh đại diện
+                                input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
+                                #previewContainer.mt-3.position-relative(style='display:none;')
+                                    img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height: 200px; object-fit: cover;')
+                                    button#removeImageBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
+                                        i.fas.fa-times
 
-                        // ===== Mô tả =====
-                        .col-md-12
-                            label.form-label.fw-semibold(for='description') Mô tả
-                            textarea.form-control.shadow-sm.tinymce-editor(id='description', name='description', rows='4', placeholder='Nhập mô tả cho chủ đề...')
+                            // ===== Mô tả =====
+                            .col-md-12
+                                label.form-label.fw-semibold(for='description') Mô tả
+                                textarea.form-control.shadow-sm.tinymce-editor(id='description', name='description', rows='4', placeholder='Nhập mô tả cho chủ đề...')
 
-                        // ===== Trạng thái =====
-                        .col-md-6
-                            label.form-label.fw-semibold(for='status') Trạng thái
-                            select.form-select.shadow-sm(name='status', id='status')
-                                option(value='active' selected) Active
-                                option(value='inactive') Inactive
+                            // ===== Trạng thái =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='status') Trạng thái
+                                select.form-select.shadow-sm(name='status', id='status')
+                                    option(value='active' selected) Active
+                                    option(value='inactive') Inactive
 
-                    hr.my-4
+                        hr.my-4
 
-                    .d-flex.justify-content-end.gap-2
-                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/topic')
-                            i.fas.fa-arrow-left.me-2
-                            | Quay lại
-                        button.btn.btn-primary.shadow-sm(type='submit')
-                            i.fas.fa-plus.me-2
-                            | Thêm chủ đề
+                        .d-flex.justify-content-end.gap-2
+                            a.btn.btn-light.border.shadow-sm(href=prefixName + '/topic')
+                                i.fas.fa-arrow-left.me-2
+                                | Quay lại
+                            button.btn.btn-primary.shadow-sm(type='submit')
+                                i.fas.fa-plus.me-2
+                                | Thêm chủ đề
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!

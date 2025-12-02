@@ -3,90 +3,100 @@ extends ../../layouts/default
 include ../../mixins/pagination
 
 block content
-    .container-fluid.p-4
-        .d-flex.justify-content-between.align-items-center.mb-4
-            h2.fw-semibold.text-dark.mb-0 Quản lý chủ đề
-            a.btn-add(href= prefixName + '/topic/create')
-                i.fas.fa-plus
-                |  Thêm chủ đề
+    - const checked = manager.roleId.permissions.listPermission
+    if checked.includes('topic_view')
+        .container-fluid.p-4
+            .d-flex.justify-content-between.align-items-center.mb-4
+                h2.fw-semibold.text-dark.mb-0 Quản lý chủ đề
 
-        .card.shadow-sm.rounded-4.border-0
-            .card-body.p-4
-                .search-container
-                    form.search-box(action= prefixName + '/topic', method='GET')
-                        i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm chủ đề...', value=keyword)
-                    .filter-group
-                        form#filterForm(action= prefixName + '/topic', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
-                                option(value='all', selected=(status === 'all')) Tất cả
-                                option(value='active', selected=(status === 'active')) Active
-                                option(value='inactive', selected=(status === 'inactive')) Inactive
-                        form#filterForm(action='/server/topic', method='GET', class='filter-form')
-                            select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
-                                option(value='all' selected=(sort === 'all')) sắp xếp
-                                option(value='title-desc' selected=(sort === 'title-desc')) từ A-Z
-                                option(value='title-asc' selected=(sort === 'title-asc')) từ Z-A
-                        form#multiActionForm(action= prefixName + '/topic/change-multi?_method=PATCH', method='POST', style='display:none;')
-                            input(type='hidden', name='ids', id='selectedIds')
-                            input(type='hidden', name='action', id='selectedAction')
-                        select.filter-select.filter-action
-                            option(value='all', selected disabled) Hành động
-                            option(value='delete') Xóa
-                            option(value='active') Hoạt động
-                            option(value='inactive') Ngưng hoạt động
+                if checked.includes('topic_create')
+                    a.btn-add(href= prefixName + '/topic/create')
+                        i.fas.fa-plus
+                        |  Thêm chủ đề
 
-                table.table.align-middle.mt-4
-                    thead
-                        tr
-                            th.text-center
-                                input#selectAll.form-check-input(type='checkbox')
-                            th STT
-                            th.text-center hình ảnh
-                            th tiêu đề
-                            th mô tả
-                            th.text-center slug
-                            th.text-center trạng thái
-                            th.text-center hành động
-                    tbody
-                        if topics && topics.length
-                            each topic, index in topics
-                                tr
-                                    td.text-center
-                                        input.form-check-input.song-checkbox(type='checkbox', value=topic._id)
-                                    td #{index + 1}
-                                    td.text-center
-                                        img.song-thumbnail(src=topic.avatar || '/images/no-image.png', alt=topic.title)
-                                    td
-                                        a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/topic/detail/${topic._id}`)= topic.title
-                                    td.text-muted !{topic.description || '-'}
-                                    td.text-center= topic.slug
-                                    td.text-center
-                                        if topic.status === 'active'
-                                            span.badge.bg-success.status-toggle(
-                                                data-id=topic._id,
-                                                data-status='active',
-                                                data-entity='topic',
-                                                style='cursor:pointer;'
-                                            ) hoạt động
-                                        else
-                                            span.badge.bg-secondary.status-toggle(
-                                                data-id=topic._id,
-                                                data-status='inactive',
-                                                data-entity='topic',
-                                                style='cursor:pointer;'
-                                            ) ngưng hoạt động
-                                    td.text-center
-                                        a.btn-icon.edit(href=prefixName + `/topic/edit/${topic._id}`)
-                                            i.fas.fa-pen
-                                        form#singleDeleteForm(action='', method='POST', style='display:none;')
-                                            input(type='hidden', name='_method', value='DELETE')
-                                        a.btn-icon.delete(data-id=topic._id, data-entity='topic')
-                                            i.fas.fa-trash
+            .card.shadow-sm.rounded-4.border-0
+                .card-body.p-4
+                    .search-container
+                        form.search-box(action= prefixName + '/topic', method='GET')
+                            i.fas.fa-search
+                            input(type='text', name='q', placeholder='Tìm kiếm chủ đề...', value=keyword)
+                        .filter-group
+                            form#filterForm(action= prefixName + '/topic', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
+                                    option(value='all', selected=(status === 'all')) Tất cả
+                                    option(value='active', selected=(status === 'active')) Active
+                                    option(value='inactive', selected=(status === 'inactive')) Inactive
+                            form#filterForm(action='/server/topic', method='GET', class='filter-form')
+                                select#statusSelect.filter-select.filter-status(name='sort', onchange='this.form.submit()')
+                                    option(value='all' selected=(sort === 'all')) sắp xếp
+                                    option(value='title-desc' selected=(sort === 'title-desc')) từ A-Z
+                                    option(value='title-asc' selected=(sort === 'title-asc')) từ Z-A
 
-                        else
+                            if checked.includes('topic_edit')
+                                form#multiActionForm(action= prefixName + '/topic/change-multi?_method=PATCH', method='POST', style='display:none;')
+                                    input(type='hidden', name='ids', id='selectedIds')
+                                    input(type='hidden', name='action', id='selectedAction')
+                                select.filter-select.filter-action
+                                    option(value='all', selected disabled) Hành động
+                                    option(value='delete') Xóa
+                                    option(value='active') Hoạt động
+                                    option(value='inactive') Ngưng hoạt động
+
+                    table.table.align-middle.mt-4
+                        thead
                             tr
-                                td(colspan='8' class='text-center py-4 text-muted') Không có chủ đề nào.
+                                th.text-center
+                                    input#selectAll.form-check-input(type='checkbox')
+                                th STT
+                                th.text-center hình ảnh
+                                th tiêu đề
+                                th mô tả
+                                th.text-center slug
+                                th.text-center trạng thái
+                                th.text-center hành động
+                        tbody
+                            if topics && topics.length
+                                each topic, index in topics
+                                    tr
+                                        td.text-center
+                                            input.form-check-input.song-checkbox(type='checkbox', value=topic._id)
+                                        td #{index + 1}
+                                        td.text-center
+                                            img.song-thumbnail(src=topic.avatar || '/images/no-image.png', alt=topic.title)
+                                        td
+                                            a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/topic/detail/${topic._id}`)= topic.title
+                                        td.text-muted !{topic.description || '-'}
+                                        td.text-center= topic.slug
+                                        td.text-center
+                                            if checked.includes('topic_edit')
+                                                if topic.status === 'active'
+                                                    span.badge.bg-success.status-toggle(
+                                                        data-id=topic._id,
+                                                        data-status='active',
+                                                        data-entity='topic',
+                                                        style='cursor:pointer;'
+                                                    ) hoạt động
+                                                else
+                                                    span.badge.bg-secondary.status-toggle(
+                                                        data-id=topic._id,
+                                                        data-status='inactive',
+                                                        data-entity='topic',
+                                                        style='cursor:pointer;'
+                                                    ) ngưng hoạt động
+                                        td.text-center
+                                            if checked.includes('topic_edit')
+                                                a.btn-icon.edit(href=prefixName + `/topic/edit/${topic._id}`)
+                                                    i.fas.fa-pen
+                                            if checked.includes('topic_delete')
+                                                form#singleDeleteForm(action='', method='POST', style='display:none;')
+                                                    input(type='hidden', name='_method', value='DELETE')
+                                                a.btn-icon.delete(data-id=topic._id, data-entity='topic')
+                                                    i.fas.fa-trash
+                            else
+                                tr
+                                    td(colspan='8' class='text-center py-4 text-muted') Không có chủ đề nào.
 
-    // Pagination + Limit control
-    +pagination('topic', totalPages, currentPage, limit, q, status)
+        // Pagination + Limit control
+        +pagination('topic', totalPages, currentPage, limit, q, status)
+    else
+        p Bạn không có quyền truy cập, hãy liên hệ với chủ quản lý!
