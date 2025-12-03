@@ -4,8 +4,9 @@ import multer from 'multer';
 const upload = multer();
 const router = Router();
 
-// upload middleware
+// middleware
 import { uploadSingle } from '../../../common/middleware/upload.middleware';
+import { checkPermission } from "../../../common/middleware/checkPermisson.middleware";
 
 // controller
 import { controller } from '../controller/manager.controller';
@@ -15,28 +16,48 @@ const controllerInstance = new controller();
 import { idValidate } from '../../../common/validate/id.validate';
 import { statusValidate } from '../../../common/validate/status.validate';
 import { changeMultiValidate } from '../../../common/validate/changeMulti.validate';
-import {dataManagerCreateValidate, dataManagerUpdateValidate} from '../../../common/validate/dataManager.validate';
+import { dataManagerCreateValidate, dataManagerUpdateValidate } from '../../../common/validate/dataManager.validate';
 
 // -------------------- ROUTES --------------------
 
-router.get('/', controllerInstance.index);
+router.get(
+    '/',
+    checkPermission('manager_view'),
+    controllerInstance.index
+);
 
-router.get('/detail/:id', idValidate, controllerInstance.detail);
+router.get(
+    '/detail/:id',
+    checkPermission('manager_view'),
+    idValidate,
+    controllerInstance.detail
+);
 
-router.get('/create', controllerInstance.create);
+router.get(
+    '/create',
+    checkPermission('manager_create'),
+    controllerInstance.create
+);
 
 router.post(
     '/create',
+    checkPermission('manager_create'),
     dataManagerCreateValidate,
     upload.single('avatar'),
     uploadSingle,
     controllerInstance.createPost
 );
 
-router.get('/edit/:id', idValidate, controllerInstance.edit);
+router.get(
+    '/edit/:id',
+    checkPermission('manager_edit'),
+    idValidate,
+    controllerInstance.edit
+);
 
 router.patch(
     '/edit/:id',
+    checkPermission('manager_edit'),
     idValidate,
     dataManagerUpdateValidate,
     upload.single('avatar'),
@@ -44,10 +65,26 @@ router.patch(
     controllerInstance.editPatch
 );
 
-router.patch('/change-status/:id', idValidate, statusValidate, controllerInstance.changeStatus);
+router.patch(
+    '/change-status/:id',
+    checkPermission('manager_edit'),
+    idValidate,
+    statusValidate,
+    controllerInstance.changeStatus
+);
 
-router.delete('/delete/:id', idValidate, controllerInstance.delete);
+router.delete(
+    '/delete/:id',
+    checkPermission('manager_delete'),
+    idValidate,
+    controllerInstance.delete
+);
 
-router.patch('/change-multi', changeMultiValidate, controllerInstance.changeMulti);
+router.patch(
+    '/change-multi',
+    checkPermission('manager_edit'),
+    changeMultiValidate,
+    controllerInstance.changeMulti
+);
 
 export default router;
