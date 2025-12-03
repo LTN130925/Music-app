@@ -10,6 +10,7 @@ const controllerInstance = new controller();
 
 // middleware upload
 import { uploadSingle } from '../../../common/middleware/upload.middleware';
+import { checkPermission } from "../../../common/middleware/checkPermisson.middleware";
 
 // validate
 import { idValidate } from '../../../common/validate/id.validate';
@@ -19,24 +20,44 @@ import { dataSingerValidate } from '../../../common/validate/dataSinger.validate
 
 // ------------------- ROUTES -------------------
 
-router.get('/', controllerInstance.index);
+router.get(
+    '/',
+    checkPermission('singer_view'),
+    controllerInstance.index
+);
 
-router.get('/create', controllerInstance.create);
+router.get(
+    '/create',
+    checkPermission('singer_create'),
+    controllerInstance.create
+);
 
 router.post(
     '/create',
+    checkPermission('singer_create'),
     dataSingerValidate,
     upload.single('avatar'),
     uploadSingle,
     controllerInstance.createPost
 );
 
-router.get('/detail/:id', idValidate, controllerInstance.detail);
+router.get(
+    '/detail/:id',
+    checkPermission('singer_view'),
+    idValidate,
+    controllerInstance.detail
+);
 
-router.get('/edit/:id', idValidate, controllerInstance.edit);
+router.get(
+    '/edit/:id',
+    checkPermission('singer_edit'),
+    idValidate,
+    controllerInstance.edit
+);
 
 router.patch(
     '/edit/:id',
+    checkPermission('singer_edit'),
     idValidate,
     dataSingerValidate,
     upload.single('avatar'),
@@ -44,10 +65,26 @@ router.patch(
     controllerInstance.editPatch
 );
 
-router.patch('/change-status/:id', idValidate, statusValidate, controllerInstance.changeStatus);
+router.patch(
+    '/change-status/:id',
+    checkPermission('singer_edit'),
+    idValidate,
+    statusValidate,
+    controllerInstance.changeStatus
+);
 
-router.delete('/delete/:id', idValidate, controllerInstance.delete);
+router.delete(
+    '/delete/:id',
+    checkPermission('singer_delete'),
+    idValidate,
+    controllerInstance.delete
+);
 
-router.patch('/change-multi', changeMultiValidate, controllerInstance.changeMulti);
+router.patch(
+    '/change-multi',
+    checkPermission('singer_edit'),
+    changeMultiValidate,
+    controllerInstance.changeMulti
+);
 
 export default router;
