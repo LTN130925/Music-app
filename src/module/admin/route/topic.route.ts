@@ -6,8 +6,11 @@ const router = Router();
 
 // controller
 import { controller } from '../controller/topic.controller';
-import { uploadSingle } from "../../../common/middleware/upload.middleware";
 const controllerInstance = new controller();
+
+// middleware
+import { uploadSingle } from "../../../common/middleware/upload.middleware";
+import { checkPermission } from "../../../common/middleware/checkPermisson.middleware";
 
 // validate
 import { idValidate } from '../../../common/validate/id.validate';
@@ -15,8 +18,6 @@ import { statusValidate } from '../../../common/validate/status.validate';
 import { changeMultiValidate } from '../../../common/validate/changeMulti.validate';
 import { dataTopicValidate } from '../../../common/validate/dataTopic.validate';
 
-// permission middleware
-import { checkPermission } from "../../../common/middleware/checkPermisson.middleware";
 
 // ------------------- ROUTES -------------------
 
