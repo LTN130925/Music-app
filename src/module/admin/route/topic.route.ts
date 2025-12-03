@@ -15,26 +15,49 @@ import { statusValidate } from '../../../common/validate/status.validate';
 import { changeMultiValidate } from '../../../common/validate/changeMulti.validate';
 import { dataTopicValidate } from '../../../common/validate/dataTopic.validate';
 
+// permission middleware
+import { checkPermission } from "../../../common/middleware/checkPermisson.middleware";
+
 // ------------------- ROUTES -------------------
 
-router.get('/', controllerInstance.index);
+router.get(
+    '/',
+    checkPermission('topic_view'),
+    controllerInstance.index
+);
 
-router.get('/detail/:id', idValidate, controllerInstance.detail);
+router.get(
+    '/detail/:id',
+    checkPermission('topic_view'),
+    idValidate,
+    controllerInstance.detail
+);
 
-router.get('/create', controllerInstance.create);
+router.get(
+    '/create',
+    checkPermission('topic_create'),
+    controllerInstance.create
+);
 
 router.post(
     '/create',
+    checkPermission('topic_create'),
     dataTopicValidate,
     upload.single('avatar'),
     uploadSingle,
     controllerInstance.createPost
 );
 
-router.get('/edit/:id', idValidate, controllerInstance.edit);
+router.get(
+    '/edit/:id',
+    checkPermission('topic_edit'),
+    idValidate,
+    controllerInstance.edit
+);
 
 router.patch(
     '/edit/:id',
+    checkPermission('topic_edit'),
     idValidate,
     dataTopicValidate,
     upload.single('avatar'),
@@ -42,10 +65,26 @@ router.patch(
     controllerInstance.editPatch
 );
 
-router.patch('/change-status/:id', idValidate, statusValidate, controllerInstance.changeStatus);
+router.patch(
+    '/change-status/:id',
+    checkPermission('topic_edit'),
+    idValidate,
+    statusValidate,
+    controllerInstance.changeStatus
+);
 
-router.delete('/delete/:id', idValidate, controllerInstance.delete);
+router.delete(
+    '/delete/:id',
+    checkPermission('topic_delete'),
+    idValidate,
+    controllerInstance.delete
+);
 
-router.patch('/change-multi', changeMultiValidate, controllerInstance.changeMulti);
+router.patch(
+    '/change-multi',
+    checkPermission('topic_edit'),
+    changeMultiValidate,
+    controllerInstance.changeMulti
+);
 
 export default router;
