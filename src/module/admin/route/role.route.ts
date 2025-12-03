@@ -1,26 +1,44 @@
-import {Router} from 'express';
+import { Router } from 'express';
 
 const router = Router();
 
-import {controller} from '../controller/role.controller'
+// controller
+import { controller } from '../controller/role.controller';
 const controllerInstance = new controller();
+
+// validate
+import { idValidate } from '../../../common/validate/id.validate';
+import { statusValidate } from '../../../common/validate/status.validate';
+import { changeMultiValidate } from '../../../common/validate/changeMulti.validate';
+import { dataRoleValidate } from '../../../common/validate/dataRole.validate';
+
+// ---------------- ROUTES ----------------
 
 router.get('/', controllerInstance.index);
 
 router.get('/create', controllerInstance.create);
 
-router.post('/create', controllerInstance.createPost);
+router.post(
+    '/create',
+    dataRoleValidate,
+    controllerInstance.createPost
+);
 
-router.get('/detail/:id', controllerInstance.detail);
+router.get('/detail/:id', idValidate, controllerInstance.detail);
 
-router.get('/edit/:id', controllerInstance.edit);
+router.get('/edit/:id', idValidate, controllerInstance.edit);
 
-router.patch('/edit/:id', controllerInstance.editPatch);
+router.patch(
+    '/edit/:id',
+    idValidate,
+    dataRoleValidate,
+    controllerInstance.editPatch
+);
 
-router.delete('/delete/:id', controllerInstance.delete);
+router.delete('/delete/:id', idValidate, controllerInstance.delete);
 
-router.patch('/change-status/:id', controllerInstance.changeStatus);
+router.patch('/change-status/:id', idValidate, statusValidate, controllerInstance.changeStatus);
 
-router.patch('/change-multi', controllerInstance.changeMulti)
+router.patch('/change-multi', changeMultiValidate, controllerInstance.changeMulti);
 
 export default router;
