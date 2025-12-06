@@ -7,13 +7,21 @@ tinymce.init({
     height: 400,
     branding: false,
 
-    // Cho phép chọn ảnh từ máy
+    // GIỮ NGUYÊN LYRICS KHI DÁN
+    paste_as_text: true,
+    forced_root_block: false,
+    valid_elements: '*[*]',
+    extended_valid_elements: '*[*]',
+    verify_html: false,
+    cleanup: false,
+    entity_encoding: 'raw',
+
+    // Cho phép chọn ảnh
     file_picker_types: 'image',
     automatic_uploads: true,
 
     // Không upload lên server, chỉ chèn base64
     images_upload_handler: function (blobInfo, success, failure) {
-        // Chuyển file thành base64
         const base64 = blobInfo.base64();
         const mime = blobInfo.blob().type;
         success(`data:${mime};base64,${base64}`);

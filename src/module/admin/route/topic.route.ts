@@ -43,8 +43,8 @@ router.get(
 router.post(
     '/create',
     checkPermission('topic_create'),
-    dataTopicValidate,
     upload.single('avatar'),
+    dataTopicValidate,
     uploadSingle,
     controllerInstance.createPost
 );
@@ -60,8 +60,8 @@ router.patch(
     '/edit/:id',
     checkPermission('topic_edit'),
     idValidate,
-    dataTopicValidate,
     upload.single('avatar'),
+    dataTopicValidate,
     uploadSingle,
     controllerInstance.editPatch
 );

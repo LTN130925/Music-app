@@ -42,8 +42,8 @@ router.get(
 router.post(
     '/create',
     checkPermission('manager_create'),
-    dataManagerCreateValidate,
     upload.single('avatar'),
+    dataManagerCreateValidate,
     uploadSingle,
     controllerInstance.createPost
 );
@@ -59,8 +59,8 @@ router.patch(
     '/edit/:id',
     checkPermission('manager_edit'),
     idValidate,
-    dataManagerUpdateValidate,
     upload.single('avatar'),
+    dataManagerUpdateValidate,
     uploadSingle,
     controllerInstance.editPatch
 );

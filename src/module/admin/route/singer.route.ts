@@ -35,8 +35,8 @@ router.get(
 router.post(
     '/create',
     checkPermission('singer_create'),
-    dataSingerValidate,
     upload.single('avatar'),
+    dataSingerValidate,
     uploadSingle,
     controllerInstance.createPost
 );
@@ -59,8 +59,8 @@ router.patch(
     '/edit/:id',
     checkPermission('singer_edit'),
     idValidate,
-    dataSingerValidate,
     upload.single('avatar'),
+    dataSingerValidate,
     uploadSingle,
     controllerInstance.editPatch
 );

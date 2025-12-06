@@ -33,11 +33,11 @@ router.get('/create',
 router.post(
     '/create',
     checkPermission('song_create'),
-    dataSongValidate,
     upload.fields([
         { name: 'avatar', maxCount: 1 },
         { name: 'audio', maxCount: 1 }
     ]),
+    dataSongValidate,
     uploadFields,
     controllerInstance.createPost
 );
@@ -52,11 +52,11 @@ router.patch(
     '/edit/:id',
     checkPermission('song_edit'),
     idValidate,
-    dataSongValidate,
     upload.fields([
         { name: 'avatar', maxCount: 1 },
         { name: 'audio', maxCount: 1 }
     ]),
+    dataSongValidate,
     uploadFields,
     controllerInstance.editPatch
 );
