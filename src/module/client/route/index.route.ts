@@ -9,11 +9,18 @@ import profileRoute from './profile.route';
 import notification from './notification.route';
 import playlistRoute from './playlist.route';
 import feedRoute from './feed.route';
+import homeRoute from './home.route';
 
 // middleware
 import {isAuthenticated} from '../../../common/middleware/auth.middleware'
 
 export default (app: Application) => {
+    app.get('/', (req, res) => {
+        res.redirect('/home');     // hoặc render trang chính
+    });
+
+    app.use('/home', isAuthenticated, homeRoute);
+
     app.use('/topic', isAuthenticated, topicRoute);
 
     app.use('/song', isAuthenticated, songRoute);

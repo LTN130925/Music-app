@@ -1,0 +1,91 @@
+extends ../../layouts/default
+
+block content
+    .homepage-container
+
+        // ===== Banner =====
+        .banner
+            img(src="client/image/5701640.jpg", alt="Banner")
+
+        // ===== BOX RANKING =====
+        .ranking-wrapper
+
+            .section-ranking
+                .ranking-header
+                    h2 Bài hát mới
+                    a.play-all(href=`/song/new`)
+                        i(class="ri-play-circle-line")
+
+                .ranking-box
+                    each song, index in songsNew
+                        .ranking-item
+                            .number= index + 1
+                            img.thumb(src=song.avatar, alt=song.title)
+                            .info
+                                .name= song.title
+                                .singer= song.singerId.fullName
+                            a.play-btn(href=`/song/detail/${song.slug}`)
+                                i(class="ri-play-fill")
+
+            .section-ranking
+                .ranking-header
+                    h2 Bài hát nổi bật
+                    a.play-all(href=`/songs/hot`)
+                        i(class="ri-play-circle-line")
+
+                .ranking-box
+                    each song, index in songsHot
+                        .ranking-item
+                            .number= index + 1
+                            img.thumb(src=song.avatar, alt=song.title)
+                            .info
+                                .name= song.title
+                                .singer= song.singerId.fullName
+                            a.play-btn(href=`/song/detail/${song.slug}`)
+                                i(class="ri-play-fill")
+
+        // ===== PLAYLIST =====
+        .section
+            .section-header
+                h2 Chủ đề nổi bật
+                a.view-more(href="/playlist") Xem tất cả →
+
+            .playlist-list
+                each pl in playlists
+                    .playlist-card
+                        a(href=`/song/${pl.slug}`)
+                            img(src=pl.avatar, alt=pl.title)
+                        .info
+                            .name= pl.title
+                            .singer= pl.description
+
+        // ===== SINGER =====
+        .section
+            .section-header
+                h2 Ca sĩ nổi bật
+                a.view-more(href="/singers") Xem tất cả →
+
+            .singer-list
+                each sg in singers
+                    .singer-card
+                        a(href=`/singer/${sg._id}`)
+                            img(src=sg.avatar, alt=sg.fullName)
+                        .info
+                            .name= sg.fullName
+
+        // ===== Gợi ý =====
+        if recommended && recommended.length > 0
+            .section
+                .section-header
+                    h2 Gợi ý cho bạn
+
+                .song-list
+                    each song in recommended
+                        .song-card
+                            img(src=song.avatar, alt=song.title)
+                            .info
+                                .name= song.title
+                                .singer= song.singerId.fullName
+                            .actions
+                                a.play-btn(href=`/song/detail/${song.slug}`)
+                                    i(class="ri-play-fill")
