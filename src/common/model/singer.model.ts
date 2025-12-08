@@ -5,6 +5,7 @@ export interface ISinger extends Document {
     avatar?: string;
     slug: string;
     status?: 'active' | 'inactive';
+    featured: boolean;
     deleted?: boolean;
     description?: string;
     registrationNumber: number;
@@ -39,6 +40,10 @@ const SingerSchema = new Schema<ISinger>({
         type: String,
         enum: ['active', 'inactive'],
         default: 'active',
+    },
+    featured: {
+        type: Boolean,
+        default: false
     },
     deleted: {
         type: Boolean,

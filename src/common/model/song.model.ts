@@ -11,6 +11,7 @@ export interface ISong extends Document {
     lyrics?: string;
     audio?: string;
     status?: 'active' | 'inactive';
+    featured?: boolean;
     deleted?: boolean;
     deletedAt?: Date;
     createdBy?: {managerId: Schema.Types.ObjectId, at: Date};
@@ -48,6 +49,10 @@ const SongSchema = new Schema<ISong>({
         type: String,
         enum: ['active', 'inactive'],
         default: 'active',
+    },
+    featured: {
+        type: Boolean,
+        default: false,
     },
     deleted: {
         type: Boolean,

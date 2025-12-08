@@ -6,6 +6,7 @@ export interface ITopic extends Document {
     description?: string;
     slug: string;
     status: 'active' | 'inactive';
+    featured: boolean;
     deleted: boolean;
     deletedAt?: Date;
     createdAt?: Date;
@@ -21,6 +22,7 @@ const Topic = new Schema<ITopic>({
     description: String,
     slug: {type: String, trim: true, unique: true, lowercase: true},
     status: {type: String, enum: ['active', 'inactive'], default: 'active'},
+    featured: {type: Boolean, default: false},
     deleted: {type: Boolean, default: false},
     createdBy: {
         managerId: { type: Schema.Types.ObjectId, ref: 'Manager' },

@@ -8,9 +8,9 @@ export class homeService {
         // @ts-ignore
         const [songsNew, songsHot, playlists, singers, recommended] = await Promise.all([
             SongModel.find(filter).populate('singerId', 'fullName').sort({createdAt: -1}).limit(5).exec(),
-            SongModel.find(filter).populate('singerId', 'fullName').limit(5).exec(),
-            TopicModel.find(filter).limit(5).exec(),
-            SingerModel.find(filter).limit(5).exec(),
+            SongModel.find({featured: true, ...filter}).populate('singerId', 'fullName').limit(5).exec(),
+            TopicModel.find({featured: true, ...filter}).limit(5).exec(),
+            SingerModel.find({featured: true, ...filter}).limit(5).exec(),
             SongModel.find(filter).sort({views: -1}).populate('singerId', 'fullName').limit(5).exec(),
         ]);
         return {

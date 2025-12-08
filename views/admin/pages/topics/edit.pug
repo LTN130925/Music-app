@@ -76,6 +76,13 @@ block content
                                     option(value='active', selected=topic.status === 'active') Active
                                     option(value='inactive', selected=topic.status === 'inactive') Inactive
 
+                            // ===== Nổi bật =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='featured') Nổi bật
+                                select.form-select.shadow-sm(name='featured', id='featured')
+                                    option(value='true', selected=topic.featured === true) Nổi bật
+                                    option(value='false', selected=topic.featured === false) Không nổi bật
+
                         hr.my-4
 
                         .d-flex.justify-content-end.gap-2

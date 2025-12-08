@@ -30,7 +30,7 @@ block content
             .section-ranking
                 .ranking-header
                     h2 Bài hát nổi bật
-                    a.play-all(href=`/songs/hot`)
+                    a.play-all(href=`/song/hot`)
                         i(class="ri-play-circle-line")
 
                 .ranking-box
@@ -48,7 +48,7 @@ block content
         .section
             .section-header
                 h2 Chủ đề nổi bật
-                a.view-more(href="/playlist") Xem tất cả →
+                a.view-more(href="/topic") Xem tất cả →
 
             .playlist-list
                 each pl in playlists
@@ -63,12 +63,12 @@ block content
         .section
             .section-header
                 h2 Ca sĩ nổi bật
-                a.view-more(href="/singers") Xem tất cả →
+                a.view-more(href="/singer") Xem tất cả →
 
             .singer-list
                 each sg in singers
                     .singer-card
-                        a(href=`/singer/${sg._id}`)
+                        a(href=`/singer/detail/${sg.slug}`)
                             img(src=sg.avatar, alt=sg.fullName)
                         .info
                             .name= sg.fullName

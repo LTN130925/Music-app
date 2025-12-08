@@ -20,7 +20,7 @@ router.get('/login', controllerInstance.login);
 router.post(
     '/login',
     passport.authenticate('local-client', {
-        successRedirect: '/topic',
+        successRedirect: '/home',
         failureRedirect: '/auth/login',
         failureFlash: true,
     })

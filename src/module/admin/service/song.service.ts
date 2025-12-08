@@ -86,6 +86,7 @@ export class songService {
             singerId: body.singerId,
             lyrics: body.lyrics || '',
             status: body.status,
+            featured: body.featured === 'true' ? true : false,
             updatedBlogId: newBlog._id,
             avatar: body.avatar ? body.avatar[0] : '',
             audio: body.audio ? body.audio[0] : '',
@@ -95,7 +96,6 @@ export class songService {
                 at: new Date()
             }
         }
-
         const newDataSong = new SongModel(dataSong);
         await newBlog.save();
         await newDataSong.save();
@@ -156,6 +156,7 @@ export class songService {
             singerId: body.singerId,
             lyrics: body.lyrics || '',
             status: body.status,
+            featured: body.featured === 'true' ? true : false,
             avatar: body.avatar?.[0] || existingSong.avatar,
             audio: body.audio?.[0] || existingSong.audio,
         };

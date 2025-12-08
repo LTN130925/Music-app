@@ -67,6 +67,13 @@ block content
                                     option(value='active', selected=singer.status === 'active') Active
                                     option(value='inactive', selected=singer.status === 'inactive') Inactive
 
+                            // ===== Nổi bật =====
+                            .col-md-6
+                                label.form-label.fw-semibold(for='featured') Nổi bật
+                                select.form-select.shadow-sm(name='featured', id='featured')
+                                    option(value='true', selected=singer.featured === true) Nổi bật
+                                    option(value='false', selected=singer.featured === false) Không nổi bật
+
                             // ===== Ghi chú hoặc mô tả (tùy chọn) =====
                             .col-md-12
                                 label.form-label.fw-semibold(for='description') Ghi chú

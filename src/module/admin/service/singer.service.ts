@@ -69,6 +69,7 @@ export class singerService {
             fullName: body.fullName,
             slug: slug(body.fullName),
             status: body.status,
+            featured: body.featured === 'true' ? true : false,
             avatar: body.avatar || '',
             updatedBlogId: newBlog._id,
             createdBy: {
@@ -91,6 +92,7 @@ export class singerService {
             slug: body.slug ? slug(body.fullName) : '',
             description: body.description,
             status: body.status,
+            featured: body.featured === 'true' ? true : false,
             avatar: body.avatar || existingSinger.avatar,
         };
         await BlogUpdatedModel.findByIdAndUpdate(existingSinger.updatedBlogId, {

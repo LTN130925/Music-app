@@ -67,6 +67,7 @@ export class topicService {
             slug: slug(body.title),
             avatar: body.avatar || '',
             status: body.status,
+            featured: body.featured === 'true' ? true : false,
             updatedBlogId: newBlog._id,
             createdBy: {
                 managerId: manager._id,
@@ -94,6 +95,7 @@ export class topicService {
             slug: slug(body.title),
             avatar: body.avatar || existingTopic.avatar,
             status: body.status,
+            featured: body.featured === 'true' ? true : false,
         };
 
         await BlogUpdatedModel.findByIdAndUpdate(existingTopic.updatedBlogId, {
