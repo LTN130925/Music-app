@@ -18,6 +18,14 @@ export class controller {
         });
     }
 
+    async blog(req: Request, res: Response) {
+        const data = await serviceInstance.blog();
+        res.render('admin/pages/blog/index', {
+            titlePage: 'Lịch sử chỉnh sửa bài hát',
+            history: data,
+        });
+    }
+
     async create(req: Request, res: Response) {
         const data = await serviceInstance.create();
         res.render('admin/pages/songs/create.pug', {

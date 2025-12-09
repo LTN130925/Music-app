@@ -1,0 +1,25 @@
+extends ../../layouts/default
+
+block content
+    .blog-history-container
+        h1.page-title Lịch sử chỉnh sửa bài viết
+
+        if history.length === 0
+            p.no-data Chưa có lịch sử chỉnh sửa nào.
+        else
+            table.history-table
+                thead
+                    tr
+                        th Người chỉnh sửa
+                        th Tiêu đề
+                        th Thời gian
+                tbody
+                    each item in history
+                        tr
+                            td
+                                if item.managerId
+                                    | #{item.managerId.fullName || "Không tồn tại"}
+                                else
+                                    | -
+                            td #{item.title}
+                            td #{item.updatedAt.toLocaleString("vi-VN")}

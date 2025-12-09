@@ -25,6 +25,11 @@ router.get('/',
     controllerInstance.index
 );
 
+router.get('/blog',
+    checkPermission('song_view'),
+    controllerInstance.blog
+);
+
 router.get('/create',
     checkPermission('song_create'),
     controllerInstance.create

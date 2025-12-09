@@ -8,11 +8,13 @@ import {UserModel} from "../../../common/model/user.model";
 import {MassagesModel} from '../../../common/model/message.model';
 import {SubscribersModel} from "../../../common/model/subscribers.model";
 
-import {ISong} from '../../../common/model/song.model';
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 
 import {pagination} from '../../../shared/util/pagination.util';
 import {countSongs} from '../../../shared/helper/cntDocument.helper';
+
+import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+const logicInstance = new logicFilterArrayLog();
 
 export class songService {
     async index(q) {
@@ -58,6 +60,16 @@ export class songService {
             limit: utilsPagination.limit,
             keyword
         };
+    }
+
+    async blog() {
+        const filter: any = {deleted: false, status: 'active'};
+        const getArrayBlog = await SongModel.find(filter)
+            .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
+            .exec();
+        logicInstance.setArray(getArrayBlog);
+        const record = logicInstance.filterArrayLog();
+        return record;
     }
 
     async detail(id) {
