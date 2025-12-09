@@ -6,9 +6,6 @@ const router = Router();
 // controller
 import {controller} from '../controller/auth.controller';
 
-// validate
-import {registerValidate} from '../../../common/validate/auth.validate'
-
 // config
 import prefixNameConfig from '../../../common/config/prefixName.config';
 

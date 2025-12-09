@@ -1,7 +1,5 @@
 import express, {Application} from 'express';
 import path from 'path';
-import session from 'express-session';
-import passport from 'passport';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import flash from 'express-flash';
@@ -16,10 +14,6 @@ import routeServer from './module/admin/route/index.route';
 // 🟢 config
 import {connect} from './common/config/database.config'; // connect database
 
-// connect passport
-import './common/config/passport.server.config';
-import './common/config/passport.client.config';
-import './common/config/passport.config';
 
 import prefixNameConfig from './common/config/prefixName.config'; // connect prefixName
 
@@ -30,17 +24,9 @@ connect(process.env.DATABASE_URL);
 const app: Application = express();
 const port = process.env.PORT;
 
-// 🟢 Session Passport
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {maxAge: 1000 * 60 * 60 * 24 * 7},
-    })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+// 🟢 connect passport
+import connectPassportConfig from "./common/config/connectPassport.config";
+connectPassportConfig(app);
 
 // 🟢 Set prefixName locals views
 app.locals.prefixName = prefixNameConfig.PATH_ADMIN;
