@@ -9,6 +9,10 @@ const controllerInstance = new controller();
 // validate
 import {updatedLikeSongUser} from '../../../common/validate/songView.validate';
 
+router.get('/new', controllerInstance.new);
+
+router.get('/hot', controllerInstance.hot);
+
 router.get('/:slug', controllerInstance.index);
 
 router.get('/detail/:slug', updatedLikeSongUser, controllerInstance.detail);

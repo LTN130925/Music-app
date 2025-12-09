@@ -14,6 +14,22 @@ export class controller {
         });
     }
 
+    async hot(req: Request, res: Response) {
+        const songs = await serviceInstance.getListSongHot();
+        res.render('client/pages/songs/list', {
+            titlePage: 'Danh sách bài hát',
+            songs
+        });
+    }
+
+    async new(req: Request, res: Response) {
+        const songs = await serviceInstance.getListSongNew();
+        res.render('client/pages/songs/list', {
+            titlePage: 'Danh sách bài hát',
+            songs
+        });
+    }
+
     async detail(req: Request, res: Response) {
         const {slug} = req.params;
         const user = req.user as IUser;

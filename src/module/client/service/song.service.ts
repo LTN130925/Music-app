@@ -32,6 +32,36 @@ export class songService {
         }
     }
 
+    async getListSongHot() {
+        try {
+            const songs = await SongModel.find({
+                featured: true,
+                deleted: false,
+                status: 'active',
+            })
+                .populate('singerId', 'fullName')
+                .exec();
+            return songs;
+        } catch (e) {
+            console.error('Error fetching songs:', e);
+            throw new Error('Unable to fetch songs');
+        }
+    }
+
+    async getListSongNew() {
+        try {
+            const songs = await SongModel.find({deleted: false, status: 'active',})
+                .populate('singerId', 'fullName')
+                .sort({createdAt: -1})
+                .limit(50)
+                .exec();
+            return songs;
+        } catch (e) {
+            console.error('Error fetching songs:', e);
+            throw new Error('Unable to fetch songs');
+        }
+    }
+
     async getOneSong(slug: string, user: IUser): Promise<ISong | null> {
         try {
             const song = await SongModel
