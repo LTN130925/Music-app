@@ -8,6 +8,9 @@ import {pagination} from "../../../shared/util/pagination.util";
 
 import {dictRoleMain} from '../../../shared/helper/dataRole.helper'
 
+import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+const logicInstance = new logicFilterArrayLog();
+
 export class roleService {
     async index(q) {
         const filter: any = {deleted: false};
@@ -51,6 +54,16 @@ export class roleService {
             limit: utilsPagination.limit,
             keyword
         };
+    }
+
+    async blog() {
+        const filter: any = {deleted: false};
+        const getArrayBlog = await RoleModel.find(filter)
+            .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
+            .exec();
+        logicInstance.setArray(getArrayBlog);
+        const record = logicInstance.filterArrayLog();
+        return record;
     }
 
     create() {

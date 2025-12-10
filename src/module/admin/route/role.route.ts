@@ -23,6 +23,11 @@ router.get(
     controllerInstance.index
 );
 
+router.get('/blog',
+    checkPermission('role_view'),
+    controllerInstance.blog
+);
+
 router.get(
     '/create',
     checkPermission('role_create'),

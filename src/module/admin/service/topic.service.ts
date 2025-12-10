@@ -7,6 +7,8 @@ import {convertTextToSlug} from '../../../shared/util/unidecode.util';
 import {countTopics} from '../../../shared/helper/cntDocument.helper';
 import {pagination} from '../../../shared/util/pagination.util';
 
+import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+const logicInstance = new logicFilterArrayLog();
 
 export class topicService {
     async index(q) {
@@ -52,6 +54,16 @@ export class topicService {
             limit: utilsPagination.limit,
             keyword,
         };
+    }
+
+    async blog() {
+        const filter: any = {deleted: false};
+        const getArrayBlog = await TopicModel.find(filter)
+            .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
+            .exec();
+        logicInstance.setArray(getArrayBlog);
+        const record = logicInstance.filterArrayLog();
+        return record;
     }
 
     async detail(id) {

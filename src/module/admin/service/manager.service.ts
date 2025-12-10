@@ -8,6 +8,9 @@ import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countManagers} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
+import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+const logicInstance = new logicFilterArrayLog();
+
 export class songService {
     async index(q) {
         const filter: any = { deleted: false };
@@ -53,6 +56,16 @@ export class songService {
             limit: utilsPagination.limit,
             keyword,
         };
+    }
+
+    async blog() {
+        const filter: any = {deleted: false};
+        const getArrayBlog = await ManagerModel.find(filter)
+            .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
+            .exec();
+        logicInstance.setArray(getArrayBlog);
+        const record = logicInstance.filterArrayLog();
+        return record;
     }
 
     async detail(id) {

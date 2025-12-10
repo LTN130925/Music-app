@@ -9,6 +9,7 @@ export class controller {
         const query = req.query;
         const data = await serviceInstance.index(query);
         res.render('client/pages/singer/list', {
+            titlePage: 'Trang ca sĩ',
             singers: data,
             query
         });

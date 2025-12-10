@@ -7,6 +7,7 @@ export class controller {
     async home(req: Request, res: Response) {
         const data = await serviceInstance.home();
         res.render("client/pages/home/index", {
+            titlePage: 'Trang chủ',
             ...data,
         });
     }

@@ -5,6 +5,9 @@ import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countUsers} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
+import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+const logicInstance = new logicFilterArrayLog();
+
 export class userService {
     async index(q, manager) {
         const filter: any = { managerUser: manager._id, deleted: false };
@@ -48,6 +51,16 @@ export class userService {
             limit: utilsPagination.limit,
             keyword,
         };
+    }
+
+    async blog() {
+        const filter: any = {deleted: false};
+        const getArrayBlog = await UserModel.find(filter)
+            .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
+            .exec();
+        logicInstance.setArray(getArrayBlog);
+        const record = logicInstance.filterArrayLog();
+        return record;
     }
 
     async detail(id) {

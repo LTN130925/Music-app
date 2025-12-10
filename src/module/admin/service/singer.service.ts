@@ -1,10 +1,14 @@
-import {SingerModel} from '../../../common/model/singer.model';
 import slug from 'slug';
 
+import {SingerModel} from '../../../common/model/singer.model';
 import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
+
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countSingers} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
+
+import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+const logicInstance = new logicFilterArrayLog();
 
 export class singerService {
     async index(q) {
@@ -49,6 +53,16 @@ export class singerService {
             limit: utilsPagination.limit,
             keyword
         };
+    }
+
+    async blog() {
+        const filter: any = {deleted: false};
+        const getArrayBlog = await SingerModel.find(filter)
+            .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
+            .exec();
+        logicInstance.setArray(getArrayBlog);
+        const record = logicInstance.filterArrayLog();
+        return record;
     }
 
     async detail(id) {

@@ -63,7 +63,7 @@ export class songService {
     }
 
     async blog() {
-        const filter: any = {deleted: false, status: 'active'};
+        const filter: any = {deleted: false};
         const getArrayBlog = await SongModel.find(filter)
             .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
             .exec();

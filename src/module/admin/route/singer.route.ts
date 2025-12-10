@@ -26,6 +26,11 @@ router.get(
     controllerInstance.index
 );
 
+router.get('/blog',
+    checkPermission('singer_view'),
+    controllerInstance.blog
+);
+
 router.get(
     '/create',
     checkPermission('singer_create'),

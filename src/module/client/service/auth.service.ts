@@ -7,6 +7,7 @@ import {SongFavouriteModel} from '../../../common/model/songFavourite.model';
 import {SubscribersModel} from '../../../common/model/subscribers.model';
 import {MassagesModel} from '../../../common/model/message.model';
 import {ManagerModel} from '../../../common/model/manager.model';
+import {BlogUpdatedModel} from '../../../common/model/blog_updated.model';
 
 export class authService {
     async register(fullName: string, email: string, password: string) {
@@ -14,12 +15,13 @@ export class authService {
         if (existingUser) return null;
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const [newSongView, newSongFavourite, newSongLike, newSubscribers, newMassage] = await Promise.all([
+        const [newSongView, newSongFavourite, newSongLike, newSubscribers, newMassage, newBlogUpdated] = await Promise.all([
             new SongViewModel().save(),
             new SongFavouriteModel().save(),
             new SongLikeModel().save(),
             new SubscribersModel().save(),
             new MassagesModel().save(),
+            new BlogUpdatedModel().save(),
         ]);
         const manager = await ManagerModel.find({deleted: false, status: 'active'})
             .select('roleId')
@@ -40,7 +42,8 @@ export class authService {
             listViewsSong: newSongView._id,
             subscribers: newSubscribers._id,
             messageId: newMassage._id,
-            managerUser: managerUserId
+            managerUser: managerUserId,
+            updatedBlogId: newBlogUpdated._id,
         });
         await newUser.save();
         return newUser;

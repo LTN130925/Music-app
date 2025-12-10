@@ -19,6 +19,14 @@ export class controller {
         });
     }
 
+    async blog(req: Request, res: Response) {
+        const data = await serviceInstance.blog();
+        res.render('admin/pages/blog/index', {
+            titlePage: 'Lịch sử chỉnh sửa chủ đề',
+            history: data,
+        });
+    }
+
     async detail(req: Request, res: Response) {
         const data = await serviceInstance.detail(req.params.id);
         res.render('admin/pages/topics/detail', {

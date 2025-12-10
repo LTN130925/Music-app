@@ -22,6 +22,11 @@ router.get(
     controllerInstance.index
 );
 
+router.get('/blog',
+    checkPermission('user_view'),
+    controllerInstance.blog
+);
+
 router.get(
     '/detail/:id',
     checkPermission('user_view'),
