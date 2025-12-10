@@ -9,10 +9,15 @@ block content
             .d-flex.justify-content-between.align-items-center.mb-4
                 h2.fw-semibold.text-dark.mb-0 Quản lý bài hát
 
-                if checked.includes('song_create')
-                    a.btn-add(href= prefixName + '/song/create')
-                        i.fas.fa-plus
-                        |  Thêm bài hát
+                .d-flex.align-items-center.gap-3
+                    if checked.includes('song_view')
+                        a.btn-history(href= prefixName + '/song/blog', title='Xem lịch sử')
+                            i.fa-solid.fa-clock-rotate-left
+
+                    if checked.includes('song_create')
+                        a.btn-add(href= prefixName + '/song/create')
+                            i.fas.fa-plus
+                            |  Thêm bài hát
 
             .card.shadow-sm.rounded-4.border-0
                 .card-body.p-4

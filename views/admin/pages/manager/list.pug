@@ -9,10 +9,15 @@ block content
             .d-flex.justify-content-between.align-items-center.mb-4
                 h2.fw-semibold.text-dark.mb-0 Quản lý quản trị viên
 
-                if checked.includes('manager_create')
-                    a.btn-add(href= prefixName + '/manager/create')
-                        i.fas.fa-plus
-                        |  Thêm quản trị viên
+                .d-flex.align-items-center.gap-3
+                    if checked.includes('manager_view')
+                        a.btn-history(href= prefixName + '/manager/blog', title='Xem lịch sử')
+                            i.fa-solid.fa-clock-rotate-left
+
+                    if checked.includes('manager_create')
+                        a.btn-add(href= prefixName + '/manager/create')
+                            i.fas.fa-plus
+                            |  Thêm quản trị viên
 
             .card.shadow-sm.rounded-4.border-0
                 .card-body.p-4

@@ -9,6 +9,11 @@ block content
             .d-flex.justify-content-between.align-items-center.mb-4
                 h2.fw-semibold.text-dark.mb-0 Quản lý người dùng
 
+                .d-flex.align-items-center.gap-3
+                    if checked.includes('user_view')
+                        a.btn-history(href= prefixName + '/user/blog', title='Xem lịch sử')
+                            i.fa-solid.fa-clock-rotate-left
+
             .card.shadow-sm.rounded-4.border-0
                 .card-body.p-4
                     .search-container

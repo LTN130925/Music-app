@@ -2,7 +2,7 @@ extends ../../layouts/default
 
 block content
     .blog-history-container
-        h1.page-title Lịch sử chỉnh sửa bài viết
+        h1.page-title #{titlePage}
 
         if history.length === 0
             p.no-data Chưa có lịch sử chỉnh sửa nào.

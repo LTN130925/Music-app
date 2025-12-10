@@ -1,0 +1,31 @@
+.blog-history-container {
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.history-table th, .history-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.history-table th {
+    background: #f7f7f7;
+    text-align: left;
+}
+
+.no-data {
+    padding: 10px;
+    font-style: italic;
+    opacity: .7;
+}

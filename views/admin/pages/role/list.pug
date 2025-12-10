@@ -9,10 +9,15 @@ block content
             .d-flex.justify-content-between.align-items-center.mb-4
                 h2.fw-semibold.text-dark.mb-0 Quản lý vai trò
 
-                if checked.includes('role_create')
-                    a.btn-add(href= prefixName + '/role/create')
-                        i.fas.fa-plus
-                        |  Thêm vai trò
+                .d-flex.align-items-center.gap-3
+                    if checked.includes('role_view')
+                        a.btn-history(href= prefixName + '/role/blog', title='Xem lịch sử')
+                            i.fa-solid.fa-clock-rotate-left
+
+                    if checked.includes('role_create')
+                        a.btn-add(href= prefixName + '/role/create')
+                            i.fas.fa-plus
+                            |  Thêm vai trò
 
             .card.shadow-sm.rounded-4.border-0
                 .card-body.p-4
