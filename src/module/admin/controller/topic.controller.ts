@@ -28,10 +28,12 @@ export class controller {
     }
 
     async detail(req: Request, res: Response) {
-        const data = await serviceInstance.detail(req.params.id);
+        const data = await serviceInstance.detail(req.params.id, req.query);
         res.render('admin/pages/topics/detail', {
             titlePage: 'Chi tiết chủ đề',
-            topic: data,
+            topic: data.topic,
+            songs: data.songs,
+            query: req.query,
         });
     }
 

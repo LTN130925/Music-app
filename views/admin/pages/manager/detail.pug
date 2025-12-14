@@ -85,16 +85,6 @@ block content
                             else
                                 span.text-muted Không xác định
 
-                        // ===== Xóa bởi =====
-                        p.mb-2
-                            strong.text-secondary Xóa bởi:
-                            |
-                            if mana.deletedBy && mana.deletedBy.managerId && mana.deletedBy.mana.fullName
-                                = mana.deletedBy.managerId.fullName + ' (' + new Date(mana.deletedBy.at).toLocaleDateString('vi-VN') + ')'
-                            else
-                                span.text-muted Không có
-
-
                         // ===== Mô tả =====
                         .col-md-12
                             hr

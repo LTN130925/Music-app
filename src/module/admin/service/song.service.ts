@@ -76,6 +76,7 @@ export class songService {
         const data = await SongModel.findOne({_id: id, deleted: false})
             .populate('singerId', 'fullName')
             .populate('topicId', 'title')
+            .populate('createdBy.managerId', 'fullName')
             .exec()
         return data;
     }

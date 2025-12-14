@@ -39,6 +39,14 @@ block content
                                         span.text-muted Không xác định
 
                                 p.mb-2
+                                    strong.text-secondary Đã tạo bởi:
+                                    |
+                                    if song.createdBy.managerId && song.createdBy.managerId.fullName
+                                        = ' ' + song.createdBy.managerId.fullName
+                                    else
+                                        span.text-muted Không xác định
+
+                                p.mb-2
                                     strong.text-secondary Trạng thái:
                                     |
                                     if song.status === 'active'

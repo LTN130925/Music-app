@@ -8,6 +8,7 @@ import {countTopics} from '../../../shared/helper/cntDocument.helper';
 import {pagination} from '../../../shared/util/pagination.util';
 
 import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+import {SongModel} from "../../../common/model/song.model";
 const logicInstance = new logicFilterArrayLog();
 
 export class topicService {
@@ -66,9 +67,30 @@ export class topicService {
         return record;
     }
 
-    async detail(id) {
-        const topic = await TopicModel.findOne({ _id: id, deleted: false }).exec();
-        return topic;
+    async detail(id, q) {
+        const topic = await TopicModel.findOne({ _id: id, deleted: false })
+            .populate('createdBy.managerId', 'fullName')
+            .exec();
+        const filter = { topicId: id, deleted: false };
+
+        if (q.search) {
+            filter['title'] = { $regex: q.search, $options: 'i' };
+        }
+
+        let sort: any = {};
+        switch (q.sort) {
+            case "name_asc": sort.title = 1; break;
+            case "name_desc": sort.title = -1; break;
+            case "views_asc": sort.views = 1; break;
+            case "views_desc": sort.views = -1; break;
+            case "newest": sort.createdAt = -1; break;
+            case "oldest": sort.createdAt = 1; break;
+            default: sort.createdAt = -1;
+        }
+        const songs = await SongModel.find(filter)
+            .sort(sort)
+            .exec();
+        return {topic, songs};
     }
 
     async createPost(body, manager): Promise<void> {

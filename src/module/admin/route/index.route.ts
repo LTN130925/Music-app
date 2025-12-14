@@ -1,4 +1,4 @@
-import {Application} from "express";
+import {Application, Response, Request} from "express";
 
 // route
 import topicRoute from './topic.route';

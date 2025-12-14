@@ -64,7 +64,15 @@ export class userService {
     }
 
     async detail(id) {
-        const user = await UserModel.findOne({ _id: id, deleted: false }).exec();
+        const user = await UserModel.findOne({ _id: id, deleted: false })
+            .populate({path: 'listLikesSong', populate: {path: 'listId', select: 'title'}})
+            .populate({path: 'listFavoritesSong', populate: {path: 'listId', select: 'title'}})
+            .populate({path: 'listViewsSong', populate: {path: 'listId.idSong', select: 'title'}})
+            .populate({path: 'subscribers', populate: {path: 'listId', select: 'fullName'}})
+            .populate('messageId')
+            .populate('managerUser', 'fullName')
+            .select('-password')
+            .exec();
         return user;
     }
 

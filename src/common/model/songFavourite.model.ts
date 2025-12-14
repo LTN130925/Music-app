@@ -1,14 +1,11 @@
 import {Schema, Document, model} from 'mongoose';
 
 export interface ISongFavourite extends Document {
-    listId: string[];
+    listId: Schema.Types.ObjectId[];
 }
 
 const songFavouriteSchema: Schema = new Schema({
-    listId: {
-        type: [String],
-        default: []
-    },
+    listId: [{type: Schema.Types.ObjectId, ref: 'Song'}],
 }, {
     timestamps: true
 });

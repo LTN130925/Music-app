@@ -71,6 +71,7 @@ export class songService {
     async detail(id) {
         const mana = await ManagerModel.findOne({ _id: id, deleted: false })
             .populate("roleId", "title")
+            .populate("createdBy.managerId", "fullName")
             .exec();
         return mana;
     }

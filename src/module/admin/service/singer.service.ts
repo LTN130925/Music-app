@@ -8,6 +8,7 @@ import {countSingers} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
 import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+import {SongModel} from "../../../common/model/song.model";
 const logicInstance = new logicFilterArrayLog();
 
 export class singerService {
@@ -65,10 +66,29 @@ export class singerService {
         return record;
     }
 
-    async detail(id) {
-        const filter = {_id: id, deleted: false};
-        const singer = await SingerModel.findOne(filter).exec();
-        return singer;
+    async detail(id, q) {
+        const singer = await SingerModel.findOne({_id: id, deleted: false})
+            .populate('createdBy.managerId', 'fullName')
+            .exec();
+        const filter = {singerId: id, deleted: false};
+
+        if (q.search) {
+            filter['title'] = { $regex: q.search, $options: 'i' };
+        }
+        let sort: any = {};
+        switch (q.sort) {
+            case "name_asc": sort.title = 1; break;
+            case "name_desc": sort.title = -1; break;
+            case "views_asc": sort.views = 1; break;
+            case "views_desc": sort.views = -1; break;
+            case "newest": sort.createdAt = -1; break;
+            case "oldest": sort.createdAt = 1; break;
+            default: sort.createdAt = -1;
+        }
+        const songs = await SongModel.find(filter)
+            .sort(sort)
+            .exec();
+        return {singer, songs};
     }
 
     async edit(id) {

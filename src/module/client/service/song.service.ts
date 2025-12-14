@@ -92,7 +92,7 @@ export class songService {
                 );
             } else {
                 await SongViewModel.updateOne(
-                    {_id: user.listViewsSong, 'listId.idSong': song._id.toString()},
+                    {_id: user.listViewsSong, 'listId.idSong': song._id},
                     {$set: {'listId.$.at': new Date()}},
                 );
             }
@@ -104,7 +104,7 @@ export class songService {
     }
 
 
-    async updatedLike(typeLike: string, songId: string, songLikeId: Schema.Types.ObjectId): Promise<number> {
+    async updatedLike(typeLike: string, songId, songLikeId: Schema.Types.ObjectId): Promise<number> {
         try {
             const updatedSong = await SongModel.findByIdAndUpdate(
                 songId,
@@ -125,7 +125,7 @@ export class songService {
         }
     }
 
-    async updatedFav(typeFav: string, songId: string, songFavId: Schema.Types.ObjectId): Promise<void> {
+    async updatedFav(typeFav: string, songId, songFavId: Schema.Types.ObjectId): Promise<void> {
         try {
             const updateAction = typeFav === 'disfav' ? '$pull' : '$push';
             await SongFavouriteModel.findByIdAndUpdate(

@@ -1,0 +1,163 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.py-4
+        // ===== HEADER =====
+        .d-flex.justify-content-between.align-items-center.mb-4
+            h3.fw-bold.text-dark Chi tiết người dùng
+            a.btn.btn-secondary(href=prefixName + '/user')
+                i.fa.fa-arrow-left.me-1
+                | Quay lại
+
+        .row
+            // ===== LEFT: PROFILE =====
+            .col-md-4
+                .card.shadow-sm
+                    .card-body.text-center
+                        img.rounded-circle.mb-3(
+                            src=user.avatar || '/images/default-avatar.png',
+                            width='120',
+                            height='120'
+                        )
+
+                        h5.fw-semibold= user.fullName
+                        p.text-muted.mb-1= user.email
+
+                        if user.phone
+                            p.text-muted.mb-2= user.phone
+
+                        span.badge(
+                            class=user.status === 'active'  'bg-success' : 'bg-secondary'
+                        )= user.status
+
+                        hr
+
+                        small.text-muted
+                            | Tạo lúc: #{new Date(user.createdAt).toLocaleString('vi-VN')}
+
+            // ===== RIGHT =====
+            .col-md-8
+                // ---- STATISTICS ----
+                .row.g-3
+                    .col-md-3
+                        .card.text-center.shadow-sm
+                            .card-body
+                                i.fa.fa-heart.text-danger.fs-4
+                                h6.mt-2 Thích
+                                strong= user.listLikesSong.listId.length || 0
+
+                    .col-md-3
+                        .card.text-center.shadow-sm
+                            .card-body
+                                i.fa.fa-star.text-warning.fs-4
+                                h6.mt-2 Yêu thích
+                                strong= user.listFavoritesSong.listId.length || 0
+
+                    .col-md-3
+                        .card.text-center.shadow-sm
+                            .card-body
+                                i.fa.fa-eye.text-primary.fs-4
+                                h6.mt-2 Lượt xem
+                                strong= user.listViewsSong.listId.length || 0
+
+                    .col-md-3
+                        .card.text-center.shadow-sm
+                            .card-body
+                                i.fa.fa-users.text-success.fs-4
+                                h6.mt-2 Theo dõi
+                                strong= user.subscribers.listId.length || 0
+
+                // ---- VIEW HISTORY ----
+                .card.mt-4.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-clock-rotate-left.me-1
+                        | Lịch sử xem bài hát
+                    .card-body
+                        if user.listViewsSong && user.listViewsSong.listId.length
+                            table.table.table-sm
+                                thead
+                                    tr
+                                        th #
+                                        th ID bài hát
+                                        th Thời gian
+                                tbody
+                                    each view, index in user.listViewsSong.listId
+                                        tr
+                                            td= index + 1
+                                            td.text-monospace= view.idSong.title
+                                            td= new Date(view.at).toLocaleString('vi-VN')
+                        else
+                            p.text-muted.mb-0 Chưa có lượt xem
+
+                // ---- FAVOURITES ----
+                .card.mt-4.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-clock-rotate-left.me-1
+                        | Bài hát yêu thích đã lưu
+                    .card-body
+                        if user.listFavoritesSong && user.listFavoritesSong.listId.length
+                            table.table.table-sm
+                                thead
+                                    tr
+                                        th #
+                                        th ID bài hát
+                                tbody
+                                    each view, index in user.listFavoritesSong.listId
+                                        tr
+                                            td= index + 1
+                                            td.text-monospace= view.title
+                        else
+                            p.text-muted.mb-0 Chưa có yêu thích
+
+                // ---- LIKES ----
+                .card.mt-4.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-clock-rotate-left.me-1
+                        | Bài hát đã thích
+                    .card-body
+                        if user.listLikesSong && user.listLikesSong.listId.length
+                            table.table.table-sm
+                                thead
+                                    tr
+                                        th #
+                                        th ID bài hát
+                                tbody
+                                    each view, index in user.listLikesSong.listId
+                                        tr
+                                            td= index + 1
+                                            td.text-monospace= view.title
+                        else
+                            p.text-muted.mb-0 Chưa có bài hát đã thích
+
+                // ---- Subscribers ----
+                .card.mt-4.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-clock-rotate-left.me-1
+                        | Ca sĩ đã đăng kí
+                    .card-body
+                        if user.subscribers && user.subscribers.listId.length
+                            table.table.table-sm
+                                thead
+                                    tr
+                                        th #
+                                        th ID ca sĩ
+                                tbody
+                                    each view, index in user.subscribers.listId
+                                        tr
+                                            td= index + 1
+                                            td.text-monospace= view.fullName
+                        else
+                            p.text-muted.mb-0 Chưa có đăng kí ca sĩ nào
+
+                // ---- MANAGER ----
+                .card.mt-4.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-user-shield.me-1
+                        | Manager quản lý
+                    .card-body
+                        if user.managerUser.length
+                            ul.mb-0
+                                each item in user.managerUser
+                                    li.text-monospace= item.fullName
+                        else
+                            p.text-muted.mb-0 Không có manager

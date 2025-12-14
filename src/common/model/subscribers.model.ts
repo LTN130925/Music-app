@@ -1,14 +1,11 @@
 import {Schema, Document, model} from 'mongoose';
 
 export interface ISubscriberSchema extends Document {
-    listId: string[];
+    listId: Schema.Types.ObjectId[];
 }
 
 const subscribersSchema: Schema = new Schema({
-    listId: {
-        type: [String],
-        default: []
-    },
+    listId: [{type: Schema.Types.ObjectId, ref: 'Singer'}],
 }, {
     timestamps: true
 });

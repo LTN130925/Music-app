@@ -28,10 +28,10 @@ export class controller {
 
     async detail(req: Request, res: Response) {
         const data = await serviceInstance.detail(req.params.id);
-        res.render('admin/pages/manager/detail', {
+        res.render('admin/pages/user/detail', {
             titlePage: 'Trang chi tiết tài khoản',
-            manager: data,
-        })
+            user: data,
+        });
     }
 
     async changeStatus(req: Request, res: Response) {

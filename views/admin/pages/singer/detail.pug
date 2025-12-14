@@ -70,6 +70,53 @@ block content
                                     .p-3.border.rounded.bg-light!= singer.description
                                 else
                                     p.text-muted Không có mô tả
+                        hr.my-3
+
+                        .container
+                            .row
+                                .col-md-12
+                                    form(action=prefixName + `/singer/detail/${singer._id}` method="GET")
+                                        .filter-bar(style="display:flex; gap:1rem; align-items:center; margin-bottom:2rem;")
+
+                                            input.form-control(
+                                                type="text",
+                                                name="search",
+                                                placeholder="Tìm bài hát...",
+                                                style="flex:1;",
+                                                value=(query && query.search ? query.search : "")
+                                            )
+
+                                            select.form-select(name="sort" onchange="this.form.submit()")
+                                                option(value="") Sắp xếp theo
+                                                option(value="name_asc" selected=(query.sort=='name_asc')) Tên A → Z
+                                                option(value="name_desc" selected=(query.sort=='name_desc')) Tên Z → A
+                                                option(value="views_asc" selected=(query.sort=='views_asc')) Lượt xem ↑
+                                                option(value="views_desc" selected=(query.sort=='views_desc')) Lượt xem ↓
+                                                option(value="newest" selected=(query.sort=='newest')) Mới nhất
+                                                option(value="oldest" selected=(query.sort=='oldest')) Cũ nhất
+
+                                    .mt-3
+                                        .song-list
+                                            each song in songs
+                                                .song-item.d-flex.align-items-center.justify-content-start.border-bottom.p-3
+                                                    // Ảnh đại diện bài hát
+                                                    .song-avatar(style=`background-image:url('${song.avatar || "/images/default-avatar.png"}'); width: 50px; height: 50px; background-size: cover; background-position: center; border-radius: 50%;`)
+
+                                                    // Thông tin bài hát
+                                                    .song-info.flex-grow-1.ms-3
+                                                        h5.song-title.mb-1
+                                                            a(href=prefixName + `/song/detail/${song._id}`, style="text-decoration:none; color:inherit;")= song.title
+
+                                                        .song-meta.d-flex.align-items-center.text-muted
+                                                            span.meta-item.me-3
+                                                                i.fas.fa-eye.me-1
+                                                                | #{song.views} lượt xem
+                                                            span.meta-item
+                                                                i.fas.fa-heart.me-1
+                                                                | #{song.likes} lượt thích
+
+                                                // Đưa vào khoảng cách dưới mỗi bài hát
+                                                hr.my-3
 
                         hr.my-4
                         .d-flex.justify-content-end.gap-2
