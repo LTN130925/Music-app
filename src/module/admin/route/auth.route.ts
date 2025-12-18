@@ -16,7 +16,7 @@ router.get('/login', controllerInstance.login);
 router.post(
     '/login',
     passport.authenticate('local-server', {
-        successRedirect: prefixNameConfig.PATH_ADMIN + '/topic',
+        successRedirect: prefixNameConfig.PATH_ADMIN + '/dashboard',
         failureRedirect: prefixNameConfig.PATH_ADMIN + '/auth/login',
         failureFlash: true,
     })

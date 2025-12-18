@@ -1,0 +1,101 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.py-4
+        h3.fw-bold.mb-4 Dashboard hệ thống
+
+        // ===== STAT CARDS =====
+        .row.g-3.mb-4
+            each item in [{ title: 'Users', value: stats.totalUsers, icon: 'fa-user' },{ title: 'Songs', value: stats.totalSongs, icon: 'fa-music' },{ title: 'Singers', value: stats.totalSingers, icon: 'fa-microphone' },{ title: 'Topics', value: stats.totalTopics, icon: 'fa-tags' },{ title: 'Likes', value: stats.totalLikes, icon: 'fa-heart' },{ title: 'Views', value: stats.totalViews, icon: 'fa-eye' },{ title: 'Subscribers', value: stats.totalSubscribers, icon: 'fa-users' },{ title: 'Managers', value: stats.totalManagers, icon: 'fa-user-shield' }]
+                .col-md-3
+                    .card.shadow-sm.text-center
+                        .card-body
+                            i.fa(class=item.icon + ' fs-3 text-primary')
+                            h6.mt-2= item.title
+                            h4.fw-bold= item.value
+
+        // ===== TABLES =====
+        .row
+            // ---- Top Songs ----
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-fire.me-1
+                        | Bài hát nổi bật
+                    .card-body
+                        table.table.table-sm
+                            thead
+                                tr
+                                    th #
+                                    th Tên bài hát
+                                    th Lượt xem
+                                    th Likes
+                            tbody
+                                each song, index in topSongs
+                                    tr
+                                        td= index + 1
+                                        td= song.title
+                                        td= song.views
+                                        td= song.likes
+
+            // ---- Latest Users ----
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-user-clock.me-1
+                        | Người dùng mới
+                    .card-body
+                        table.table.table-sm
+                            thead
+                                tr
+                                    th #
+                                    th Tên
+                                    th Email
+                                    th Ngày tạo
+                            tbody
+                                each user, index in latestUsers
+                                    tr
+                                        td= index + 1
+                                        td= user.fullName
+                                        td= user.email
+                                        td= new Date(user.createdAt).toLocaleDateString('vi-VN')
+
+            // ---- Top Singers ----
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-fire.me-1
+                        | Ca sĩ nổi bật
+                    .card-body
+                        table.table.table-sm
+                            thead
+                                tr
+                                    th #
+                                    th Tên ca sĩ
+                                    th Lượt đăng kí
+                            tbody
+                                each singer, index in topSingers
+                                    tr
+                                        td= index + 1
+                                        td= singer.fullName
+                                        td= singer.registrationNumber
+
+            // ---- Top Topics ----
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold
+                        i.fa.fa-fire.me-1
+                        | Chủ đề nổi bật
+                    .card-body
+                        table.table.table-sm
+                            thead
+                                tr
+                                    th #
+                                    th Tên chủ đề
+                            tbody
+                                each topic, index in topTopics
+                                    tr
+                                        td= index + 1
+                                        td= topic.title
+
+

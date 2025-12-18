@@ -1,6 +1,7 @@
 import {Application, Response, Request} from "express";
 
 // route
+import dashboardsRoute from './dashboard.route';
 import topicRoute from './topic.route';
 import songRoute from './song.route';
 import userRoute from './user.route';
@@ -18,6 +19,8 @@ import {isAuthenticated} from '../../../common/middleware/authServer.middleware'
 import prefixNameConfig from '../../../common/config/prefixName.config';
 
 export default (app: Application) => {
+    app.use(prefixNameConfig.PATH_ADMIN + '/dashboard', isAuthenticated, dashboardsRoute);
+
     app.use(prefixNameConfig.PATH_ADMIN + '/topic', isAuthenticated, topicRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/song', isAuthenticated, songRoute);
