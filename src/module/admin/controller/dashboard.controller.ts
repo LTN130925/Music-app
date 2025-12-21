@@ -7,6 +7,7 @@ export class controller {
     async index(req: Request, res: Response) {
         const record = await serviceInstance.index();
         res.render('admin/pages/dashboard/dashboard', {
+            titlePage: 'Trang tổng quan',
             ...record
         });
     }

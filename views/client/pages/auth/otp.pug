@@ -1,0 +1,20 @@
+extends ../../layouts/auth.pug
+include ../../mixins/box-head
+
+block auth
+    .auth-container
+        .auth-card
+            +box-head("Xác thực OTP")
+            form(action=`/auth/forgot/otp?email=${email}` method="POST")
+                .form-group
+                    label(for="otp") Mã OTP
+                    input#otp(
+                        type="text"
+                        name="otp"
+                        placeholder="Nhập mã OTP"
+                        required
+                        maxlength="6"
+                        autocomplete="one-time-code"
+                    )
+
+                button.btn-primary(type="submit") Xác nhận

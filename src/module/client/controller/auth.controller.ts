@@ -1,13 +1,68 @@
 import {Request, Response} from 'express';
 
 import {authService} from '../service/auth.service';
-
 const serviceInstance = new authService();
+
 export class controller {
     register(req: Request, res: Response) {
         res.render('client/pages/auth/register', {
             titlePage: 'Trang đăng kí',
         });
+    }
+
+    forgot(req: Request, res: Response) {
+        res.render('client/pages/auth/forgot', {
+            titlePage: 'Quân mật khẩu',
+        })
+    }
+
+    async forgotPost(req: Request, res: Response) {
+        const {email} = req.body;
+        const result = await serviceInstance.confirmEmail(email);
+        if (!result) {
+            req.flash('error', 'Không tồn tại email đã nhập!');
+            return res.redirect(req.get('referrent') || '/');
+        }
+        req.session['text'] = email;
+        res.redirect('/auth/forgot/otp');
+    }
+
+    forgotOtp(req: Request, res: Response) {
+        res.render('client/pages/auth/otp', {
+            titlePage: 'Trang xác thực otp',
+            email: req.session['text']
+        });
+    }
+
+    async forgotOtpPost(req: Request, res: Response) {
+        const {email} = req.query;
+        const {otp} = req.body;
+        const confirmOtp = await serviceInstance.confirmOtp(email as string, otp as string);
+        if (!confirmOtp) {
+            req.flash('error', 'Sai mã, vui lòng nhập lại!!');
+            return res.redirect(req.get('referrent') || '/');
+        }
+        req.session['text'] = email;
+        res.redirect('/auth/change-password');
+    }
+
+    async changePassword(req: Request, res: Response) {
+        res.render('client/pages/auth/change-password', {
+            titlePage: 'Đổi mật khẩu',
+            email: req.session['text'],
+        });
+    }
+
+    async changePasswordReset(req: Request, res: Response) {
+        const {email} = req.query;
+        const {password} = req.body;
+        const updated = await serviceInstance.changePassword(email as string, password);
+        if (!updated) {
+            req.flash('error', 'Thay đổi mật khẩu thất bại, vui lòng thử lại!');
+            return res.redirect(req.get('referrent') || '/');
+        }
+        req.flash('success', 'Thay đổi mật khẩu thành công, hãy đăng nhập để hưởng thức âm nhạc!');
+        res.redirect('/auth/login');
     }
 
     async registerPost(req: Request, res: Response) {

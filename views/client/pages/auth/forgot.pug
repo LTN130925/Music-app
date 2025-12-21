@@ -1,0 +1,13 @@
+extends ../../layouts/auth.pug
+include ../../mixins/box-head
+
+block auth
+    .auth-container
+        .auth-card
+            +box-head("Xác thực email")
+            form(action="/auth/forgot" method="POST")
+                .form-group
+                    label(for="email") Email
+                    input#email(type="email" name="email" placeholder="Nhập email..." required)
+
+                button.btn-primary(type="submit") Đăng nhập
