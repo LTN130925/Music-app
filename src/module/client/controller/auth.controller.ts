@@ -24,6 +24,7 @@ export class controller {
             return res.redirect(req.get('referrent') || '/');
         }
         req.session['text'] = email;
+        req.flash('success', 'Đã gửi mã OTP qua email của bạn, Hãy kiểm tra và xác thực OTP!')
         res.redirect('/auth/forgot/otp');
     }
 
@@ -43,6 +44,7 @@ export class controller {
             return res.redirect(req.get('referrent') || '/');
         }
         req.session['text'] = email;
+        req.flash('success', 'Xác thực mã otp thành công, hãy thay đổi mật khẩu của bạn!')
         res.redirect('/auth/change-password');
     }
 

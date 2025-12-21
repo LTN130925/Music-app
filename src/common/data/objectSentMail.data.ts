@@ -16,7 +16,7 @@ export const objectSentMailData = (forgotPassword) => {
             
             <!-- Header -->
             <div style="background:#2ecc71; padding:20px; text-align:center; color:#ffffff;">
-              <h1 style="margin:0; font-size:22px;">Cửa hàng thực phẩm</h1>
+              <h1 style="margin:0; font-size:22px;">Tận hưởng âm thanh</h1>
               <p style="margin:5px 0 0; font-size:14px;">Xác nhận đổi mật khẩu</p>
             </div>
         
@@ -60,7 +60,7 @@ export const objectSentMailData = (forgotPassword) => {
         
               <p style="font-size:14px;">
                 Trân trọng,<br />
-                <b>Đội ngũ Cửa hàng thực phẩm</b>
+                <b>Đội ngũ Tận hưởng âm thanh</b>
               </p>
             </div>
         
