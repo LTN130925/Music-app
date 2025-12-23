@@ -12,4 +12,6 @@ router.get('/song/:id/comments', idValidate, controllerInstance.getListComments)
 
 router.post('/song/:id/comments', idValidate, controllerInstance.commentPost);
 
+router.post('/comment/:id/react', idValidate, controllerInstance.reactPost);
+
 export default router;

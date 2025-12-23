@@ -23,4 +23,11 @@ export class controller {
             res.status(500).json({ message: 'Server error' });
         }
     }
+
+    async reactPost(req: Request, res: Response) {
+        const {id} = req.params;
+        const {type} = req.body;
+        await serviceInstance.react(id, type, req.user['_id']);
+        res.status(200).json({ success: true });
+    }
 }

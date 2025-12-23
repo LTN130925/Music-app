@@ -34,4 +34,37 @@ export class commentService {
         return newComment.toObject();
     }
 
+    async react(commentId: string, type: 'like' | 'dislike', userId: Types.ObjectId) {
+        const id = new Types.ObjectId(commentId);
+
+        const field = type === 'like' ? 'likes' : 'dislikes';
+        const oppositeField = type === 'like' ? 'dislikes' : 'likes';
+        const countField = type === 'like' ? 'likesCount' : 'dislikesCount';
+
+        const comment = await CommentModel.findById(id)
+            .select(field)
+            .lean();
+
+        if (!comment) return;
+        const hasReacted = comment[field].some(x => x.equals(userId));
+
+        if (!hasReacted) {
+            await CommentModel.updateOne(
+                { _id: id },
+                {
+                    $addToSet: { [field]: userId },
+                    $pull: { [oppositeField]: userId },
+                    $inc: { [countField]: 1 }
+                }
+            );
+        } else {
+            await CommentModel.updateOne(
+                { _id: id },
+                {
+                    $pull: { [field]: userId },
+                    $inc: { [countField]: -1 }
+                }
+            );
+        }
+    }
 }
