@@ -52,3 +52,14 @@ block content
                     .song-lyrics.mt-4
                         h5 Lời bài hát
                         pre.lyrics !{song.lyrics}
+
+                    .section-comments(data-song-id=song._id)
+                        h5.section-title Bình luận
+
+                        form#comment-form.comment-form
+                            textarea#comment-input.comment-input(
+                                placeholder="Viết bình luận của bạn..."
+                            )
+                            button(type="submit").comment-submit Gửi
+
+                        ul#comment-list.comment-list

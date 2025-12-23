@@ -3,6 +3,7 @@ import {Application} from "express";
 // route
 import topicRoute from './topic.route';
 import songRoute from './song.route';
+import apiCommentRoute from './api.route';
 import userRoute from './auth.route';
 import singerRoute from './singer.route';
 import profileRoute from './profile.route';
@@ -24,6 +25,8 @@ export default (app: Application) => {
     app.use('/topic', isAuthenticated, topicRoute);
 
     app.use('/song', isAuthenticated, songRoute);
+
+    app.use('/api', isAuthenticated, apiCommentRoute);
 
     app.use('/singer', isAuthenticated, singerRoute);
 

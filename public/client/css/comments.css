@@ -1,0 +1,143 @@
+.section-comments {
+    margin-top: 32px;
+    padding: 20px;
+    background: #0f0f0f;
+    border-radius: 12px;
+}
+
+.section-title {
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+}
+
+/* ===== FORM ===== */
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comment-input {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px;
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.comment-input::placeholder {
+    color: #777;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: #1db954;
+}
+
+/* Nút gửi */
+.comment-submit {
+    align-self: flex-end;
+    padding: 6px 16px;
+    background: #1db954;
+    border: none;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #000;
+}
+
+.comment-submit:hover {
+    background: #1ed760;
+}
+
+/* ===== LIST ===== */
+.comment-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 24px;
+}
+
+/* ===== COMMENT ===== */
+.comment-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #1f1f1f;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-author {
+    font-weight: 600;
+    font-size: 13px;
+    color: #fff;
+}
+
+.comment-time {
+    font-size: 11px;
+    color: #777;
+}
+
+.comment-content {
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #e5e5e5;
+}
+
+/* ===== ACTION ===== */
+.comment-actions {
+    margin-top: 6px;
+}
+
+.reply-btn {
+    font-size: 12px;
+    color: #1db954;
+    cursor: pointer;
+}
+
+.reply-btn:hover {
+    text-decoration: underline;
+}
+
+/* ===== REPLY ===== */
+.comment-replies {
+    margin-top: 12px;
+    margin-left: 32px;
+    padding-left: 16px;
+    border-left: 2px solid #1f1f1f;
+}
+
+/* ===== REPLY FORM ===== */
+.reply-form {
+    margin-top: 8px;
+}
+
+.reply-form textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    color: #fff;
+}
+
+.reply-form button {
+    margin-top: 6px;
+    padding: 4px 12px;
+    background: #1db954;
+    border: none;
+    border-radius: 999px;
+    font-size: 12px;
+    cursor: pointer;
+}
