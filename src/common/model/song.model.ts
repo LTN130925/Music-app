@@ -79,4 +79,7 @@ const SongSchema = new Schema<ISong>({
     timestamps: true
 });
 
+SongSchema.index({topicId: 1, createdAt: -1});
+SongSchema.index({singerId: 1, createdAt: -1});
+
 export const SongModel = model<ISong>('Song', SongSchema, 'songs');
