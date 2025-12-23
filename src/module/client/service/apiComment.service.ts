@@ -40,31 +40,36 @@ export class commentService {
         const field = type === 'like' ? 'likes' : 'dislikes';
         const oppositeField = type === 'like' ? 'dislikes' : 'likes';
         const countField = type === 'like' ? 'likesCount' : 'dislikesCount';
+        const oppositeCountField = type === 'like' ? 'dislikesCount' : 'likesCount';
 
         const comment = await CommentModel.findById(id)
-            .select(field)
-            .lean();
+            .select('likes dislikes')
+            .lean<{
+                likes: Types.ObjectId[];
+                dislikes: Types.ObjectId[];
+            }>();
 
         if (!comment) return;
+
         const hasReacted = comment[field].some(x => x.equals(userId));
+        const hasOppositeReacted = comment[oppositeField].some(x => x.equals(userId));
+
+        const update: any = {};
 
         if (!hasReacted) {
-            await CommentModel.updateOne(
-                { _id: id },
-                {
-                    $addToSet: { [field]: userId },
-                    $pull: { [oppositeField]: userId },
-                    $inc: { [countField]: 1 }
-                }
-            );
+            update.$addToSet = { [field]: userId };
+            update.$inc = { [countField]: 1 };
+
+            if (hasOppositeReacted) {
+                update.$pull = { [oppositeField]: userId };
+                update.$inc[oppositeCountField] = -1;
+            }
         } else {
-            await CommentModel.updateOne(
-                { _id: id },
-                {
-                    $pull: { [field]: userId },
-                    $inc: { [countField]: -1 }
-                }
-            );
+            update.$pull = { [field]: userId };
+            update.$inc = { [countField]: -1 };
         }
+
+        await CommentModel.updateOne({ _id: id }, update);
     }
+
 }
