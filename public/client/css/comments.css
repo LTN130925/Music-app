@@ -141,3 +141,20 @@
     font-size: 12px;
     cursor: pointer;
 }
+
+/* Reply level 1 */
+.comment-replies {
+    margin-top: 12px;
+    margin-left: 24px;
+    padding-left: 16px;
+    border-left: 2px solid #1f1f1f;
+}
+
+/* Reply level >= 2 */
+.comment-replies-flat {
+    margin-top: 8px;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+}
+

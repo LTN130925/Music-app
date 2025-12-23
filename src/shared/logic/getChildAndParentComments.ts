@@ -36,13 +36,16 @@ export class getChildAndParentComments {
                 dislikesCount: c.dislikesCount,
                 isLiked: c.likes.some((x: any) => x.equals(this.userId)),
                 isDisliked: c.dislikes.some((x: any) => x.equals(this.userId)),
-                replies: []
+                replies: [],
             };
 
             this.hashTable[id] = node;
 
             if (this.pending[id]) {
-                node.replies.push(...this.pending[id]);
+                for (const child of this.pending[id]) {
+                    child.replyTo = node.author;
+                    node.replies.push(child);
+                }
                 delete this.pending[id];
             }
 
@@ -50,6 +53,7 @@ export class getChildAndParentComments {
                 const parentId = c.parent_id.toString();
 
                 if (this.hashTable[parentId]) {
+                    node.replyTo = this.hashTable[parentId].author;
                     this.hashTable[parentId].replies.push(node);
                 } else {
                     if (!this.pending[parentId]) {

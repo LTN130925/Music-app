@@ -11,7 +11,7 @@ async function loadComments() {
     comments.forEach(c => list.appendChild(renderComment(c)));
 }
 
-function renderComment(c) {
+function renderComment(c, depth = 0) {
     const li = document.createElement('li');
     li.className = 'comment-item';
 
@@ -21,8 +21,11 @@ function renderComment(c) {
           <span class="comment-time">${new Date(c.createdAt).toLocaleString()}</span>
         </div>
     
-        <div class="comment-content">${c.content}</div>
-    
+        <div class="comment-content">
+          ${c.replyTo ? `@<strong>${c.replyTo}</strong> ` : ''}
+          ${c.content}
+        </div>
+
         <div class="comment-actions">
           <span class="like-btn ${c.isLiked ? 'active' : ''}" data-id="${c.id}" data-type="like">
             👍 ${c.likesCount}
@@ -40,10 +43,17 @@ function renderComment(c) {
         btn.onclick = () => react(btn.dataset.id, btn.dataset.type);
     });
 
-    if (c.replies.length) {
+    if (c.replies?.length) {
         const ul = document.createElement('ul');
-        ul.className = 'comment-replies';
-        c.replies.forEach(r => ul.appendChild(renderComment(r)));
+
+        ul.className = depth >= 3
+            ? 'comment-replies-flat'
+            : 'comment-replies';
+
+        c.replies.forEach(r =>
+            ul.appendChild(renderComment(r, depth + 1))
+        );
+
         li.appendChild(ul);
     }
 

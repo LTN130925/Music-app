@@ -23,6 +23,7 @@ export interface IComment {
 export interface CommentResponse {
     id: string;
     author: string;
+    replyTo?: string | null;
     content: string;
     createdAt: Date;
     likesCount: number;
