@@ -11,6 +11,9 @@ import {registerValidate} from '../../../common/validate/auth.validate'
 import {checkAccessPathTimeValidate} from "../../../common/validate/checkAccessPathTime.validate";
 import {changePasswordForgotValidate} from "../../../common/validate/changePassword.validate";
 
+// middleware
+import {rateLimitAuthMiddleware} from "../../../common/middleware/rateLimitAuth.middleware";
+
 const controllerInstance = new controller();
 
 router.get('/register', controllerInstance.register);
@@ -21,6 +24,7 @@ router.get('/login', controllerInstance.login);
 
 router.post(
     '/login',
+    rateLimitAuthMiddleware,
     passport.authenticate('local-client', {
         successRedirect: '/home',
         failureRedirect: '/auth/login',
