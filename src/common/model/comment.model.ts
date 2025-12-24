@@ -81,5 +81,8 @@ const CommentSchema = new Schema(
 
 CommentSchema.index({song_id: 1, createdAt: -1});
 CommentSchema.index({parent_id: 1, createdAt: -1});
+CommentSchema.index({song_id: 1, likesCount: -1});
+CommentSchema.index({song_id: 1, dislikesCount: -1});
+CommentSchema.index({user_id: 1, createAt: -1});
 
 export const CommentModel = model('Comment', CommentSchema, 'comments');

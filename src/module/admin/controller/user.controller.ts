@@ -30,7 +30,9 @@ export class controller {
         const data = await serviceInstance.detail(req.params.id);
         res.render('admin/pages/user/detail', {
             titlePage: 'Trang chi tiết tài khoản',
-            user: data,
+            user: data.user,
+            totalPlusReact: data.totalPlus,
+            totalMinusReact: data.totalMinus,
         });
     }
 

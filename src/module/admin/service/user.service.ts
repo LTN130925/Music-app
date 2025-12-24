@@ -1,5 +1,6 @@
 import {UserModel} from '../../../common/model/user.model';
 import {BlogUpdatedModel} from '../../../common/model/blog_updated.model'
+import {CommentModel} from "../../../common/model/comment.model";
 
 import {convertTextToSlug} from "../../../shared/util/unidecode.util";
 import {countUsers} from "../../../shared/helper/cntDocument.helper";
@@ -72,8 +73,23 @@ export class userService {
             .populate('messageId')
             .populate('managerUser', 'fullName')
             .select('-password')
+            .lean()
             .exec();
-        return user;
+
+        const progressReact = await CommentModel.find({user_id: id})
+            .select('likesCount dislikesCount')
+            .lean<{
+                likesCount: number;
+                dislikesCount: number;
+            }[]>()
+            .exec();
+
+        const [totalPlus, totalMinus] = [
+            progressReact.reduce((sum, x) => sum + x.likesCount, 0),
+            progressReact.reduce((sum, x) => sum + x.dislikesCount, 0),
+        ];
+
+        return {user, totalPlus, totalMinus};
     }
 
     async changeStatus(id, body, manager): Promise<void> {
