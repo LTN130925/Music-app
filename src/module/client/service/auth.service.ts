@@ -12,7 +12,7 @@ import {ForgotPassword} from "../../../common/model/forgot.model";
 
 import { generateRandom } from "../../../shared/util/generateRandom";
 import {sendMail} from "../../../shared/util/sendMail.util";
-import {objectSentMailData} from "../../../common/data/objectSentMail.data";
+import {objectSentMailDataClient} from "../../../common/data/objectSentMail.data";
 
 export class authService {
     async register(fullName: string, email: string, password: string) {
@@ -65,7 +65,7 @@ export class authService {
         const forgotPassword = new ForgotPassword(object);
         await forgotPassword.save();
 
-        const objectSendMail: any = objectSentMailData(forgotPassword);
+        const objectSendMail: any = objectSentMailDataClient(forgotPassword);
 
         sendMail(objectSendMail);
         return 'success';

@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug
+
+block content
+    .container.mt-5.pt-4
+        .card.shadow-sm.border-0.rounded-3
+            .card-body.p-4
+                h3.mb-3.text-warning Xác thực OTP
+                hr
+
+                form(
+                    method="POST",
+                    action=prefixName + "/profile/verification/otp?_method=PATCH"
+                )
+                    .row
+                        // Icon / Minh họa
+                        .col-md-3.text-center
+                            i.fas.fa-shield-alt.fa-5x.text-warning.mb-3
+                            p.text-muted.small
+                                | Nhập mã xác thực
+                                br
+                                | để hoàn tất thay đổi mật khẩu
+
+                        // Nội dung xác thực
+                        .col-md-9
+                            .mb-3
+                                label.form-label Mã OTP
+                                input.form-control(
+                                    type="text",
+                                    name="otp",
+                                    placeholder="Nhập mã OTP",
+                                    required,
+                                    autocomplete="one-time-code"
+                                )
+
+                            .text-muted.small
+                                | Mã OTP có hiệu lực trong thời gian ngắn.
+                                br
+                                | Không chia sẻ mã này cho bất kỳ ai.
+
+                            .d-flex.justify-content-end.mt-4
+                                a.btn.btn-outline-secondary.me-2(
+                                    href=prefixName + "/profile"
+                                ) Hủy
+                                button.btn.btn-warning(type="submit") Xác thực

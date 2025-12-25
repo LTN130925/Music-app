@@ -22,3 +22,19 @@ export const changePasswordForgotValidate = (req: Request, res: Response, next: 
     next();
 }
 
+export const changePasswordServerValidate = (req: Request, res: Response, next: NextFunction) => {
+    if (!req.body.password) {
+        req.flash('error', 'Mật khẩu rỗng!');
+        return res.redirect(req.get('referrent') || '/');
+    }
+    if (!isValidPassword(req.body.password)) {
+        req.flash('error', 'Mật khẩu không hợp lệ!');
+        return res.redirect(req.get('referrent') || '/');
+    }
+    if (req.body.password !== req.body['confirm-password']) {
+        req.flash('error', 'Mật khẩu xác thực không khớp!');
+        return res.redirect(req.get('referrent') || '/');
+    }
+    next();
+}
+
