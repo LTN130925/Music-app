@@ -11,6 +11,7 @@ import singerRoute from './singer.route';
 import authRoute from './auth.route';
 import managerRoute from './manager.route';
 import profileRoute from './profile.route';
+import verificationRoute from './verification.route';
 
 // middleware
 import {isAuthenticated} from '../../../common/middleware/authServer.middleware'
@@ -36,6 +37,8 @@ export default (app: Application) => {
     app.use(prefixNameConfig.PATH_ADMIN + '/manager', isAuthenticated, managerRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/profile', isAuthenticated, profileRoute);
+
+    app.use(prefixNameConfig.PATH_ADMIN + '/verification', isAuthenticated, verificationRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/auth', authRoute);
 }

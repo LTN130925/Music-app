@@ -43,17 +43,14 @@ export class controller {
     }
 
     async createPost(req: Request, res: Response) {
-        try {
-            const result = await serviceInstance.createPost(req.body, req.user);
-            if (result) {
-                req.flash('error', result as string);
-                return res.redirect(req.get('Referrer') || '/');
-            }
-            req.flash('success', 'Tạo tài khoản quản trị thành công');
-        } catch (e) {
-            req.flash('error', 'Lỗi tạo tài khoản quản trị');
+        const result = await serviceInstance.createPost(req.body, req.user);
+        if (!result) {
+            req.flash('error', 'email đã tồn tại, vui lòng tạo tài khoản với email mới!');
+            return res.redirect(req.get('Referrer') || '/');
         }
-        res.redirect(req.get('Referrer') || '/');
+        req.session['dataObject'] = result;
+        req.session['path'] = 'create-manager'
+        res.redirect('/server/verification/otp');
     }
 
     async edit(req: Request, res: Response) {
@@ -65,17 +62,14 @@ export class controller {
     }
 
     async editPatch(req: Request, res: Response) {
-        try {
-            const result = await serviceInstance.editPatch(req.params.id, req.body, req.user);
-            if (result) {
-                req.flash('error', result as string);
-                return res.redirect(req.get('Referrer') || '/');
-            }
-            req.flash('success', 'Cập tài khoản quản trị thành công!');
-        } catch (e) {
-            req.flash('error', 'Lỗi cập nhật tài khoản quản trị!');
+        const result = await serviceInstance.editPatch(req.params.id, req.body, req.user['email']);
+        if (!result) {
+            req.flash('error', 'Không tồn tại tài khoản quản trị hoặc trùng email quản trị');
+            return res.redirect(req.get('Referrer') || '/');
         }
-        res.redirect(req.get('Referrer') || '/');
+        req.session['dataObject'] = result;
+        req.session['path'] = 'edit-manager';
+        res.redirect('/server/verification/otp');
     }
 
     async changeStatus(req: Request, res: Response) {

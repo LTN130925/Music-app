@@ -9,6 +9,10 @@ import {countManagers} from "../../../shared/helper/cntDocument.helper";
 import {pagination} from "../../../shared/util/pagination.util";
 
 import {logicFilterArrayLog} from "../../../shared/logic/filterArrayLog";
+import {generateRandom} from "../../../shared/util/generateRandom";
+import {ForgotPassword} from "../../../common/model/forgot.model";
+import {objectSentMailDataServer} from "../../../common/data/objectSentMail.data";
+import {sendMail} from "../../../shared/util/sendMail.util";
 const logicInstance = new logicFilterArrayLog();
 
 export class songService {
@@ -83,9 +87,10 @@ export class songService {
         return data;
     }
 
-    async createPost(body, manager): Promise<String> {
+    async createPost(body, manager): Promise<any> {
         const emailExist = await ManagerModel.findOne({email: body.email, deleted: false}).exec();
-        if (emailExist) return 'Tài khoản đã tồn tại, vui lòng nhập email khác!';
+        if (emailExist) return false;
+
         const createDataBlog = new BlogUpdatedModel();
         await createDataBlog.save();
 
@@ -101,12 +106,20 @@ export class songService {
             updatedBlogId: createDataBlog._id,
             createdBy: {
                 managerId: manager._id,
-                at: new Date(),
+                at: Date.now(),
             }
         }
-        const createNewManager = new ManagerModel(dataManager);
-        await createNewManager.save();
-        return '';
+        const object: any = {
+            email: manager.email,
+            otp: generateRandom.typeNumber(6),
+        };
+        const forgotPassword = new ForgotPassword(object);
+        await forgotPassword.save();
+
+        const objectSendMail: any = objectSentMailDataServer(forgotPassword);
+
+        sendMail(objectSendMail);
+        return dataManager;
     }
 
     async edit(id) {
@@ -118,16 +131,16 @@ export class songService {
         };
     }
 
-    async editPatch(id, body, manager): Promise<string> {
+    async editPatch(id, body, email): Promise<any> {
         const existing = await ManagerModel.findById(id);
-        if (!existing) return "Id không tồn tại!";
+        if (!existing) return false;
 
         const emailExists = await ManagerModel.findOne({
             _id: { $ne: id },
             email: body.email,
             deleted: false
         }).exec();
-        if (emailExists) return "Email đã tồn tại!";
+        if (emailExists) return false;
 
         const dataUpdate: Record<string, any> = {
             fullName: body.fullName,
@@ -138,22 +151,22 @@ export class songService {
             description: body.description,
             status: body.status,
         };
-
         if (body.password) {
             dataUpdate.password = await bcrypt.hash(body.password, 10);
         }
-        await BlogUpdatedModel.findByIdAndUpdate(existing.updatedBlogId, {
-            $push: {
-                list_blog: {
-                    managerId: manager._id,
-                    title: "Chỉnh sửa tài khoản quản lý",
-                    updatedAt: new Date(),
-                },
-            },
-        });
+        dataUpdate['id'] = id;
 
-        await ManagerModel.findByIdAndUpdate(id, dataUpdate);
-        return '';
+        const object: any = {
+            email: email,
+            otp: generateRandom.typeNumber(6),
+        };
+        const forgotPassword = new ForgotPassword(object);
+        await forgotPassword.save();
+
+        const objectSendMail: any = objectSentMailDataServer(forgotPassword);
+
+        sendMail(objectSendMail);
+        return dataUpdate;
     }
 
     async changeStatus(id, body, manager): Promise<void> {

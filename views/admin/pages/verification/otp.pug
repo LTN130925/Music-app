@@ -1,4 +1,4 @@
-extends ../../layouts/default.pug
+extends ../../layouts/default
 
 block content
     .container.mt-5.pt-4
@@ -9,7 +9,7 @@ block content
 
                 form(
                     method="POST",
-                    action=prefixName + "/profile/verification/otp?_method=PATCH"
+                    action=prefixName + `/verification/otp/${path}?_method=PATCH`
                 )
                     .row
                         // Icon / Minh họa

@@ -42,26 +42,8 @@ export class controller {
             req.user['email']
         );
         req.session['text'] = data;
-        res.redirect('/server/profile/verification/otp');
-    }
-
-    otp(req: Request, res: Response) {
-        res.render('admin/pages/profile/otp', {
-            titlePage: 'Xác thực otp thay đổi mật khẩu!'
-        })
-    }
-
-    async verificationOtp(req: Request, res: Response) {
-        const getPassword = req.session['text'];
-        const getOtp = req.body['otp'];
-        const verify = await serviceInstance.verifiOtp(getOtp, getPassword, req.user['email'], req.user['_id']);
-        if (verify) {
-            delete req.session['text'];
-            req.flash('success', 'xác thực mã otp thành công, mật khẩu của bạn đã được cập nhật!');
-        } else {
-            req.flash('error', 'Xác thực mã otp thất bại, vui lòng xác thực lại!')
-        }
-        res.redirect(req.get('Referrer') || '/');
+        req.session['path'] = 'change-password';
+        res.redirect('/server/verification/otp');
     }
 
     debug(req: Request, res: Response) {

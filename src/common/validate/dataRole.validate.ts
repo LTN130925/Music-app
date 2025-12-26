@@ -8,7 +8,7 @@ export const dataRoleValidate = (req: Request, res: Response, next: NextFunction
         req.flash('error', 'Có dữ liệu đầu vào không tồn tại!');
         return res.redirect(req.get('Referrer') || '/');
     }
-    if (!role.includes(data)) {
+    if (!data.includes(role)) {
         req.flash('error', 'Dữ liệu quyền bị can thiệp!');
         return res.redirect(req.get('Referrer') || '/');
     }

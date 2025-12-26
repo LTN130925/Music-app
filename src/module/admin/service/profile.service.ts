@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import {ManagerModel} from "../../../common/model/manager.model";
 import {generateRandom} from "../../../shared/util/generateRandom";
 import {ForgotPassword} from "../../../common/model/forgot.model";
+
 import {objectSentMailDataServer} from "../../../common/data/objectSentMail.data";
 import {sendMail} from "../../../shared/util/sendMail.util";
 
@@ -26,15 +27,5 @@ export class ProfileService {
 
         sendMail(objectSendMail);
         return cypher;
-    }
-
-    async verifiOtp(otp: string, password: string, email: string, id: Types.ObjectId): Promise<boolean> {
-        const verify = await ForgotPassword.findOne({email, otp})
-            .lean();
-        if (!verify) {
-            return false;
-        }
-        await ManagerModel.findByIdAndUpdate(id, {password: password});
-        return true;
     }
 }

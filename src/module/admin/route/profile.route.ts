@@ -30,10 +30,6 @@ router.get('/change-password', controllerInstance.changePassword);
 
 router.post('/change-password', changePasswordServerValidate, controllerInstance.encryptPassword);
 
-router.get('/verification/otp', controllerInstance.otp);
-
-router.patch('/verification/otp', controllerInstance.verificationOtp)
-
 router.get('/debug', controllerInstance.debug)
 
 export default router;
