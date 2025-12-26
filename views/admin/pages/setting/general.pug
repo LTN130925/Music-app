@@ -1,0 +1,75 @@
+extends ../../layouts/default.pug
+
+block content
+    .container.mt-5.pt-4
+        .card.shadow-sm.border-0.rounded-3
+            .card-body.p-4
+                h3.mb-3.text-primary Cấu hình chung
+                hr
+
+                form(
+                    method="POST",
+                    action=prefixName + "/setting/general",
+                    enctype="multipart/form-data"
+                )
+                    .row
+                        .col-md-6.mb-3
+                            label.form-label Tên hệ thống
+                            input.form-control(
+                                type="text",
+                                name="siteName",
+                                value=settings.siteName || "",
+                                placeholder="Nhập tên hệ thống"
+                            )
+
+                        .col-md-6.mb-3
+                            label.form-label Email liên hệ
+                            input.form-control(
+                                type="email",
+                                name="contactEmail",
+                                value=settings.contactEmail || "",
+                                placeholder="example@email.com"
+                            )
+
+                        .col-md-6.mb-3
+                            label.form-label Số điện thoại
+                            input.form-control(
+                                type="text",
+                                name="phone",
+                                value=settings.phone || "",
+                                placeholder="0123 456 789"
+                            )
+
+                        .col-md-6.mb-3
+                            label.form-label Copyright
+                            input.form-control(
+                                type="text",
+                                name="copyright",
+                                value=settings.copyright || "",
+                                placeholder="© 2025 Your Company"
+                            )
+
+                        .col-md-6.mb-3
+                            label.form-label Logo hệ thống
+                            input.form-control(type="file", name="logo")
+
+                            if settings.logo
+                                img.mt-2(
+                                    src=settings.logo,
+                                    alt="logo",
+                                    height="60"
+                                )
+
+                        .col-md-12.mb-3
+                            .form-check.form-switch
+                                input.form-check-input(
+                                    type="checkbox",
+                                    name="maintenance",
+                                    checked=settings.maintenance
+                                )
+                                label.form-check-label Chế độ bảo trì
+
+                    .text-end.mt-4
+                        button.btn.btn-primary(type="submit")
+                            i.fas.fa-save.me-1
+                            | Lưu cấu hình

@@ -12,6 +12,7 @@ import authRoute from './auth.route';
 import managerRoute from './manager.route';
 import profileRoute from './profile.route';
 import verificationRoute from './verification.route';
+import generalSettingRoute from './setting.route';
 
 // middleware
 import {isAuthenticated} from '../../../common/middleware/authServer.middleware'
@@ -39,6 +40,8 @@ export default (app: Application) => {
     app.use(prefixNameConfig.PATH_ADMIN + '/profile', isAuthenticated, profileRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/verification', isAuthenticated, verificationRoute);
+
+    app.use(prefixNameConfig.PATH_ADMIN + '/setting', isAuthenticated, generalSettingRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/auth', authRoute);
 }
