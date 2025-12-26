@@ -7,7 +7,7 @@ block content
                 h3.mb-3.text-primary Chỉnh sửa hồ sơ
                 hr
 
-                form(method="POST", action=prefixName + "/profile/edit?_method=PATCH", enctype="multipart/form-data")
+                form(method="POST", action="/profile/edit?_method=PATCH", enctype="multipart/form-data")
                     .row
                         // Avatar
                         .col-md-3.text-center
@@ -58,6 +58,6 @@ block content
 
                             .d-flex.justify-content-end.mt-4
                                 a.btn.btn-outline-secondary.me-2(
-                                    href=prefixName + "/profile"
+                                    href="/profile"
                                 ) Hủy
                                 button.btn.btn-primary(type="submit") Lưu thay đổi

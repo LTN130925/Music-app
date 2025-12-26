@@ -11,6 +11,7 @@ import notification from './notification.route';
 import playlistRoute from './playlist.route';
 import feedRoute from './feed.route';
 import homeRoute from './home.route';
+import verificationRoute from './verification.route';
 
 // middleware
 import {isAuthenticated} from '../../../common/middleware/auth.middleware'
@@ -37,6 +38,8 @@ export default (app: Application) => {
     app.use('/playlist', isAuthenticated, playlistRoute);
 
     app.use('/feed', isAuthenticated, feedRoute);
+
+    app.use('/verification', isAuthenticated, verificationRoute);
 
     app.use('/auth', userRoute);
 }

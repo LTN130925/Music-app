@@ -35,22 +35,22 @@ export class dashboardService {
 
             UserModel.find({ deleted: false })
                 .sort({ createdAt: -1 })
-                .limit(5)
+                .limit(10)
                 .select('fullName email createdAt'),
 
             SongModel.find({ deleted: false })
                 .sort({ views: -1 })
-                .limit(5)
+                .limit(10)
                 .select('title views likes'),
 
             SingerModel.find({ deleted: false })
                 .sort({registrationNumber: -1})
-                .limit(5)
+                .limit(10)
                 .select('fullName registrationNumber'),
 
-            TopicModel.find({deleted: false, featured: true})
+            TopicModel.find({deleted: false})
                 .sort({createdAt: -1})
-                .limit(5)
+                .limit(10)
                 .select('title')
         ]);
 
