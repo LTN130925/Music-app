@@ -14,6 +14,35 @@ block content
                             h6.mt-2= item.title
                             h4.fw-bold= item.value
 
+
+        // ===== CHARTS =====
+        .row.g-3.mb-4
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold Biểu đồ bài hát nổi bật
+                    .card-body
+                        canvas#topSongsChart(width='400', height='300')
+
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold Biểu đồ ca sĩ nổi bật
+                    .card-body
+                        canvas#topSingersChart(width='400', height='300')
+
+        .row.g-3.mb-4
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold Biểu đồ chủ đề nổi bật
+                    .card-body
+                        canvas#topTopicsChart(width='400', height='300')
+
+            .col-md-6
+                .card.shadow-sm
+                    .card-header.fw-semibold Biểu đồ Likes & Views
+                    .card-body
+                        canvas#likesViewsChart(width='400', height='300')
+
+
         // ===== TABLES =====
         .row
             // ---- Top Songs ----
@@ -98,4 +127,15 @@ block content
                                         td= index + 1
                                         td= topic.title
 
+block scripts
+    script(src="https://cdn.jsdelivr.net/npm/chart.js") // import Chart.js
+    script.
+        // Dữ liệu từ server
+        window.dashboardData = {
+            topSongs: !{JSON.stringify(topSongs)},
+            topSingers: !{JSON.stringify(topSingers)},
+            topTopics: !{JSON.stringify(topTopics)},
+            stats: !{JSON.stringify(stats)}
+        };
+    script(type="module" src="/admin/js/dashboard-charts.js")
 
