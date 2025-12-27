@@ -1,0 +1,70 @@
+doctype html
+html(lang="vi")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title 404 - Trang không tồn tại
+        style.
+            /* Reset cơ bản */
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+
+            body {
+                height: 100vh;
+                font-family: 'Arial', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
+                color: #e5e5e5;
+            }
+
+            .container {
+                text-align: center;
+                background: rgba(255,255,255,0.05);
+                padding: 50px;
+                border-radius: 16px;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+                max-width: 500px;
+            }
+
+            h1 {
+                font-size: 100px;
+                color: #ff4d4f;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                font-size: 28px;
+                margin-bottom: 12px;
+            }
+
+            p {
+                opacity: 0.8;
+                margin-bottom: 30px;
+                line-height: 1.6;
+            }
+
+            a {
+                display: inline-block;
+                text-decoration: none;
+                color: #fff;
+                background-color: #1db954;
+                padding: 12px 24px;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+                margin: 0 8px;
+            }
+
+            a:hover {
+                background-color: #17a347;
+                transform: translateY(-2px);
+            }
+
+    body
+        .container
+            h1 404
+            h2 Trang không tồn tại
+            p
+                | Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.
+            a(href="/home") Về trang chủ
+            a(href="javascript:history.back()") Quay lại

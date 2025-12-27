@@ -58,6 +58,12 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 routeServer(app);
 routeClient(app);
 
+app.use((req, res) => {
+    res.status(404).render('error/404', {
+
+    })
+})
+
 // 🟢 Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port} — link: http://localhost:${port}`);
