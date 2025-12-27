@@ -11,14 +11,22 @@ import notification from './notification.route';
 import playlistRoute from './playlist.route';
 import feedRoute from './feed.route';
 import homeRoute from './home.route';
+import contactRoute from './contact.route';
 import verificationRoute from './verification.route';
 
 // middleware
 import {isAuthenticated} from '../../../common/middleware/auth.middleware'
+import {generalSettingMiddleware} from "../../../common/middleware/generalSetting.middleware";
 
 export default (app: Application) => {
+    app.use('/maintenance', (req, res) => {
+        res.render('maintenance/index');
+    });
+
+    app.use(generalSettingMiddleware);
+
     app.get('/', (req, res) => {
-        res.redirect('/home');     // hoặc render trang chính
+        res.redirect('/home');
     });
 
     app.use('/home', isAuthenticated, homeRoute);
@@ -40,6 +48,8 @@ export default (app: Application) => {
     app.use('/feed', isAuthenticated, feedRoute);
 
     app.use('/verification', isAuthenticated, verificationRoute);
+
+    app.use('/contact', isAuthenticated, contactRoute);
 
     app.use('/auth', userRoute);
 }

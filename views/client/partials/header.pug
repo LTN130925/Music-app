@@ -5,7 +5,13 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
             i.fas.fa-bars.fa-lg.text-white
 
         //- Logo
-        a.navbar-brand.ml-2.font-weight-bold.text-white(href="/topic") MusicApp
+        a.navbar-brand.ml-2.font-weight-bold.text-white(href="/home")
+            img(
+                src=setting.logo
+                alt="Logo"
+                style="height:30px; width:30px; margin-right:8px; border-radius:6px; object-fit:cover;"
+            )
+
 
         if user
             //- Nút thông báo

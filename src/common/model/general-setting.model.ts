@@ -47,4 +47,4 @@ const SettingSchema = new Schema<ISetting>(
     }
 );
 
-export const SettingModel = model<ISetting>("Setting", SettingSchema, "genenal-setting");
+export const SettingModel = model<ISetting>("Setting", SettingSchema, "general-setting");

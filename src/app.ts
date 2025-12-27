@@ -55,8 +55,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 // 🟢 Routes
-routeClient(app);
 routeServer(app);
+routeClient(app);
 
 // 🟢 Start the server
 app.listen(port, () => {

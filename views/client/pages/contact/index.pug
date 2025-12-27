@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug
+
+block content
+    .container.mt-5.pt-4
+        .card.shadow-sm.border-0.rounded-3
+            .card-body.p-4
+                h3.mb-3.text-primary Liên hệ
+                hr
+
+                .row
+                    // Logo
+                    .col-md-3.text-center
+                        if setting.logo
+                            img.rounded.mb-3(
+                                src=setting.logo
+                                alt="Logo"
+                                width="120"
+                                height="120"
+                                style="object-fit:cover;"
+                            )
+
+                    // Thông tin liên hệ
+                    .col-md-9
+                        p.text-muted
+                            | Nếu bạn cần hỗ trợ hoặc có thắc mắc, vui lòng liên hệ với chúng tôi qua các thông tin bên dưới.
+
+                        .mb-3
+                            label.form-label Số điện thoại
+                            p.mb-0
+                                a.text-decoration-none(
+                                    href=`tel:${setting.phone}`
+                                )= setting.phone
+
+                        .mb-3
+                            label.form-label Email
+                            p.mb-0
+                                a.text-decoration-none(
+                                    href=`mailto:${setting.contactEmail}?subject=Liên hệ MusicApp`
+                                )= setting.contactEmail
+
+                        .d-flex.justify-content-end.mt-4
+                            a.btn.btn-outline-secondary(
+                                href="/home"
+                            ) Quay lại trang chủ
