@@ -8,7 +8,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "NodeNext",
     "target": "ES2017",
-    "types": [],
+    "types": ["node"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -20,7 +20,6 @@
     "declarationMap": true,
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
     // Style Options
     // "noImplicitReturns": true,
     // "noImplicitOverride": true,

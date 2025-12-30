@@ -1,9 +1,9 @@
 {
   "name": "Music-app",
   "version": "1.0.0",
-  "main": "./src/app.ts",
+  "main": "./dist/app.js",
   "scripts": {
-    "start": "node ./dict/index.js",
+    "start": "node ./dist/app.js",
     "build": "tsc",
     "dev": "nodemon --exec ts-node ./src/app.ts"
   },
